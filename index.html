@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Real Limo Lux - Navigation Hub</title>
+<style>
+:root{
+--bg:#070809;
+--surface:#13161b;
+--surface-2:#1b1f25;
+--gold:#d7b46a;
+--text:#ffffff;
+--muted:#b8bcc4;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{
+font-family:Inter,Arial,sans-serif;
+background:linear-gradient(135deg,#070809,#11151b,#191d23);
+color:var(--text);
+padding:60px 24px;
+min-height:100vh;
+}
+.container{max-width:1400px;margin:auto}
+.hero{text-align:center;margin-bottom:60px}
+.hero h1{font-size:56px;color:var(--gold);margin-bottom:12px}
+.hero p{font-size:18px;color:var(--muted)}
+.section-title{
+font-size:30px;
+color:var(--gold);
+margin:40px 0 24px;
+}
+.grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(360px,1fr));
+gap:24px;
+}
+.card{
+background:linear-gradient(145deg,var(--surface),var(--surface-2));
+border:1px solid rgba(215,180,106,.2);
+border-radius:24px;
+padding:30px;
+transition:.3s ease;
+}
+.card:hover{
+transform:translateY(-6px);
+box-shadow:0 20px 40px rgba(215,180,106,.15);
+border-color:var(--gold);
+}
+.badge{
+display:inline-block;
+padding:8px 14px;
+border-radius:999px;
+background:rgba(215,180,106,.12);
+color:var(--gold);
+font-size:12px;
+font-weight:700;
+margin-bottom:18px;
+}
+.card h3{
+font-size:28px;
+margin-bottom:12px;
+}
+.card p{
+color:var(--muted);
+line-height:1.7;
+margin-bottom:24px;
+}
+.btn{
+display:inline-block;
+padding:14px 22px;
+background:var(--gold);
+color:#111;
+text-decoration:none;
+font-weight:700;
+border-radius:12px;
+}
+footer{
+margin-top:60px;
+text-align:center;
+color:#8e949c;
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+
+<div class="hero">
+<h1>Real Limo Lux</h1>
+<p>Luxury Transportation Platform Navigation Center</p>
+</div>
+
+<h2 class="section-title">Customer Experience</h2>
+
+<div class="grid">
+
+<div class="card">
+<span class="badge">WEB PORTAL</span>
+<h3>Customer Web App</h3>
+<p>Passenger booking portal, ride management, account settings and reservation experience.</p>
+<a class="btn" href="Customer.html">Open Portal</a>
+</div>
+
+<div class="card">
+<span class="badge">MOBILE APP</span>
+<h3>Customer Mobile App</h3>
+<p>Mobile booking experience with ride tracking, chauffeur updates and trip management.</p>
+<a class="btn" href="Customer_Mobile.html">Open App</a>
+</div>
+
+<div class="card">
+<span class="badge">ADMIN PORTAL</span>
+<h3>Dispatcher Web Console</h3>
+<p>Operations dashboard for dispatching, scheduling, customer management and reporting.</p>
+<a class="btn" href="Admin.html">Open Dashboard</a>
+</div>
+
+<div class="card">
+<span class="badge">USER FLOW</span>
+<h3>Customer App User Flow</h3>
+<p>Customer onboarding, booking journey, notifications and ride lifecycle workflow.</p>
+<a class="btn" href="Customer_App_User_Flow.html">View Flow</a>
+</div>
+
+<div class="card">
+<span class="badge">USER FLOW</span>
+<h3>Admin App User Flow</h3>
+<p>Administrative workflow diagrams covering dispatching, assignment and monitoring.</p>
+<a class="btn" href="Admin_App_User_Flow.html">View Flow</a>
+</div>
+
+</div>
+
+<footer>
+Real Limo Lux • Premium Transportation Platform
+</footer>
+
+</div>
+
+</body>
+</html>
