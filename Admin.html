@@ -1970,25 +1970,30 @@
               <form>
                 <div style="display:grid; grid-template-columns:1fr 1fr; gap:24px; margin-bottom:24px;">
                   <div>
+                    <label style="display:block; margin-bottom:8px; font-size:0.85rem; color:#fff;">Vehicle Category</label>
+                    <select style="width:100%; padding:12px; background:transparent; border:1px solid rgba(255,255,255,0.1); color:#fff; border-radius:6px; font-size:0.95rem; cursor:pointer;">
+                      <option>Executive Sedan</option>
+                      <option>Luxury SUV</option>
+                      <option>Executive Van</option>
+                      <option>Stretch Limousine</option>
+                      <option>Motor Coach</option>
+                    </select>
+                  </div>
+                  <div>
                     <label style="display:block; margin-bottom:8px; font-size:0.85rem; color:#fff;">Vehicle Name</label>
                     <input type="text" placeholder="Mercedes S-Class" style="width:100%; padding:12px; background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.1); color:#fff; border-radius:6px; font-size:0.95rem;">
                   </div>
                   <div>
-                    <label style="display:block; margin-bottom:8px; font-size:0.85rem; color:#fff;">Model Year</label>
-                    <input type="text" placeholder="2024" style="width:100%; padding:12px; background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.1); color:#fff; border-radius:6px; font-size:0.95rem;">
+                    <label style="display:block; margin-bottom:8px; font-size:0.85rem; color:#fff;">Vehicle Model</label>
+                    <input type="text" placeholder="S-Class" style="width:100%; padding:12px; background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.1); color:#fff; border-radius:6px; font-size:0.95rem;">
                   </div>
                   <div>
-                    <label style="display:block; margin-bottom:8px; font-size:0.85rem; color:#fff;">Plate Number</label>
+                    <label style="display:block; margin-bottom:8px; font-size:0.85rem; color:#fff;">Colour</label>
+                    <input type="text" placeholder="Obsidian Black" style="width:100%; padding:12px; background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.1); color:#fff; border-radius:6px; font-size:0.95rem;">
+                  </div>
+                  <div>
+                    <label style="display:block; margin-bottom:8px; font-size:0.85rem; color:#fff;">Vehicle Number</label>
                     <input type="text" placeholder="NYC-1006" style="width:100%; padding:12px; background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.1); color:#fff; border-radius:6px; font-size:0.95rem;">
-                  </div>
-                  <div>
-                    <label style="display:block; margin-bottom:8px; font-size:0.85rem; color:#fff;">Vehicle Type</label>
-                    <select style="width:100%; padding:12px; background:transparent; border:1px solid rgba(255,255,255,0.1); color:#fff; border-radius:6px; font-size:0.95rem; cursor:pointer;">
-                      <option>Sedan</option>
-                      <option>SUV</option>
-                      <option>Van</option>
-                      <option>Limousine</option>
-                    </select>
                   </div>
                   <div>
                     <label style="display:block; margin-bottom:8px; font-size:0.85rem; color:#fff;">Passenger Capacity</label>
@@ -1998,6 +2003,17 @@
 
                 
                 
+                <h3 style="margin-top:32px; color:#fff; font-size:1.1rem; margin-bottom:16px; border-bottom:1px solid rgba(255,255,255,0.1); padding-bottom:8px;">Amenities</h3>
+                <div style="display:grid; grid-template-columns:repeat(4, minmax(0, 1fr)); gap:14px; margin-bottom:32px;">
+                  <label style="display:flex; align-items:center; gap:10px; padding:14px; background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.1); border-radius:6px; color:#fff; cursor:pointer;"><input type="checkbox" style="accent-color:#e8c96a;"> Wi-Fi</label>
+                  <label style="display:flex; align-items:center; gap:10px; padding:14px; background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.1); border-radius:6px; color:#fff; cursor:pointer;"><input type="checkbox" style="accent-color:#e8c96a;"> Leather Seats</label>
+                  <label style="display:flex; align-items:center; gap:10px; padding:14px; background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.1); border-radius:6px; color:#fff; cursor:pointer;"><input type="checkbox" style="accent-color:#e8c96a;"> Refreshments</label>
+                  <label style="display:flex; align-items:center; gap:10px; padding:14px; background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.1); border-radius:6px; color:#fff; cursor:pointer;"><input type="checkbox" style="accent-color:#e8c96a;"> Charging Ports</label>
+                  <label style="display:flex; align-items:center; gap:10px; padding:14px; background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.1); border-radius:6px; color:#fff; cursor:pointer;"><input type="checkbox" style="accent-color:#e8c96a;"> Climate Control</label>
+                  <label style="display:flex; align-items:center; gap:10px; padding:14px; background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.1); border-radius:6px; color:#fff; cursor:pointer;"><input type="checkbox" style="accent-color:#e8c96a;"> Privacy Glass</label>
+                  <label style="display:flex; align-items:center; gap:10px; padding:14px; background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.1); border-radius:6px; color:#fff; cursor:pointer;"><input type="checkbox" style="accent-color:#e8c96a;"> Child Seats</label>
+                </div>
+
                 <h3 style="margin-top:32px; color:#fff; font-size:1.1rem; margin-bottom:16px; border-bottom:1px solid rgba(255,255,255,0.1); padding-bottom:8px;">Pricing & Documents</h3>
                 <div style="display:grid; grid-template-columns:1fr 1fr; gap:24px; margin-bottom:32px;">
                   <div>
@@ -2010,21 +2026,30 @@
                     </div>
                   </div>
                   <div style="grid-column: span 2;">
-                    <label style="display:block; margin-bottom:8px; font-size:0.85rem; color:#fff;">Vehicle Photos <span style="color:rgba(255,255,255,0.5);">(Upload JPG, PNG)</span></label>
+                    <label style="display:block; margin-bottom:8px; font-size:0.85rem; color:#fff;">Vehicle Photos (4) <span style="color:rgba(255,255,255,0.5);">(Upload JPG, PNG)</span></label>
                     <div style="border:2px dashed rgba(255,255,255,0.2); border-radius:8px; padding:32px; text-align:center; background:rgba(255,255,255,0.02); cursor:pointer;">
                         <div style="font-size:2rem; margin-bottom:8px;">📷</div>
                         <div style="color:#fff; font-weight:500; margin-bottom:4px;">Click to upload photos</div>
-                        <div style="color:rgba(255,255,255,0.4); font-size:0.8rem;">Exterior, interior, and detail shots</div>
-                        <input type="file" multiple style="display:none;">
+                        <div style="color:rgba(255,255,255,0.4); font-size:0.8rem;">Upload exactly 4 exterior, interior, and detail shots</div>
+                        <input type="file" accept="image/*" multiple style="margin-top:12px; width:100%; color:rgba(255,255,255,0.7);">
                     </div>
                   </div>
                   <div style="grid-column: span 2;">
-                    <label style="display:block; margin-bottom:8px; font-size:0.85rem; color:#fff;">Registration & Compliance Documents <span style="color:rgba(255,255,255,0.5);">(Upload PDF, JPG)</span></label>
+                    <label style="display:block; margin-bottom:8px; font-size:0.85rem; color:#fff;">Registration Documents <span style="color:rgba(255,255,255,0.5);">(Upload PDF, JPG)</span></label>
                     <div style="border:2px dashed rgba(255,255,255,0.2); border-radius:8px; padding:32px; text-align:center; background:rgba(255,255,255,0.02); cursor:pointer;">
                         <div style="font-size:2rem; margin-bottom:8px;">📄</div>
-                        <div style="color:#fff; font-weight:500; margin-bottom:4px;">Click to upload documents</div>
-                        <div style="color:rgba(255,255,255,0.4); font-size:0.8rem;">Insurance, Registration Certificate, Permits</div>
-                        <input type="file" multiple style="display:none;">
+                        <div style="color:#fff; font-weight:500; margin-bottom:4px;">Click to upload registration documents</div>
+                        <div style="color:rgba(255,255,255,0.4); font-size:0.8rem;">Registration certificate and related permits</div>
+                        <input type="file" accept=".pdf,image/*" multiple style="margin-top:12px; width:100%; color:rgba(255,255,255,0.7);">
+                    </div>
+                  </div>
+                  <div style="grid-column: span 2;">
+                    <label style="display:block; margin-bottom:8px; font-size:0.85rem; color:#fff;">Insurance Documents <span style="color:rgba(255,255,255,0.5);">(Upload PDF, JPG)</span></label>
+                    <div style="border:2px dashed rgba(255,255,255,0.2); border-radius:8px; padding:32px; text-align:center; background:rgba(255,255,255,0.02); cursor:pointer;">
+                        <div style="font-size:2rem; margin-bottom:8px;">DOC</div>
+                        <div style="color:#fff; font-weight:500; margin-bottom:4px;">Click to upload insurance documents</div>
+                        <div style="color:rgba(255,255,255,0.4); font-size:0.8rem;">Insurance policy and renewal documents</div>
+                        <input type="file" accept=".pdf,image/*" multiple style="margin-top:12px; width:100%; color:rgba(255,255,255,0.7);">
                     </div>
                   </div>
                 </div>

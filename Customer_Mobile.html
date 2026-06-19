@@ -54,6 +54,34 @@
       }
       .mobile-bottom-nav { left: 50% !important; transform: translateX(-50%); }
 
+      .mobile-global-back {
+        position: fixed;
+        top: 10px;
+        left: max(16px, calc((100vw - 430px) / 2 + 16px));
+        z-index: 1200;
+        width: 44px;
+        height: 44px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border: 0;
+        background: transparent;
+        color: #fff;
+        cursor: pointer;
+      }
+      .mobile-global-back svg {
+        width: 28px;
+        height: 28px;
+        display: block;
+        stroke-width: 2.4;
+      }
+.auth-back,
+.profile-back-btn,
+.mobile-detail-back,
+a[onclick="history.back()"] {
+  display: none !important;
+}
+
       a { color: inherit; text-decoration: none; }
       button, input, select, textarea { font: inherit; }
       .screen { display: none; min-height: 100vh; }
@@ -77,10 +105,11 @@
         justify-content: space-between;
         gap: 22px;
       }
-      .brand { display: flex; flex-direction: column; align-items: flex-start; text-align: left; gap: 0; text-decoration: none; padding-top: 4px; }
-      .brand-car-icon { margin-bottom: -4px; margin-left: -6px; }
-      .brand-name { font-family: var(--display); font-weight: 600; font-size: 1.6rem; color: var(--ivory); letter-spacing: 0; line-height: 1; }
-      .brand-sub { font-size: 0.65rem; letter-spacing: 0.25em; color: var(--gold); font-weight: 600; text-transform: uppercase; align-self: flex-end; margin-top: 2px; margin-right: 4px; }
+.brand { display: flex; align-items: center; text-align: left; gap: 14px; text-decoration: none; padding-top: 0; }
+.brand::before { content: "RLL"; width: 58px; height: 58px; display: grid; place-items: center; border: 1px solid rgba(240,212,138,.44); background: linear-gradient(145deg, rgba(201,164,93,.22), rgba(5,5,5,.78)); color: var(--gold-bright); font-family: var(--display); font-size: 1.35rem; font-weight: 700; flex: 0 0 auto; }
+.brand-car-icon { display: none; }
+.brand-name { font-family: var(--body); font-weight: 800; font-size: 1.35rem; color: var(--ivory); letter-spacing: 0; line-height: 1.15; }
+.brand-sub { display: none; }
       .nav-links, .nav-actions { display: flex; align-items: center; gap: 24px; }
       .nav-links a { color: #dcd6c9; }
       .nav-links a:hover, .profile-menu a:hover { color: var(--gold-bright); }
@@ -966,7 +995,7 @@
       .booking-history .summary-row strong { text-align: right; }
       #bookings .section {
         min-height: 100vh;
-        padding: 40px 0 150px;
+        padding: 138px 0 150px;
         background:
           radial-gradient(circle at 20% 0%, rgba(201,164,93,.14), transparent 34%),
           linear-gradient(180deg, #090908 0%, #12151b 52%, #050505 100%);
@@ -990,9 +1019,10 @@
       }
       .booking-title-block h1 {
         font-family: var(--display);
-        font-size: clamp(2.45rem, 10vw, 3.4rem);
+        font-size: clamp(2.35rem, 8.4vw, 3rem);
         line-height: .94;
         margin: 6px 0 0;
+        white-space: nowrap;
       }
       .booking-status-pill {
         flex: 0 0 auto;
@@ -1219,27 +1249,31 @@
       }
       .mobile-rides-page {
         min-height: 100vh;
-        padding: 28px 0 112px;
+        padding: 88px 0 112px;
         background:
           radial-gradient(circle at 18% 0%, rgba(201,164,93,.13), transparent 32%),
           linear-gradient(180deg, #090a0d 0%, #11141a 56%, #050505 100%);
       }
       .mobile-rides-header {
-        display: flex;
-        align-items: flex-end;
-        justify-content: space-between;
+        display: grid;
+        grid-template-columns: 1fr;
+        align-items: start;
         gap: 14px;
         margin-bottom: 22px;
       }
       .mobile-rides-header h1,
       .mobile-ride-detail-header h1 {
         font-family: var(--display);
-        font-size: clamp(2.6rem, 13vw, 4rem);
+        font-size: clamp(2.8rem, 10.8vw, 3.55rem);
         line-height: .9;
         margin: 6px 0 0;
       }
+      .mobile-rides-header h1 {
+        white-space: nowrap;
+      }
       .mobile-book-another {
         flex: 0 0 auto;
+        justify-self: end;
         padding: 11px 13px;
         font-size: .76rem;
       }
@@ -1605,7 +1639,7 @@
       .profile-detail-row span, .booking-status span { color: var(--muted); }
       .profile-mobile-page {
         min-height: calc(100vh - 76px);
-        padding: 22px 14px 96px;
+        padding: 72px 14px 96px;
         background: #050505;
       }
       .profile-mobile-page h1 {
@@ -1827,7 +1861,7 @@
       .profile-subpage {
         width: min(100%, 540px);
         margin: 0 auto;
-        padding: 22px 16px 110px;
+        padding: 72px 16px 110px;
         background:
           radial-gradient(circle at 16% 0%, rgba(201,164,93,.12), transparent 34%),
           linear-gradient(180deg, #0a0a09 0%, #12151b 52%, #050505 100%);
@@ -1871,7 +1905,7 @@
         align-items: center;
         gap: 10px;
         min-height: 74px;
-        padding: 18px 16px 12px;
+        padding: 18px 16px 12px 72px;
         background: #050505;
         border-bottom: 1px solid rgba(255,255,255,.08);
       }
@@ -2141,7 +2175,7 @@
 
         /* Mobile-specific navigation */
         .mobile-bottom-nav {
-          display: none;
+          display: flex;
           position: fixed;
           bottom: calc(18px + env(safe-area-inset-bottom));
           left: 50%;
@@ -2159,6 +2193,9 @@
           justify-content: center;
           align-items: center;
           gap: 8px;
+        }
+        body.mobile-nav-hidden .mobile-bottom-nav {
+          display: none !important;
         }
         .mobile-bottom-nav a {
           position: relative;
@@ -2490,6 +2527,17 @@
         font-weight: 700;
       }
 
+      #otp-login h1,
+      #otp-login p,
+      #otp-login label {
+        color: #fff !important;
+        text-shadow: 0 3px 14px rgba(0,0,0,.78) !important;
+      }
+
+      #otp-login label {
+        font-weight: 800 !important;
+      }
+
       .input-wrap {
         position: relative;
       }
@@ -2778,7 +2826,13 @@
 
       </style>
   </head>
-  <body>
+<body>
+    <button class="mobile-global-back" type="button" data-mobile-global-back aria-label="Go to previous page">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M19 12H5"></path>
+        <path d="m12 19-7-7 7-7"></path>
+      </svg>
+    </button>
     <datalist id="location-suggestions">
       <option value="The Peninsula, Beverly Hills"></option>
       <option value="Van Nuys Private Airport"></option>
@@ -2848,7 +2902,7 @@
       </div>
 
       <div class="auth-shell">
-        <a href="#welcome" onclick="history.back()" class="auth-back" aria-label="Back">
+        <a href="#welcome" onclick="history.back()" class="auth-back" aria-label="Previous page">
           <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
         </a>
 
@@ -2876,7 +2930,7 @@
           </div>
 
           <label class="auth-field">
-            <span class="auth-label">Email address</span>
+            <span class="auth-label">Email address (Optional)</span>
             <span class="input-wrap">
               <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
               <input type="email" class="glass-input" placeholder="davidjohnson@gmail.com">
@@ -2923,7 +2977,7 @@
     <section id="otp-login" class="screen" style="position: relative; overflow: hidden;">
       <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1;">
         <img src="https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=1400&q=82" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.style.display='none'">
-        <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.2) 30%, rgba(0,0,0,0.6) 70%, rgba(0,0,0,0.95) 100%);"></div>
+        <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(180deg, rgba(0,0,0,0.68) 0%, rgba(0,0,0,0.54) 30%, rgba(0,0,0,0.7) 70%, rgba(0,0,0,0.96) 100%);"></div>
       </div>
 
       <div style="position: relative; z-index: 2; height: 100vh; overflow-y: auto; display: flex; flex-direction: column; padding: 24px;">
@@ -3000,7 +3054,7 @@
       </div>
 
       <div class="auth-shell">
-        <a href="#otp-login" onclick="history.back()" class="auth-back" aria-label="Back">
+        <a href="#otp-login" onclick="history.back()" class="auth-back" aria-label="Previous page">
           <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
         </a>
 
@@ -3269,7 +3323,7 @@
               <path d="M45,28 Q91,30 127,27 Q148,25 163,18" />
               <path d="M171,24 Q190,20 207,27" />
             </svg>
-            <div class="brand-name">Real Luxury<br>Transportation</div>
+            <div class="brand-name">Real Limo<br>Lux</div>
             <div class="brand-sub">PREMIUM RIDES</div>
           </a><div class="nav-actions"><a class="btn primary" href="#fleet">Book Now</a><a class="btn secondary notification-icon-btn" href="#notifications" aria-label="Notifications"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"></path><path d="M13.7 21a2 2 0 0 1-3.4 0"></path></svg><span class="sr-only">Notifications</span></a></div></div></nav>
       <main class="section"><div class="container"><span class="eyebrow">Fleet Showcase</span><h1>Choose your chauffeur vehicle.</h1><div class="fleet-tools"><button class="btn outline filter-toggle-btn" type="button" id="fleet-filter-toggle" aria-expanded="false" aria-controls="fleet-filters"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16"></path><path d="M7 12h10"></path><path d="M10 18h4"></path></svg>Filters</button></div><div class="panel quick-request-summary is-hidden" id="quick-request-summary" style="background: linear-gradient(135deg, rgba(201,164,93,0.1), rgba(0,0,0,0)); border: 1px solid var(--gold); border-radius: 12px; margin-bottom: 24px; padding: 24px;">
@@ -3525,7 +3579,7 @@
               <path d="M45,28 Q91,30 127,27 Q148,25 163,18" />
               <path d="M171,24 Q190,20 207,27" />
             </svg>
-            <div class="brand-name">Real Luxury<br>Transportation</div>
+            <div class="brand-name">Real Limo<br>Lux</div>
             <div class="brand-sub">PREMIUM RIDES</div>
           </a><div class="nav-actions"><a class="btn primary" href="#fleet">Book Now</a><a class="btn secondary notification-icon-btn" href="#notifications" aria-label="Notifications"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"></path><path d="M13.7 21a2 2 0 0 1-3.4 0"></path></svg><span class="sr-only">Notifications</span></a></div></div></nav>
       <main class="section"><div class="container"><div class="detail-gallery"><div class="gallery-main" style="background-image:url('https://images.unsplash.com/photo-1473643068423-87f28e69e5ef?auto=format&fit=crop&w=1400&q=82')"></div><div class="gallery-side"><div style="background-image:url('https://images.unsplash.com/photo-1603386329225-868f9b1ee6c9?auto=format&fit=crop&w=900&q=82')"></div><div style="background-image:url('https://images.unsplash.com/photo-1552519507-da3b142c6e3d?auto=format&fit=crop&w=900&q=82')"></div></div></div><div class="detail-grid"><div class="detail-stack"><article class="card tight vehicle-summary-card"><span class="eyebrow">Executive Sedan</span><h2>Mercedes-Benz S-Class</h2><p>Discreet executive comfort for premium airport, business, and VIP travel.</p><div class="vehicle-meta"><span>3 passengers</span><span>Executive Sedan</span></div></article><article class="card tight pricing-card"><h3>Indicative Pricing</h3><div class="pricing-mini-grid"><div class="pricing-mini-row"><span>Hourly Pricing</span><strong class="price">$280/hr</strong></div><div class="pricing-mini-row"><span>Daily Pricing</span><strong class="price">$1,850/day</strong></div><div class="pricing-mini-row"><span>Estimated Pricing</span><strong class="price">$900 - $1,150</strong></div></div><p class="pricing-disclaimer">Final pricing is tailored based on journey distance, travel duration, route preferences, vehicle selection, additional stops, personalized service requests, and fleet availability at the time of confirmation.</p></article></div><article class="card tight"><h2>Amenities</h2><div class="amenity-grid"><span class="amenity-card"><span class="icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 13a10 10 0 0 1 14 0"></path><path d="M8.5 16.5a5 5 0 0 1 7 0"></path><path d="M12 20h.01"></path></svg></span>Wi-Fi</span><span class="amenity-card"><span class="icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14"></path><path d="M7 12V8a3 3 0 0 1 3-3h4a3 3 0 0 1 3 3v4"></path><path d="M6 12v6"></path><path d="M18 12v6"></path></svg></span>Leather Seats</span><span class="amenity-card"><span class="icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3h10"></path><path d="M8 3l1 7h6l1-7"></path><path d="M12 10v9"></path><path d="M9 21h6"></path></svg></span>Refreshments</span><span class="amenity-card"><span class="icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13 2 4 14h7l-1 8 9-12h-7l1-8z"></path></svg></span>Charging Ports</span><span class="amenity-card"><span class="icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v18"></path><path d="m8 7 4-4 4 4"></path><path d="m8 17 4 4 4-4"></path></svg></span>Climate Control</span><span class="amenity-card"><span class="icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16"></path><path d="M7 6v12"></path><path d="M17 6v12"></path><path d="M4 18h16"></path></svg></span>Privacy Glass</span></div></article><aside class="card tight vehicle-request-cta-card"><a class="btn primary" href="#vehicle-request">Request This Vehicle</a></aside></div></div></main>
@@ -3539,14 +3593,14 @@
               <path d="M45,28 Q91,30 127,27 Q148,25 163,18" />
               <path d="M171,24 Q190,20 207,27" />
             </svg>
-            <div class="brand-name">Real Luxury<br>Transportation</div>
+            <div class="brand-name">Real Limo<br>Lux</div>
             <div class="brand-sub">PREMIUM RIDES</div>
           </a><div class="nav-actions"><a class="btn ghost" href="#vehicle">Vehicle Details</a></div></div></nav>
       <main class="section vehicle-request-page">
         <div class="container">
-          <a class="mobile-detail-back" href="#vehicle" aria-label="Back to vehicle details">
+          <a class="mobile-detail-back" href="#vehicle" aria-label="Previous page">
             <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"></path><path d="m12 19-7-7 7-7"></path></svg>
-            Back to vehicle
+            <span aria-hidden="true">&larr;</span>
           </a>
           <aside class="card tight vehicle-request-card" aria-label="Request this vehicle"></aside>
         </div>
@@ -3561,10 +3615,10 @@
               <path d="M45,28 Q91,30 127,27 Q148,25 163,18" />
               <path d="M171,24 Q190,20 207,27" />
             </svg>
-            <div class="brand-name">Real Luxury<br>Transportation</div>
+            <div class="brand-name">Real Limo<br>Lux</div>
             <div class="brand-sub">PREMIUM RIDES</div>
           </a><div class="nav-actions"><a class="btn ghost" href="#vehicle">Review Booking</a></div></div></nav>
-      <main class="section"><div class="container"><div class="card"><h2>Booking Summary</h2><div class="summary-list"><div class="summary-row"><span>Vehicle</span><strong>Mercedes-Benz S-Class</strong></div><div class="summary-row"><span>Pickup</span><strong>The Peninsula, Beverly Hills</strong></div><div class="summary-row"><span>Destination</span><strong>Van Nuys Private Airport</strong></div><div class="summary-row"><span>Stops</span><strong>Beverly Hills Hotel</strong></div><div class="summary-row"><span>Special Requests</span><strong>VIP treatment, refreshments, quiet cabin</strong></div><div class="summary-row"><span>Date & Time</span><strong>May 22, 2026 at 6:30 PM</strong></div><div class="summary-row"><span>Indicative Pricing</span><strong>$900 - $1,150</strong></div></div><a class="btn primary" style="margin-top:22px" href="#confirmation">Submit Booking Request</a></div></div></main>
+      <main class="section"><div class="container"><div class="card"><h2>Booking Summary</h2><div class="summary-list"><div class="summary-row"><span>Requested Vehicle</span><strong>Mercedes-Benz S-Class</strong></div><div class="summary-row"><span>Pickup</span><strong>The Peninsula, Beverly Hills</strong></div><div class="summary-row"><span>Stop 1</span><strong>Beverly Hills Hotel</strong></div><div class="summary-row"><span>Destination</span><strong>Van Nuys Private Airport</strong></div><div class="summary-row"><span>From Date</span><strong>Select date</strong></div><div class="summary-row"><span>To Date</span><strong>Select date</strong></div><div class="summary-row"><span>From Time</span><strong>Select time</strong></div><div class="summary-row"><span>To Time</span><strong>Select time</strong></div><div class="summary-row"><span>Duration</span><strong>Select date and time</strong></div><div class="summary-row"><span>Special Requests</span><strong>Not added</strong></div></div><a class="btn primary" style="margin-top:22px" href="#confirmation">Submit Booking Request</a></div></div></main>
     </section>
 
     <section id="confirmation" class="screen">
@@ -3575,7 +3629,7 @@
               <path d="M45,28 Q91,30 127,27 Q148,25 163,18" />
               <path d="M171,24 Q190,20 207,27" />
             </svg>
-            <div class="brand-name">Real Luxury<br>Transportation</div>
+            <div class="brand-name">Real Limo<br>Lux</div>
             <div class="brand-sub">PREMIUM RIDES</div>
           </a></div></nav>
       <main class="section"><div class="container"><div class="panel success"><span class="icon"><svg width="28" height="28" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="16" cy="16" r="14" fill="rgba(240,212,138,0.15)" stroke="currentColor" stroke-width="2"/><path d="M10.5 16.5L14.5 20.5L21.5 13.5" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span><h1>Booking Request Received</h1><p>Your chauffeur request has been successfully received. Our concierge team will review availability and confirm details shortly.</p><a class="btn primary" href="#fleet">Book Another Ride</a></div></div></main>
@@ -3584,7 +3638,7 @@
     <section id="notifications" class="screen">
       <main class="profile-mobile-page profile-subpage">
         <div class="profile-detail-top">
-          <a class="profile-back-btn" href="#profile" aria-label="Back">
+          <a class="profile-back-btn" href="#profile" aria-label="Previous page">
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"></path><path d="m12 19-7-7 7-7"></path></svg>
           </a>
         </div>
@@ -3638,7 +3692,7 @@
     <section id="communication-preferences" class="screen">
       <main class="profile-mobile-page profile-subpage">
         <div class="profile-detail-top">
-          <a class="profile-back-btn" href="#profile" aria-label="Back">
+          <a class="profile-back-btn" href="#profile" aria-label="Previous page">
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"></path><path d="m12 19-7-7 7-7"></path></svg>
           </a>
         </div>
@@ -3710,7 +3764,7 @@
     <section id="profile-details" class="screen">
       <main class="profile-mobile-page">
         <div class="profile-detail-top">
-          <a class="profile-back-btn" href="#profile" aria-label="Back">
+          <a class="profile-back-btn" href="#profile" aria-label="Previous page">
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"></path><path d="m12 19-7-7 7-7"></path></svg>
           </a>
         </div>
@@ -3755,7 +3809,7 @@
     <section id="about" class="screen">
       <main class="about-app-page">
         <div class="about-app-header">
-          <a class="profile-back-btn" href="#profile" aria-label="Back">
+          <a class="profile-back-btn" href="#profile" aria-label="Previous page">
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"></path><path d="m12 19-7-7 7-7"></path></svg>
           </a>
           <h1>Real Limo Lux</h1>
@@ -3791,7 +3845,7 @@
     <section id="saved-addresses" class="screen profile-saved-addresses">
       <main class="profile-mobile-page profile-subpage">
         <div class="profile-detail-top">
-          <a class="profile-back-btn" href="#profile" aria-label="Back">
+          <a class="profile-back-btn" href="#profile" aria-label="Previous page">
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"></path><path d="m12 19-7-7 7-7"></path></svg>
           </a>
         </div>
@@ -3845,7 +3899,7 @@
               <path d="M45,28 Q91,30 127,27 Q148,25 163,18" />
               <path d="M171,24 Q190,20 207,27" />
             </svg>
-            <div class="brand-name">Real Luxury<br>Transportation</div>
+            <div class="brand-name">Real Limo<br>Lux</div>
             <div class="brand-sub">PREMIUM RIDES</div>
           </a><div class="nav-actions"><a class="btn secondary notification-icon-btn" href="#notifications" aria-label="Notifications"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"></path><path d="M13.7 21a2 2 0 0 1-3.4 0"></path></svg><span class="sr-only">Notifications</span></a></div></div></nav>
       <main class="mobile-rides-page">
@@ -3917,7 +3971,7 @@
               <path d="M45,28 Q91,30 127,27 Q148,25 163,18" />
               <path d="M171,24 Q190,20 207,27" />
             </svg>
-            <div class="brand-name">Real Luxury<br>Transportation</div>
+            <div class="brand-name">Real Limo<br>Lux</div>
             <div class="brand-sub">PREMIUM RIDES</div>
           </a><a class="btn primary" href="#fleet">Book Now</a></div></nav>
       <main class="section"><div class="container"><div class="card"><h2>Contact & Support</h2><div class="form-grid"><label class="field"><span>Name</span><input value="Avery Cole"></label><label class="field"><span>Email</span><input value="avery@example.com"></label><div class="field"><span>Phone</span><div style="display: flex; gap: 8px;">
@@ -3933,7 +3987,7 @@
               <path d="M45,28 Q91,30 127,27 Q148,25 163,18" />
               <path d="M171,24 Q190,20 207,27" />
             </svg>
-            <div class="brand-name">Real Luxury<br>Transportation</div>
+            <div class="brand-name">Real Limo<br>Lux</div>
             <div class="brand-sub">PREMIUM RIDES</div>
           </a></div></nav><main class="section"><div class="container"><div class="card"><h1>Terms of Service</h1><p>Bookings remain requests until concierge confirmation. Vehicle availability and final estimates are confirmed by the operations team.</p></div></div></main></section>
     <section id="privacy" class="screen"><nav class="nav"><div class="nav-inner"><a class="brand" href="#home" aria-label="Real Limo Lux Premium Rides">
@@ -3943,7 +3997,7 @@
               <path d="M45,28 Q91,30 127,27 Q148,25 163,18" />
               <path d="M171,24 Q190,20 207,27" />
             </svg>
-            <div class="brand-name">Real Luxury<br>Transportation</div>
+            <div class="brand-name">Real Limo<br>Lux</div>
             <div class="brand-sub">PREMIUM RIDES</div>
           </a></div></nav><main class="section"><div class="container"><div class="card"><h1>Privacy Policy</h1><p>We collect only the information needed to manage account access, saved addresses, booking requests, and concierge communication.</p></div></div></main></section>
 
@@ -3959,7 +4013,7 @@
               <path d="M45,28 Q91,30 127,27 Q148,25 163,18" />
               <path d="M171,24 Q190,20 207,27" />
             </svg>
-            <div class="brand-name">Real Luxury<br>Transportation</div>
+            <div class="brand-name">Real Limo<br>Lux</div>
             <div class="brand-sub">PREMIUM RIDES</div>
           </a></div></nav>
       <main class="section"><div class="container"><div class="panel success"><span class="icon"><svg width="28" height="28" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="16" cy="16" r="14" fill="rgba(240,212,138,0.15)" stroke="currentColor" stroke-width="2"/><path d="M10.5 16.5L14.5 20.5L21.5 13.5" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span><h1>Authentication Complete</h1><p>Session persistence is enabled for this prototype. Existing customers continue to the home screen, while new social users can finish account setup.</p><div class="auth-success-actions"><a class="btn primary" href="#home">Continue Home</a><a class="btn outline" href="#signup">Create Account</a></div></div></div></main>
@@ -4146,6 +4200,13 @@
           const selectedChips = vehicleDetailsSection?.querySelectorAll(".selected-vehicle-card .chip-row .chip");
           const selectedImage = vehicleDetailsSection?.querySelector(".selected-vehicle-image");
 
+          const formatHourlyPriceRange = (text) => {
+            const amounts = String(text || "").match(/\d+/g)?.map(Number).filter(Number.isFinite) || [];
+            if (amounts.length >= 2) return `$${amounts[0]} - $${amounts[1]}/hr`;
+            const base = amounts[0] || 0;
+            return `$${Math.max(0, base - 20)} - $${base + 20}/hr`;
+          };
+
           const category = card.querySelector(".eyebrow")?.textContent.trim() || "Vehicle";
           const title = card.querySelector("h3")?.textContent.trim() || "Selected Vehicle";
           const metaSpans = [...card.querySelectorAll(".vehicle-meta span")].map((span) => span.textContent.trim());
@@ -4238,8 +4299,7 @@
           if (summaryMeta?.[0]) summaryMeta[0].textContent = passengers;
           if (summaryMeta?.[1]) summaryMeta[1].textContent = category;
           if (pricingPrices?.[0]) {
-            const base = Number(priceText.replace(/[^0-9]/g, "")) || 0;
-            pricingPrices[0].textContent = `$${Math.max(0, base - 20)} - $${base + 20}/hr`;
+            pricingPrices[0].textContent = formatHourlyPriceRange(priceText);
           }
           if (selectedName) selectedName.textContent = title;
           if (selectedChips?.[0]) selectedChips[0].textContent = passengers;
@@ -4248,6 +4308,7 @@
             selectedImage.style.backgroundImage = `url('${detailData.gallery[0]}')`;
             selectedImage.setAttribute("aria-label", `Selected ${title}`);
           }
+          try { sessionStorage.setItem("limoSelectedVehicle", title); } catch (error) {}
         };
 
         document.querySelectorAll("#fleet-results .fleet-card .btn.small.outline").forEach((button) => {
@@ -4340,7 +4401,19 @@
         document.body.appendChild(addressAutocompleteMenu);
         let activeLocationInput = null;
 
-        const isAddressAutocompleteInput = (input) => input?.matches?.('.location-input[list="location-suggestions"]');
+        const prepareAddressAutocompleteInput = (input) => {
+          if (!input?.matches?.(".location-input")) return false;
+          if (input.dataset.addressAutocomplete === "true") return true;
+          if (input.getAttribute("list") !== "location-suggestions") return false;
+          input.dataset.addressAutocomplete = "true";
+          input.removeAttribute("list");
+          input.setAttribute("autocomplete", "off");
+          return true;
+        };
+
+        document.querySelectorAll('.location-input[list="location-suggestions"]').forEach(prepareAddressAutocompleteInput);
+
+        const isAddressAutocompleteInput = (input) => prepareAddressAutocompleteInput(input);
 
         const positionAddressAutocomplete = () => {
           if (!activeLocationInput || !addressAutocompleteMenu.classList.contains("is-open")) return;
@@ -4371,8 +4444,12 @@
           input.setAttribute("autocomplete", "off");
           input.setAttribute("aria-autocomplete", "list");
           const query = input.value.trim().toLowerCase();
+          if (!query) {
+            closeAddressAutocomplete();
+            return;
+          }
           const matches = locationSuggestionValues
-            .filter((value) => !query || value.toLowerCase().includes(query))
+            .filter((value) => value.toLowerCase().includes(query))
             .sort((a, b) => {
               const aStarts = a.toLowerCase().startsWith(query) ? 0 : 1;
               const bStarts = b.toLowerCase().startsWith(query) ? 0 : 1;
@@ -4765,12 +4842,22 @@
 
         const setRow = (label, value) => {
           const row = summaryRows.find((item) => item.querySelector("span")?.textContent.trim() === label);
-          if (row && value) row.querySelector("strong").textContent = value;
+          if (row) row.querySelector("strong").textContent = value || "-";
         };
 
         const normalizeStops = (stops) => stops.map((stop) => stop.trim()).filter(Boolean);
 
+        const currentRequestedVehicle = () => {
+          const title = vehicleDetailsSection?.querySelector(".vehicle-summary-card h2")?.textContent.trim();
+          try {
+            return title || sessionStorage.getItem("limoSelectedVehicle") || "Mercedes-Benz S-Class";
+          } catch (error) {
+            return title || "Mercedes-Benz S-Class";
+          }
+        };
+
         const collectVehicleRequest = () => ({
+          vehicle: currentRequestedVehicle(),
           pickup: getValue("#vehicle-pickup"),
           destination: getValue("#vehicle-destination"),
           date: getValue("#vehicle-date"),
@@ -4783,6 +4870,7 @@
         });
 
         const collectBookingRequest = () => ({
+          vehicle: currentRequestedVehicle(),
           pickup: getValue("#booking input.location-input"),
           destination: document.querySelectorAll("#booking input.location-input")[1]?.value?.trim() || "",
           date: document.querySelector('#booking input[type="date"]')?.value || "",
@@ -4834,13 +4922,16 @@
 
         const populateSummary = (data) => {
           const stops = normalizeStops(data.stops);
-          setRow("Pickup", data.pickup);
-          setRow("Destination", data.destination);
-          setRow("Stops", stops.map((stop, index) => `Stop ${index + 1}: ${stop}`).join("; "));
-          setRow("Special Requests", data.specialRequests);
-          const startText = `${data.date || "Selected date"} at ${data.time || "selected time"}`;
-          const endText = data.endDate || data.endTime ? ` to ${data.endDate || data.date || "selected date"} at ${data.endTime || "selected time"}` : "";
-          setRow("Date & Time", `${startText}${endText} (${data.duration || "selected duration"})`);
+          setRow("Requested Vehicle", data.vehicle || currentRequestedVehicle());
+          setRow("Pickup", data.pickup || "Not selected");
+          setRow("Stop 1", stops.length ? stops.map((stop, index) => `Stop ${index + 1}: ${stop}`).join("; ") : "No stops added");
+          setRow("Destination", data.destination || "Not selected");
+          setRow("From Date", data.date || "Select date");
+          setRow("To Date", data.endDate || "Select date");
+          setRow("From Time", data.time || "Select time");
+          setRow("To Time", data.endTime || "Select time");
+          setRow("Duration", data.duration || "Select date and time");
+          setRow("Special Requests", data.specialRequests || "Not added");
         };
 
         const hydrateSummary = () => {
@@ -5058,7 +5149,7 @@
       })();
     </script>
     <!-- Mobile Bottom Navigation -->
-    <nav class="mobile-bottom-nav" style="display: none;" aria-label="Primary mobile navigation">
+    <nav class="mobile-bottom-nav" aria-label="Primary mobile navigation">
       <a href="#home" class="active" aria-label="Home" title="Home" onclick="setMobileNavActive(this);">
         <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
         <span class="sr-only">Home</span>
@@ -5076,6 +5167,9 @@
         <span class="sr-only">Profile</span>
       </a>
     </nav>
+    <script>
+      window.dispatchEvent(new Event("hashchange"));
+    </script>
   
 <script>
 // ==========================================
@@ -5267,7 +5361,7 @@ document.addEventListener('DOMContentLoaded', () => {
             <span class="eyebrow">Review Submitted</span>
             <h2>Thank you</h2>
             <div class="mobile-review-submitted">Your review has been submitted to the admin.</div>
-            <a class="btn outline" href="#bookings">Back to rides</a>
+            <a class="btn outline" href="#bookings" aria-label="Go to previous page">?</a>
         `;
     });
 
@@ -5533,7 +5627,7 @@ document.addEventListener('DOMContentLoaded', () => {
         </div>
         
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 32px;">
-          <a href="#" onclick="history.back()" style="color: var(--gold); font-size: 14px; text-decoration: none; font-weight: 500;">Back</a>
+          <a href="#" onclick="history.back()" style="color: var(--gold); font-size: 14px; text-decoration: none; font-weight: 500;" aria-label="Go to previous page">?</a>
           <button class="btn primary" onclick="nextMockStep('aas', 2)" style="background: var(--gold); color: #000; border: none; padding: 10px 24px; border-radius: 8px; font-weight: 600; font-size: 15px; cursor: pointer;">Sign in</button>
         </div>
         
@@ -5587,7 +5681,7 @@ document.addEventListener('DOMContentLoaded', () => {
         </div>
         
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 32px;">
-          <a href="#" onclick="history.back()" style="color: var(--gold); font-size: 14px; text-decoration: none; font-weight: 500;">Back</a>
+          <a href="#" onclick="history.back()" style="color: var(--gold); font-size: 14px; text-decoration: none; font-weight: 500;" aria-label="Go to previous page">?</a>
           <button class="btn primary" onclick="nextMockStep('gas', 2)" style="background: var(--gold); color: #000; border: none; padding: 10px 24px; border-radius: 8px; font-weight: 600; font-size: 15px; cursor: pointer;">Sign in</button>
         </div>
         
@@ -5641,7 +5735,7 @@ document.addEventListener('DOMContentLoaded', () => {
         </div>
         
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 32px;">
-          <a href="#" onclick="history.back()" style="color: var(--gold); font-size: 14px; text-decoration: none; font-weight: 500;">Back</a>
+          <a href="#" onclick="history.back()" style="color: var(--gold); font-size: 14px; text-decoration: none; font-weight: 500;" aria-label="Go to previous page">?</a>
           <button class="btn primary" onclick="nextMockStep('aasu', 2)" style="background: var(--gold); color: #000; border: none; padding: 10px 24px; border-radius: 8px; font-weight: 600; font-size: 15px; cursor: pointer;">Sign up</button>
         </div>
         
@@ -5695,7 +5789,7 @@ document.addEventListener('DOMContentLoaded', () => {
         </div>
         
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 32px;">
-          <a href="#" onclick="history.back()" style="color: var(--gold); font-size: 14px; text-decoration: none; font-weight: 500;">Back</a>
+          <a href="#" onclick="history.back()" style="color: var(--gold); font-size: 14px; text-decoration: none; font-weight: 500;" aria-label="Go to previous page">?</a>
           <button class="btn primary" onclick="nextMockStep('gasu', 2)" style="background: var(--gold); color: #000; border: none; padding: 10px 24px; border-radius: 8px; font-weight: 600; font-size: 15px; cursor: pointer;">Sign up</button>
         </div>
         
@@ -5878,9 +5972,9 @@ document.addEventListener('DOMContentLoaded', () => {
 <section id="ride-current-mobile" class="screen">
       <main class="mobile-ride-detail-page">
         <div class="container">
-          <a class="mobile-detail-back" href="#bookings" aria-label="Back to rides">
+          <a class="mobile-detail-back" href="#bookings" aria-label="Previous page">
             <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"></path><path d="m12 19-7-7 7-7"></path></svg>
-            Back to rides
+            <span aria-hidden="true">&larr;</span>
           </a>
           <article class="mobile-ride-detail-card">
             <div class="mobile-ride-detail-header">
@@ -5933,9 +6027,9 @@ document.addEventListener('DOMContentLoaded', () => {
 <section id="booking-1986" class="screen">
       <main class="mobile-ride-detail-page">
         <div class="container">
-          <a class="mobile-detail-back" href="#bookings" aria-label="Back to rides">
+          <a class="mobile-detail-back" href="#bookings" aria-label="Previous page">
             <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"></path><path d="m12 19-7-7 7-7"></path></svg>
-            Back to rides
+            <span aria-hidden="true">&larr;</span>
           </a>
           <article class="mobile-ride-detail-card">
             <div class="mobile-ride-detail-header">
@@ -6016,9 +6110,9 @@ document.addEventListener('DOMContentLoaded', () => {
 <section id="booking-1744" class="screen">
       <main class="mobile-ride-detail-page">
         <div class="container">
-          <a class="mobile-detail-back" href="#bookings" aria-label="Back to rides">
+          <a class="mobile-detail-back" href="#bookings" aria-label="Previous page">
             <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"></path><path d="m12 19-7-7 7-7"></path></svg>
-            Back to rides
+            <span aria-hidden="true">&larr;</span>
           </a>
           <article class="mobile-ride-detail-card">
             <div class="mobile-ride-detail-header">
@@ -6041,6 +6135,59 @@ document.addEventListener('DOMContentLoaded', () => {
         </div>
       </main>
     </section>
+    <script>
+      (() => {
+        const fallbackRoutes = {
+          "#vehicle-request": "#vehicle",
+          "#summary": "#vehicle-request",
+          "#confirmation": "#summary",
+          "#ride-current-mobile": "#bookings",
+          "#booking-1986": "#bookings",
+          "#booking-1744": "#bookings",
+          "#saved-addresses": "#profile",
+          "#communication-preferences": "#profile",
+          "#notifications": "#profile",
+          "#profile-details": "#profile",
+          "#terms": "#home",
+          "#privacy": "#home",
+          "#signup": "#welcome",
+          "#otp-login": "#welcome",
+          "#otp-verify": "#otp-login",
+          "#google-auth": "#login",
+          "#apple-auth": "#login",
+          "#google-auth-flow": "#login",
+          "#apple-auth-flow": "#login"
+        };
+        const routeStack = [];
+        const currentRoute = () => window.location.hash || "#welcome";
+        const rememberRoute = () => {
+          const route = currentRoute();
+          if (routeStack[routeStack.length - 1] !== route) routeStack.push(route);
+          if (routeStack.length > 50) routeStack.shift();
+        };
+
+        rememberRoute();
+        window.addEventListener("hashchange", rememberRoute);
+
+        document.addEventListener("click", (event) => {
+          const button = event.target.closest("[data-mobile-global-back]");
+          if (!button) return;
+          event.preventDefault();
+
+          const current = currentRoute();
+          if (routeStack.length > 1) {
+            routeStack.pop();
+            const previous = routeStack.pop();
+            if (previous && previous !== current) {
+              window.location.hash = previous;
+              return;
+            }
+          }
+
+          window.location.hash = fallbackRoutes[current] || "#home";
+        });
+      })();
+    </script>
 </body>
 </html>
 

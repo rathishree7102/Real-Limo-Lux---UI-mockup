@@ -66,10 +66,11 @@
         justify-content: space-between;
         gap: 22px;
       }
-      .brand { display: flex; flex-direction: column; align-items: flex-start; text-align: left; gap: 0; text-decoration: none; padding-top: 4px; }
-      .brand-car-icon { margin-bottom: -4px; margin-left: -6px; }
-      .brand-name { font-family: var(--display); font-weight: 600; font-size: 1.6rem; color: var(--ivory); letter-spacing: 0; line-height: 1; }
-      .brand-sub { font-size: 0.65rem; letter-spacing: 0.25em; color: var(--gold); font-weight: 600; text-transform: uppercase; align-self: flex-end; margin-top: 2px; margin-right: 4px; }
+.brand { display: flex; align-items: center; text-align: left; gap: 14px; text-decoration: none; padding-top: 0; }
+.brand::before { content: "RLL"; width: 58px; height: 58px; display: grid; place-items: center; border: 1px solid rgba(240,212,138,.44); background: linear-gradient(145deg, rgba(201,164,93,.22), rgba(5,5,5,.78)); color: var(--gold-bright); font-family: var(--display); font-size: 1.35rem; font-weight: 700; flex: 0 0 auto; }
+.brand-car-icon { display: none; }
+.brand-name { font-family: var(--body); font-weight: 800; font-size: 1.35rem; color: var(--ivory); letter-spacing: 0; line-height: 1.15; }
+.brand-sub { display: none; }
       .nav-left { display: flex; align-items: center; gap: 16px; min-width: 0; }
       .page-back-btn {
         width: 42px;
@@ -3058,6 +3059,13 @@
           const selectedChips = vehicleDetailsSection?.querySelectorAll(".selected-vehicle-card .chip-row .chip");
           const selectedImage = vehicleDetailsSection?.querySelector(".selected-vehicle-image");
 
+          const formatHourlyPriceRange = (text) => {
+            const amounts = String(text || "").match(/\d+/g)?.map(Number).filter(Number.isFinite) || [];
+            if (amounts.length >= 2) return `$${amounts[0]} - $${amounts[1]}/hr`;
+            const base = amounts[0] || 0;
+            return `$${Math.max(0, base - 20)} - $${base + 20}/hr`;
+          };
+
           const category = card.querySelector(".eyebrow")?.textContent.trim() || "Vehicle";
           const title = card.querySelector("h3")?.textContent.trim() || "Selected Vehicle";
           const metaSpans = [...card.querySelectorAll(".vehicle-meta span")].map((span) => span.textContent.trim());
@@ -3153,8 +3161,7 @@
           if (summaryMeta?.[0]) summaryMeta[0].textContent = passengers;
           if (summaryMeta?.[1]) summaryMeta[1].textContent = category;
           if (pricingPrices?.[0]) {
-            const base = Number(priceText.replace(/[^0-9]/g, "")) || 0;
-            pricingPrices[0].textContent = `$${Math.max(0, base - 20)} - $${base + 20}/hr`;
+            pricingPrices[0].textContent = formatHourlyPriceRange(priceText);
           }
           if (selectedName) selectedName.textContent = title;
           if (selectedChips?.[0]) selectedChips[0].textContent = passengers;
@@ -3279,7 +3286,19 @@
         document.body.appendChild(addressAutocompleteMenu);
         let activeLocationInput = null;
 
-        const isAddressAutocompleteInput = (input) => input?.matches?.('.location-input[list="location-suggestions"]');
+        const prepareAddressAutocompleteInput = (input) => {
+          if (!input?.matches?.(".location-input")) return false;
+          if (input.dataset.addressAutocomplete === "true") return true;
+          if (input.getAttribute("list") !== "location-suggestions") return false;
+          input.dataset.addressAutocomplete = "true";
+          input.removeAttribute("list");
+          input.setAttribute("autocomplete", "off");
+          return true;
+        };
+
+        document.querySelectorAll('.location-input[list="location-suggestions"]').forEach(prepareAddressAutocompleteInput);
+
+        const isAddressAutocompleteInput = (input) => prepareAddressAutocompleteInput(input);
 
         const positionAddressAutocomplete = () => {
           if (!activeLocationInput || !addressAutocompleteMenu.classList.contains("is-open")) return;
@@ -3310,8 +3329,12 @@
           input.setAttribute("autocomplete", "off");
           input.setAttribute("aria-autocomplete", "list");
           const query = input.value.trim().toLowerCase();
+          if (!query) {
+            closeAddressAutocomplete();
+            return;
+          }
           const matches = locationSuggestionValues
-            .filter((value) => !query || value.toLowerCase().includes(query))
+            .filter((value) => value.toLowerCase().includes(query))
             .sort((a, b) => {
               const aStarts = a.toLowerCase().startsWith(query) ? 0 : 1;
               const bStarts = b.toLowerCase().startsWith(query) ? 0 : 1;
