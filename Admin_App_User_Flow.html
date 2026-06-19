@@ -1,0 +1,863 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Luxury Limo Admin Portal - Admin User Flow</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+      :root {
+        --black: #070706;
+        --charcoal: #0e1014;
+        --panel: #131519;
+        --panel-soft: #1a1d24;
+        --gold: #C9A45D;
+        --gold-bright: #F0D48A;
+        --champagne: #e8dfc8;
+        --ivory: #FFFFFF;
+        --text-para: #C9C5BC;
+        --muted: #8a8b8e;
+        --line: rgba(240, 212, 138, .13);
+        --success: #32B887;
+        --info: #5FB4F0;
+        --warn: #E0A94B;
+        --danger: #D9562E;
+        --radius: 14px;
+        --radius-sm: 10px;
+        --shadow: 0 24px 70px rgba(0,0,0,.42);
+        --shadow-soft: 0 12px 36px rgba(0,0,0,.32);
+        --display: "Cormorant Garamond", Georgia, serif;
+        --body: Manrope, Inter, system-ui, sans-serif;
+      }
+      * { box-sizing: border-box; }
+      html { scroll-behavior: smooth; background: #05060a; color-scheme: dark; }
+      body {
+        margin: 0;
+        min-height: 100vh;
+        font-family: var(--body);
+        background:
+          radial-gradient(circle at 8% 0%, rgba(201,164,93,.16), transparent 30rem),
+          radial-gradient(circle at 95% 12%, rgba(95,180,240,.07), transparent 28rem),
+          linear-gradient(145deg, var(--black), #10131a 54%, #06080c);
+        color: var(--ivory);
+        -webkit-font-smoothing: antialiased;
+      }
+      a { color: inherit; text-decoration: none; }
+      .page-shell { width: min(1240px, calc(100% - 40px)); margin: 0 auto; padding: 32px 0 96px; }
+
+      .topbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 24px;
+        padding: 26px 30px;
+        border: 1px solid rgba(240,212,138,.16);
+        border-radius: 18px;
+        background: linear-gradient(135deg, rgba(20,22,28,.95), rgba(12,14,19,.95));
+        box-shadow: var(--shadow);
+        margin-bottom: 18px;
+        position: relative;
+        overflow: hidden;
+      }
+      .topbar::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(120deg, transparent 40%, rgba(240,212,138,.06) 50%, transparent 60%);
+        pointer-events: none;
+      }
+      .brand { display: flex; flex-direction: column; gap: 6px; z-index: 1; }
+      .brand-sub { color: var(--gold-bright); font-size: .78rem; letter-spacing: .26em; text-transform: uppercase; margin: 0; }
+      .brand-name { font-family: var(--display); font-size: clamp(1.9rem, 2.4vw, 2.6rem); letter-spacing: .02em; margin: 0; line-height: 1.05; }
+      .topbar .meta { display: flex; gap: 10px; flex-wrap: wrap; justify-content: flex-end; z-index: 1; }
+      .meta-chip { padding: 8px 14px; border-radius: 999px; border: 1px solid rgba(240,212,138,.2); background: rgba(240,212,138,.07); color: var(--champagne); font-size: .78rem; letter-spacing: .05em; }
+
+      .doc-nav {
+        position: sticky;
+        top: 14px;
+        z-index: 20;
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+        padding: 12px 16px;
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        background: rgba(10,12,16,.82);
+        backdrop-filter: blur(14px);
+        margin-bottom: 36px;
+        box-shadow: var(--shadow-soft);
+      }
+      .doc-nav a {
+        padding: 8px 14px;
+        border-radius: 999px;
+        font-size: .85rem;
+        color: var(--text-para);
+        border: 1px solid transparent;
+        transition: .2s;
+      }
+      .doc-nav a:hover { color: var(--ivory); border-color: rgba(240,212,138,.25); background: rgba(240,212,138,.08); }
+
+      .section { padding: 0; margin-top: 56px; scroll-margin-top: 90px; }
+      .section-head { display: grid; gap: 12px; margin-bottom: 26px; }
+      .section-head strong { color: var(--gold-bright); font-size: .82rem; letter-spacing: .2em; text-transform: uppercase; }
+      .section-head h1 { margin: 0; font-family: var(--display); font-size: clamp(2.4rem, 3.6vw, 3.6rem); line-height: 1.04; }
+      .section-head p { margin: 0; color: var(--text-para); max-width: 860px; line-height: 1.7; }
+
+      .grid { display: grid; gap: 22px; }
+      .cards-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .cards-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+      .cards-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+
+      .card, .screen-card, .spec-card {
+        padding: 24px;
+        border-radius: var(--radius);
+        background: linear-gradient(180deg, rgba(28,31,38,.94), rgba(14,16,21,.94));
+        border: 1px solid rgba(240,212,138,.12);
+        box-shadow: var(--shadow-soft);
+        transition: .25s;
+      }
+      .card:hover, .screen-card:hover, .spec-card:hover { border-color: rgba(240,212,138,.3); transform: translateY(-3px); }
+      .card h2, .spec-card h2 { margin: 0 0 12px; font-size: 1.3rem; }
+      .card p, .spec-card p { margin: 0 0 14px; color: var(--text-para); line-height: 1.65; }
+      .muted { color: var(--muted); }
+
+      .stat-strip { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; }
+      .stat { padding: 22px; border-radius: var(--radius); border: 1px solid var(--line); background: linear-gradient(180deg, rgba(26,29,36,.9), rgba(12,14,19,.9)); text-align: center; }
+      .stat .num { font-family: var(--display); font-size: 2.6rem; color: var(--gold-bright); line-height: 1; }
+      .stat .label { color: var(--muted); font-size: .82rem; letter-spacing: .08em; text-transform: uppercase; margin-top: 8px; }
+
+      .flow-step { display: flex; gap: 16px; align-items: flex-start; padding: 18px 0; border-bottom: 1px solid rgba(255,255,255,.05); }
+      .flow-step:last-child { border-bottom: none; padding-bottom: 0; }
+      .flow-step .idx { min-width: 38px; height: 38px; display: grid; place-items: center; border-radius: 50%; background: linear-gradient(145deg, rgba(240,212,138,.22), rgba(201,164,93,.08)); color: var(--gold-bright); font-weight: 700; border: 1px solid rgba(240,212,138,.3); }
+      .flow-copy { color: var(--text-para); line-height: 1.7; }
+      .flow-copy strong { color: var(--ivory); }
+      .flow-copy .sub { display: block; margin-top: 6px; color: var(--muted); font-size: .9rem; }
+
+      .flowchart {
+        border: 1px solid var(--line);
+        border-radius: 18px;
+        padding: 38px 26px;
+        background:
+          radial-gradient(circle at 20% 0%, rgba(201,164,93,.08), transparent 40%),
+          linear-gradient(180deg, rgba(16,18,24,.7), rgba(8,10,14,.7));
+        overflow-x: auto;
+      }
+      .fc-track { min-width: 940px; display: flex; flex-direction: column; gap: 8px; }
+      .fc-row { display: flex; align-items: stretch; justify-content: center; gap: 18px; flex-wrap: nowrap; }
+      .fc-row.wrap { flex-wrap: wrap; }
+      .node {
+        position: relative;
+        min-width: 168px;
+        max-width: 240px;
+        padding: 16px 18px;
+        border-radius: 12px;
+        text-align: center;
+        background: linear-gradient(180deg, rgba(30,33,41,.96), rgba(16,18,24,.96));
+        border: 1px solid rgba(240,212,138,.18);
+        box-shadow: var(--shadow-soft);
+      }
+      .node .n-tag { font-size: .68rem; letter-spacing: .16em; text-transform: uppercase; color: var(--gold-bright); display: block; margin-bottom: 6px; }
+      .node .n-title { font-weight: 700; font-size: 1rem; color: var(--ivory); }
+      .node .n-desc { font-size: .82rem; color: var(--muted); margin-top: 6px; line-height: 1.5; }
+      .node.start { border-color: rgba(50,184,135,.5); background: linear-gradient(180deg, rgba(50,184,135,.14), rgba(16,18,24,.96)); }
+      .node.start .n-tag { color: var(--success); }
+      .node.decision { border-color: rgba(224,169,75,.5); background: linear-gradient(180deg, rgba(224,169,75,.12), rgba(16,18,24,.96)); }
+      .node.decision .n-tag { color: var(--warn); }
+      .node.terminal { border-color: rgba(95,180,240,.5); background: linear-gradient(180deg, rgba(95,180,240,.12), rgba(16,18,24,.96)); }
+      .node.terminal .n-tag { color: var(--info); }
+      .node.danger { border-color: rgba(217,86,46,.55); background: linear-gradient(180deg, rgba(217,86,46,.12), rgba(16,18,24,.96)); }
+      .node.danger .n-tag { color: var(--danger); }
+      .node.accent { border-color: rgba(240,212,138,.4); background: linear-gradient(180deg, rgba(240,212,138,.12), rgba(16,18,24,.96)); }
+      .connector-v { width: 2px; height: 30px; margin: 0 auto; background: linear-gradient(180deg, rgba(240,212,138,.5), rgba(240,212,138,.15)); position: relative; }
+      .connector-v::after { content: ""; position: absolute; bottom: -1px; left: 50%; transform: translateX(-50%); border-left: 6px solid transparent; border-right: 6px solid transparent; border-top: 8px solid rgba(240,212,138,.5); }
+      .connector-label { text-align: center; font-size: .72rem; color: var(--warn); letter-spacing: .12em; text-transform: uppercase; padding: 4px 0; }
+      .branch { display: flex; gap: 18px; justify-content: center; flex-wrap: wrap; }
+      .branch-col { display: flex; flex-direction: column; align-items: center; gap: 6px; }
+      .branch-tag { font-size: .72rem; color: var(--success); letter-spacing: .1em; text-transform: uppercase; }
+      .legend { display: flex; gap: 18px; flex-wrap: wrap; margin-top: 26px; padding-top: 22px; border-top: 1px solid var(--line); }
+      .legend span { display: flex; align-items: center; gap: 8px; font-size: .82rem; color: var(--text-para); }
+      .legend .dot { width: 12px; height: 12px; border-radius: 4px; }
+      .dot.d-start { background: var(--success); }
+      .dot.d-step { background: var(--gold-bright); }
+      .dot.d-decision { background: var(--warn); }
+      .dot.d-terminal { background: var(--info); }
+      .dot.d-danger { background: var(--danger); }
+
+      .feature-table, .spec-table { width: 100%; border-collapse: collapse; margin-top: 8px; }
+      .feature-table th, .feature-table td, .spec-table th, .spec-table td { padding: 14px 14px; text-align: left; border-bottom: 1px solid rgba(255,255,255,.07); }
+      .feature-table thead th, .spec-table thead th { color: var(--gold-bright); font-weight: 700; font-size: .86rem; letter-spacing: .04em; text-transform: uppercase; position: sticky; top: 0; background: rgba(12,14,19,.96); }
+      .feature-table td, .spec-table td { color: var(--text-para); font-size: .92rem; vertical-align: top; line-height: 1.55; }
+      .feature-table tbody tr:hover, .spec-table tbody tr:hover { background: rgba(240,212,138,.04); }
+      .feature-table td:first-child, .spec-table td:first-child { color: var(--muted); }
+      .table-wrap { overflow-x: auto; border: 1px solid var(--line); border-radius: var(--radius); background: rgba(10,12,16,.5); }
+      .mod-tag { display: inline-block; padding: 4px 10px; border-radius: 999px; font-size: .76rem; background: rgba(240,212,138,.1); border: 1px solid rgba(240,212,138,.2); color: var(--champagne); white-space: nowrap; }
+
+      .screen-card .screen-title { color: var(--gold-bright); margin-bottom: 6px; display: inline-block; font-size: .76rem; letter-spacing: .16em; text-transform: uppercase; }
+      .screen-card h2 { margin: 0 0 14px; font-size: 1.25rem; }
+      .screen-card ul, .spec-card ul { margin: 0; padding-left: 18px; color: var(--text-para); line-height: 1.75; }
+      .screen-card ul li, .spec-card ul li { margin-bottom: 6px; }
+      .screen-card .tags, .spec-card .tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+      .screen-card .tags span, .spec-card .tags span { font-size: .74rem; padding: 5px 10px; border-radius: 8px; background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.08); color: var(--muted); }
+
+      .spec-card .spec-head { display: flex; align-items: center; justify-content: space-between; gap: 14px; flex-wrap: wrap; margin-bottom: 4px; }
+      .spec-card .spec-head h2 { margin: 0; font-size: 1.28rem; }
+      .spec-route { display: inline-block; margin-top: 6px; font-family: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace; font-size: .82rem; color: var(--gold-bright); background: rgba(240,212,138,.07); border: 1px solid rgba(240,212,138,.18); border-radius: 7px; padding: 4px 10px; }
+      .spec-grid { display: grid; gap: 18px; margin-top: 18px; }
+      .spec-block h4 { margin: 0 0 8px; font-size: .76rem; letter-spacing: .14em; text-transform: uppercase; color: var(--gold-bright); }
+      .spec-block ul li code, .inline-code { font-family: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace; font-size: .82rem; color: var(--champagne); background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.08); border-radius: 5px; padding: 1px 6px; }
+
+      .story-group { margin-top: 26px; }
+      .story-group > h3 { font-family: var(--display); font-size: 1.5rem; margin: 0 0 14px; color: var(--ivory); display: flex; align-items: center; gap: 10px; }
+      .story-group > h3 .mod-tag { font-family: var(--body); }
+      .story-card { padding: 18px 20px; border-radius: var(--radius-sm); background: linear-gradient(180deg, rgba(28,31,38,.92), rgba(14,16,21,.92)); border: 1px solid rgba(240,212,138,.12); border-left: 3px solid var(--gold); }
+      .story-card .story-id { font-family: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace; font-size: .74rem; color: var(--gold-bright); letter-spacing: .05em; }
+      .story-card p { margin: 6px 0 0; color: var(--text-para); line-height: 1.65; font-size: .95rem; }
+      .story-card p .as { color: var(--gold-bright); }
+      .story-card p .want { color: var(--ivory); }
+      .story-card .ac { margin: 12px 0 0; padding-top: 12px; border-top: 1px solid rgba(255,255,255,.06); }
+      .story-card .ac h5 { margin: 0 0 6px; font-size: .7rem; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); }
+      .story-card .ac ul { margin: 0; padding-left: 18px; color: var(--text-para); font-size: .88rem; line-height: 1.6; }
+      .story-card .ac ul li { margin-bottom: 4px; }
+
+      .note { color: var(--muted); font-size: .92rem; margin-top: 12px; }
+      .footer { margin-top: 64px; padding-top: 26px; border-top: 1px solid var(--line); color: var(--muted); font-size: .85rem; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
+
+      @media (max-width: 980px) {
+        .cards-2, .cards-3, .cards-4 { grid-template-columns: 1fr; }
+        .stat-strip { grid-template-columns: repeat(2, 1fr); }
+        .topbar { flex-direction: column; align-items: flex-start; }
+        .topbar .meta { justify-content: flex-start; }
+      }
+      @media (max-width: 620px) {
+        .page-shell { width: min(100% - 24px, 1240px); padding-top: 18px; }
+        .topbar { padding: 22px 18px; }
+        .stat-strip { grid-template-columns: 1fr; }
+        .section { margin-top: 44px; }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="page-shell">
+      <header class="topbar">
+        <div class="brand">
+          <p class="brand-sub">Luxury Limo - Operations Workspace</p>
+          <h1 class="brand-name">Admin Portal - User Flow</h1>
+        </div>
+        <div class="meta">
+          <span class="meta-chip">Source: Admin.html</span>
+          <span class="meta-chip">Admin flow handoff</span>
+        </div>
+      </header>
+
+      <nav class="doc-nav">
+        <a href="#overview">Overview</a>
+        <a href="#flowchart">Flow Chart</a>
+        <a href="#journey">Journey Steps</a>
+        <a href="#features">Feature Map</a>
+        <a href="#pagespecs">Page Specs</a>
+        <a href="#bookingops">Booking Ops</a>
+        <a href="#screens">Screens</a>
+        <a href="#stories">User Stories</a>
+        <a href="#rules">Business Rules</a>
+      </nav>
+
+      <section id="overview" class="section" style="margin-top: 0;">
+        <div class="section-head">
+          <strong>Admin Experience</strong>
+          <h1>A secure command center for limo operations</h1>
+          <p>The admin portal is built around the screens visible in the supplied Admin.html sidebar. Staff authenticate, land in Booking Management, then work across four core operating modules: Booking Management, Driver Management, Fleet Management, and Customers. Settings is available as the configuration area for communication rules and system options.</p>
+        </div>
+        <div class="stat-strip">
+          <div class="stat"><div class="num">3</div><div class="label">Auth screens</div></div>
+          <div class="stat"><div class="num">4</div><div class="label">Core modules</div></div>
+          <div class="stat"><div class="num">1</div><div class="label">Settings area</div></div>
+          <div class="stat"><div class="num">28</div><div class="label">Mapped features</div></div>
+        </div>
+      </section>
+
+      <section id="flowchart" class="section">
+        <div class="section-head">
+          <strong>Visual map</strong>
+          <h1>Admin user-flow chart</h1>
+          <p>A focused map of the admin screens present in the supplied Admin.html flow. After login, the admin lands in the portal and can move through four core modules: Booking Management, Driver Management, Fleet Management, and Customers. Each module is broken down into the tabs, panels, and actions available in the HTML.</p>
+        </div>
+
+        <div class="flowchart">
+          <div class="fc-track">
+            <div class="fc-row">
+              <div class="node start">
+                <span class="n-tag">Entry</span>
+                <div class="n-title">Open Admin Portal</div>
+                <div class="n-desc">Admin URL loads login view</div>
+              </div>
+            </div>
+            <div class="connector-v"></div>
+
+            <div class="fc-row">
+              <div class="node decision">
+                <span class="n-tag">Auth</span>
+                <div class="n-title">Login Valid?</div>
+                <div class="n-desc">Email / username + password</div>
+              </div>
+            </div>
+            <div class="connector-label">forgot password branch available</div>
+            <div class="fc-row">
+              <div class="branch">
+                <div class="branch-col">
+                  <span class="branch-tag">Recovery</span>
+                  <div class="node">
+                    <span class="n-tag">Forgot</span>
+                    <div class="n-title">Send OTP</div>
+                    <div class="n-desc">Verified admin email</div>
+                  </div>
+                </div>
+                <div class="branch-col">
+                  <span class="branch-tag">Reset</span>
+                  <div class="node">
+                    <span class="n-tag">Password</span>
+                    <div class="n-title">OTP + New Password</div>
+                    <div class="n-desc">Enforce password rules</div>
+                  </div>
+                </div>
+                <div class="branch-col">
+                  <span class="branch-tag">Success</span>
+                  <div class="node accent">
+                    <span class="n-tag">Session</span>
+                    <div class="n-title">Open Bookings</div>
+                    <div class="n-desc">Default operating workspace</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="connector-v"></div>
+
+            <div class="fc-row">
+              <div class="node accent">
+                <span class="n-tag">After Login</span>
+                <div class="n-title">Admin Portal</div>
+                <div class="n-desc">Sidebar + top search + profile menu</div>
+              </div>
+            </div>
+            <div class="connector-label">4 core modules from Admin.html</div>
+            <div class="connector-v"></div>
+
+            <div class="fc-row wrap">
+              <div class="node accent">
+                <span class="n-tag">Module 1</span>
+                <div class="n-title">Booking Management</div>
+                <div class="n-desc">New Requests, Bookings, Add Booking</div>
+              </div>
+              <div class="node accent">
+                <span class="n-tag">Module 2</span>
+                <div class="n-title">Driver Management</div>
+                <div class="n-desc">Drivers, Add Driver, driver panels</div>
+              </div>
+              <div class="node accent">
+                <span class="n-tag">Module 3</span>
+                <div class="n-title">Fleet Management</div>
+                <div class="n-desc">Fleet, Add Fleet, vehicle panels</div>
+              </div>
+              <div class="node accent">
+                <span class="n-tag">Module 4</span>
+                <div class="n-title">Customers</div>
+                <div class="n-desc">Client Profiles and VIP status</div>
+              </div>
+            </div>
+
+            <div class="connector-label">module breakdown</div>
+
+            <div class="fc-row wrap">
+              <div class="branch-col">
+                <span class="branch-tag">Booking Management</span>
+                <div class="node">
+                  <span class="n-tag">Tab</span>
+                  <div class="n-title">New Requests</div>
+                  <div class="n-desc">Pickup date filter, request table, View</div>
+                </div>
+                <div class="node">
+                  <span class="n-tag">Panel</span>
+                  <div class="n-title">Booking Request Details</div>
+                  <div class="n-desc">Customer, trip, vehicle preference</div>
+                </div>
+                <div class="node terminal">
+                  <span class="n-tag">Actions</span>
+                  <div class="n-title">Confirm / Cancel</div>
+                  <div class="n-desc">Confirm booking or cancel with modal</div>
+                </div>
+                <div class="node">
+                  <span class="n-tag">Tab</span>
+                  <div class="n-title">Bookings</div>
+                  <div class="n-desc">Confirmed, completed, cancelled rides</div>
+                </div>
+                <div class="node">
+                  <span class="n-tag">Panel</span>
+                  <div class="n-title">Booking Details</div>
+                  <div class="n-desc">Reassign vehicle/driver, cancel booking</div>
+                </div>
+                <div class="node">
+                  <span class="n-tag">Tab</span>
+                  <div class="n-title">Add Booking</div>
+                  <div class="n-desc">Customer, route, stops, vehicle type, date/time</div>
+                </div>
+              </div>
+
+              <div class="branch-col">
+                <span class="branch-tag">Driver Management</span>
+                <div class="node">
+                  <span class="n-tag">Tab</span>
+                  <div class="n-title">Drivers</div>
+                  <div class="n-desc">Search, availability, license filters</div>
+                </div>
+                <div class="node">
+                  <span class="n-tag">Table</span>
+                  <div class="n-title">Driver Rows</div>
+                  <div class="n-desc">Driver ID, phone, experience, status, booking</div>
+                </div>
+                <div class="node">
+                  <span class="n-tag">Panel</span>
+                  <div class="n-title">Driver Details</div>
+                  <div class="n-desc">Contact, license, documents, assignment</div>
+                </div>
+                <div class="node terminal">
+                  <span class="n-tag">Actions</span>
+                  <div class="n-title">History / Leave / Suspend / Delete</div>
+                  <div class="n-desc">Driver history and status modals</div>
+                </div>
+                <div class="node">
+                  <span class="n-tag">Tab</span>
+                  <div class="n-title">Add Driver</div>
+                  <div class="n-desc">Photo, identity, license, documents</div>
+                </div>
+              </div>
+
+              <div class="branch-col">
+                <span class="branch-tag">Fleet Management</span>
+                <div class="node">
+                  <span class="n-tag">Tab</span>
+                  <div class="n-title">Fleet</div>
+                  <div class="n-desc">Search vehicle, filter type/status</div>
+                </div>
+                <div class="node">
+                  <span class="n-tag">Table</span>
+                  <div class="n-title">Vehicle Rows</div>
+                  <div class="n-desc">Vehicle ID, plate, type, status, booking</div>
+                </div>
+                <div class="node">
+                  <span class="n-tag">Panel</span>
+                  <div class="n-title">Vehicle Status & Actions</div>
+                  <div class="n-desc">Maintenance, disable, available, details, history</div>
+                </div>
+                <div class="node terminal">
+                  <span class="n-tag">Panels</span>
+                  <div class="n-title">Vehicle Details / History</div>
+                  <div class="n-desc">Specs, compliance, activity timeline</div>
+                </div>
+                <div class="node">
+                  <span class="n-tag">Tab</span>
+                  <div class="n-title">Add Fleet</div>
+                  <div class="n-desc">Vehicle specs, photos, registration docs</div>
+                </div>
+              </div>
+
+              <div class="branch-col">
+                <span class="branch-tag">Customers</span>
+                <div class="node">
+                  <span class="n-tag">Screen</span>
+                  <div class="n-title">Client Profiles</div>
+                  <div class="n-desc">Customer table and profile records</div>
+                </div>
+                <div class="node">
+                  <span class="n-tag">Filters</span>
+                  <div class="n-title">VIP + Search</div>
+                  <div class="n-desc">VIP status and customer text search</div>
+                </div>
+                <div class="node">
+                  <span class="n-tag">Table</span>
+                  <div class="n-title">Customer Rows</div>
+                  <div class="n-desc">Customer ID, name, phone, email, VIP status</div>
+                </div>
+                <div class="node terminal">
+                  <span class="n-tag">Actions</span>
+                  <div class="n-title">Open Profile / Update VIP</div>
+                  <div class="n-desc">View details and switch VIP/Standard</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="legend">
+            <span><i class="dot d-start"></i> Entry / session</span>
+            <span><i class="dot d-step"></i> Workflow step</span>
+            <span><i class="dot d-decision"></i> Decision</span>
+            <span><i class="dot d-terminal"></i> Operational outcome</span>
+            <span><i class="dot d-danger"></i> Risk / destructive action</span>
+          </div>
+        </div>
+      </section>
+
+      <section id="journey" class="section">
+        <div class="section-head">
+          <strong>Detailed flow</strong>
+          <h1>Admin journey steps</h1>
+          <p>How an operations admin moves through the actual portal screens in Admin.html, from secure access to the four core operating modules and Settings.</p>
+        </div>
+        <div class="card">
+          <div class="flow-step"><span class="idx">1</span><div class="flow-copy"><strong>Admin lands on login.</strong> The login screen collects email or username, password, remember-me preference, and exposes the forgot-password path.<span class="sub">Routes: <span class="inline-code">#admin-login</span>, <span class="inline-code">#admin-forgot</span>, <span class="inline-code">#admin-reset</span>.</span></div></div>
+          <div class="flow-step"><span class="idx">2</span><div class="flow-copy"><strong>Recovery branch verifies admin access.</strong> Forgot password sends an OTP to the admin email; reset requires OTP, new password, confirm password, and password rules.</div></div>
+          <div class="flow-step"><span class="idx">3</span><div class="flow-copy"><strong>Successful login opens Booking Management.</strong> The portal shows the sidebar, topbar search, profile menu, and default Bookings workspace.<span class="sub">Visible sidebar: Bookings, Driver Management, Fleet Management, Customers, Settings.</span></div></div>
+          <div class="flow-step"><span class="idx">4</span><div class="flow-copy"><strong>Admin handles Booking Management.</strong> New Requests, Bookings, and Add Booking tabs support request review, booking lookup, booking detail panels, confirmation, cancellation, resource reassignment, and manual booking creation.</div></div>
+          <div class="flow-step"><span class="idx">5</span><div class="flow-copy"><strong>Admin handles Driver Management.</strong> The Drivers tab supports search, availability and license filters, driver detail panel, driver history, leave, suspension, deletion, and the Add Driver form with document upload.</div></div>
+          <div class="flow-step"><span class="idx">6</span><div class="flow-copy"><strong>Admin handles Fleet Management.</strong> The Fleet tab supports vehicle search and filters, status/action panel, vehicle details, vehicle history, maintenance/disable/delete flows, and the Add Fleet form with photos and compliance documents.</div></div>
+          <div class="flow-step"><span class="idx">7</span><div class="flow-copy"><strong>Admin handles Customers.</strong> Client Profiles supports VIP filtering, customer search, customer rows with ID/contact details, customer detail access, and VIP/Standard updates.</div></div>
+          <div class="flow-step"><span class="idx">8</span><div class="flow-copy"><strong>Admin configures Settings.</strong> Settings exposes Communication Settings in the active tab, including notification rules, reminder timing, and the Test Notification panel; the HTML also contains a hidden General Settings panel.</div></div>
+          <div class="flow-step"><span class="idx">9</span><div class="flow-copy"><strong>Admin logs out from profile.</strong> Profile menu shows Operations Admin and returns the user to the login screen.</div></div>
+        </div>
+      </section>
+
+      <section id="features" class="section">
+        <div class="section-head">
+          <strong>Feature inventory</strong>
+          <h1>Admin feature map</h1>
+          <p>Feature-level mapping extracted from the active admin portal flow in Admin.html. This list follows the login screens, visible sidebar modules, and embedded panels used by those modules.</p>
+        </div>
+        <div class="table-wrap">
+          <table class="feature-table">
+            <thead>
+              <tr>
+                <th>Module</th>
+                <th>Feature</th>
+                <th>Admin action</th>
+                <th>Important data / state</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td><span class="mod-tag">Auth</span></td><td>Secure login</td><td>Enter email/username and password, remember session, log in.</td><td>Email / username, password, remember me, profile initials, logout.</td></tr>
+              <tr><td><span class="mod-tag">Auth</span></td><td>Password recovery</td><td>Send OTP, enter OTP, set and confirm password.</td><td>OTP code, new password, uppercase/number/special-character rules.</td></tr>
+              <tr><td><span class="mod-tag">Shell</span></td><td>Admin navigation</td><td>Move between Bookings, Driver Management, Fleet Management, Customers, Settings, and profile logout.</td><td>Visible sidebar modules plus hidden Overview link in source.</td></tr>
+              <tr><td><span class="mod-tag">Shell</span></td><td>Global search</td><td>Search by booking ID, customer, phone, or email.</td><td>Topbar search scope should align with booking/customer records.</td></tr>
+              <tr><td><span class="mod-tag">Bookings</span></td><td>New request queue</td><td>Filter by pickup date and open request details.</td><td>Request ID, customer, phone, pickup, drop-off, pickup date/time, duration, New Request status.</td></tr>
+              <tr><td><span class="mod-tag">Bookings</span></td><td>Booking request detail panel</td><td>Review customer information, trip information, and vehicle preference.</td><td>Customer, phone, email, pickup/drop, date/time, duration, vehicle preference.</td></tr>
+              <tr><td><span class="mod-tag">Bookings</span></td><td>Confirm or cancel request</td><td>Confirm booking from request panel or open cancel modal.</td><td>Confirmed status or cancellation reason.</td></tr>
+              <tr><td><span class="mod-tag">Bookings</span></td><td>Booking list</td><td>Filter by pickup date and open booking details.</td><td>Booking ID, customer ID, pickup date/time, status, vehicle, driver.</td></tr>
+              <tr><td><span class="mod-tag">Bookings</span></td><td>Booking details panel</td><td>View confirmed/completed/cancelled booking records and operational timeline.</td><td>Customer info, trip info, vehicle, driver, booking timeline, action visibility by status.</td></tr>
+              <tr><td><span class="mod-tag">Bookings</span></td><td>Reassign booking resources</td><td>Open vehicle or driver reassignment modals from booking details.</td><td>Reassign vehicle select, reassign driver select.</td></tr>
+              <tr><td><span class="mod-tag">Bookings</span></td><td>Create manual booking</td><td>Add booking from admin form.</td><td>First/last name, country code, phone, email, pickup, drop, multiple stops, vehicle type, date, time, duration.</td></tr>
+              <tr><td><span class="mod-tag">Drivers</span></td><td>Driver list</td><td>Search, filter, review current booking, and open driver panel.</td><td>Driver name, ID, phone, experience, license status, availability, current booking.</td></tr>
+              <tr><td><span class="mod-tag">Drivers</span></td><td>Driver detail panel</td><td>Review chauffeur profile, contact, stats, license, documents, and assignment.</td><td>Experience, trips completed, rating, phone, email, location, license status, verified documents.</td></tr>
+              <tr><td><span class="mod-tag">Drivers</span></td><td>Driver history</td><td>Open ride/history panels for selected driver.</td><td>Trip history and driver activity records.</td></tr>
+              <tr><td><span class="mod-tag">Drivers</span></td><td>Driver status actions</td><td>Set on leave, suspend driver, or delete driver.</td><td>Leave modal, suspend modal, delete modal, reason input where required.</td></tr>
+              <tr><td><span class="mod-tag">Drivers</span></td><td>Add driver</td><td>Create chauffeur record and upload documents.</td><td>Photo, name, email, phone, experience, license number, issue/expiry date, license/medical/background files.</td></tr>
+              <tr><td><span class="mod-tag">Fleet</span></td><td>Vehicle list</td><td>Search and filter vehicles, open action panel.</td><td>Vehicle name, ID, plate, type, status, current booking, last service.</td></tr>
+              <tr><td><span class="mod-tag">Fleet</span></td><td>Vehicle status actions</td><td>Open status/action panel and update availability.</td><td>Available, maintenance, disabled states; disable reason modal.</td></tr>
+              <tr><td><span class="mod-tag">Fleet</span></td><td>Vehicle details panel</td><td>Review vehicle specifications and compliance information.</td><td>Vehicle name, plate, type, year, specs, documents.</td></tr>
+              <tr><td><span class="mod-tag">Fleet</span></td><td>Vehicle history panel</td><td>Review assignment, maintenance, status, and update timeline.</td><td>Trip completed, driver assigned, maintenance started/completed, status changed, vehicle added.</td></tr>
+              <tr><td><span class="mod-tag">Fleet</span></td><td>Add vehicle</td><td>Create fleet record with specifications and compliance uploads.</td><td>Name, type, brand/model/year, plate, capacity, hourly rate, photos, registration, insurance, permits.</td></tr>
+              <tr><td><span class="mod-tag">Fleet</span></td><td>Delete vehicle</td><td>Open delete vehicle modal and submit deletion reason.</td><td>Delete reason and destructive confirmation.</td></tr>
+              <tr><td><span class="mod-tag">Customers</span></td><td>Client profiles</td><td>Search, filter VIP status, open profile, update VIP/Standard.</td><td>Customer ID, name, phone, email, booking count/history, VIP status.</td></tr>
+              <tr><td><span class="mod-tag">Customers</span></td><td>VIP status menu</td><td>Switch a customer between VIP and Standard from row menu.</td><td>VIP badge state and row data attribute.</td></tr>
+              <tr><td><span class="mod-tag">Customers</span></td><td>Customer detail panel</td><td>Open customer details from row selection.</td><td>Customer ID, name, contact, profile details, booking context.</td></tr>
+              <tr><td><span class="mod-tag">Settings</span></td><td>Communication Settings tab</td><td>Choose customer notification channels and reminder timing.</td><td>Booking confirmed, driver assigned, driver en route, 24h/2h reminders, driver arrived, trip completed, payment receipt.</td></tr>
+              <tr><td><span class="mod-tag">Settings</span></td><td>Test notification panel</td><td>Open Test Notification, choose event and recipient details, send test.</td><td>Event select, customer fields, country code, phone/email destination.</td></tr>
+              <tr><td><span class="mod-tag">Settings</span></td><td>General settings panel</td><td>Hidden panel in source for system, company, security, service area, provider, and integration settings.</td><td>Booking approval mode, timezone, currency, company, 2FA, session timeout, providers, payment gateway, maps provider.</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section id="pagespecs" class="section">
+        <div class="section-head">
+          <strong>Developer handoff</strong>
+          <h1>Page specs</h1>
+          <p>Route-level notes for the active admin portal screens and embedded panels in Admin.html. This section follows the visible sidebar modules and their child tabs.</p>
+        </div>
+        <div class="grid cards-2">
+          <article class="spec-card">
+            <div class="spec-head"><h2>Admin Login</h2><span class="mod-tag">Auth</span></div>
+            <span class="spec-route">#admin-login</span>
+            <div class="spec-grid">
+              <div class="spec-block"><h4>Purpose</h4><ul><li>Secure internal entry point for operations staff.</li><li>Hides sidebar, topbar, footer, and admin shell until authenticated.</li></ul></div>
+              <div class="spec-block"><h4>Fields</h4><ul><li>Email / username.</li><li>Password.</li><li>Remember Me.</li><li>Forgot Password link.</li></ul></div>
+              <div class="spec-block"><h4>Actions</h4><ul><li>Login Securely opens the bookings workspace.</li><li>Logout from profile returns here.</li></ul></div>
+            </div>
+          </article>
+
+          <article class="spec-card">
+            <div class="spec-head"><h2>Password Recovery</h2><span class="mod-tag">Auth</span></div>
+            <span class="spec-route">#admin-forgot / #admin-reset</span>
+            <div class="spec-grid">
+              <div class="spec-block"><h4>Purpose</h4><ul><li>Recover admin access through email OTP and new password setup.</li></ul></div>
+              <div class="spec-block"><h4>Fields</h4><ul><li>Admin email.</li><li>OTP code.</li><li>New password.</li><li>Confirm password.</li></ul></div>
+              <div class="spec-block"><h4>Rules</h4><ul><li>Password must satisfy minimum length, uppercase, number, and special-character guidance.</li><li>Successful reset opens the booking workspace.</li></ul></div>
+            </div>
+          </article>
+
+          <article class="spec-card">
+            <div class="spec-head"><h2>Booking Management</h2><span class="mod-tag">Bookings</span></div>
+            <span class="spec-route">#admin-bookings</span>
+            <div class="spec-grid">
+              <div class="spec-block"><h4>Tabs</h4><ul><li><code>booking-requests</code>: new ride request queue.</li><li><code>booking-list</code>: existing bookings.</li><li><code>booking-create</code>: manual admin booking form.</li></ul></div>
+              <div class="spec-block"><h4>Primary fields</h4><ul><li>Request or booking ID, customer, pickup, drop-off, pickup date/time, duration, status, vehicle, driver.</li><li>Create form captures customer details, multiple stops, vehicle type, date, time, and duration.</li></ul></div>
+              <div class="spec-block"><h4>Actions</h4><ul><li>Switch tabs.</li><li>Open request detail side panel.</li><li>Open booking detail side panel.</li><li>Add additional stop and remove stop.</li></ul></div>
+            </div>
+          </article>
+
+          <article class="spec-card">
+            <div class="spec-head"><h2>Booking Panels & Modals</h2><span class="mod-tag">Bookings</span></div>
+            <span class="spec-route">#booking-request-details-panel / #booking-details-panel</span>
+            <div class="spec-grid">
+              <div class="spec-block"><h4>Request details</h4><ul><li>Customer Information.</li><li>Trip Information.</li><li>Vehicle Preference.</li><li>Confirm Booking and Cancel Booking actions.</li></ul></div>
+              <div class="spec-block"><h4>Booking details</h4><ul><li>Customer Information.</li><li>Trip Information.</li><li>Vehicle & Driver.</li><li>Booking Timeline.</li></ul></div>
+              <div class="spec-block"><h4>Modals</h4><ul><li>Reassign Vehicle.</li><li>Reassign Driver.</li><li>Cancel Booking.</li><li>Actions hide for Completed and Cancelled bookings.</li></ul></div>
+            </div>
+          </article>
+
+          <article class="spec-card">
+            <div class="spec-head"><h2>Driver Management</h2><span class="mod-tag">Drivers</span></div>
+            <span class="spec-route">#admin-driver-management</span>
+            <div class="spec-grid">
+              <div class="spec-block"><h4>Tabs</h4><ul><li><code>driver-list</code>: driver table and filters.</li><li><code>driver-add</code>: new chauffeur form.</li></ul></div>
+              <div class="spec-block"><h4>Data</h4><ul><li>Name, driver ID, phone, experience, license status, availability, current booking.</li><li>License number, issue date, expiry date, license type.</li><li>Documents: license, background check, medical certificate.</li></ul></div>
+              <div class="spec-block"><h4>Actions</h4><ul><li>Open details.</li><li>Open history.</li><li>Set On Leave.</li><li>Suspend Driver.</li><li>Delete Driver.</li><li>Add driver with uploaded documents.</li></ul></div>
+            </div>
+          </article>
+
+          <article class="spec-card">
+            <div class="spec-head"><h2>Driver Panels & Modals</h2><span class="mod-tag">Drivers</span></div>
+            <span class="spec-route">#driver-side-panel / #driver-history-panel</span>
+            <div class="spec-grid">
+              <div class="spec-block"><h4>Driver detail panel</h4><ul><li>Profile, status, experience, trips completed, rating.</li><li>Contact information, license information, verified documents.</li><li>Current assignment and action list.</li></ul></div>
+              <div class="spec-block"><h4>Action modals</h4><ul><li>Ride History.</li><li>Set On Leave.</li><li>Suspend Driver.</li><li>Delete Driver.</li><li>Reason modal for status-sensitive actions.</li></ul></div>
+            </div>
+          </article>
+
+          <article class="spec-card">
+            <div class="spec-head"><h2>Fleet Management</h2><span class="mod-tag">Fleet</span></div>
+            <span class="spec-route">#admin-fleet-management</span>
+            <div class="spec-grid">
+              <div class="spec-block"><h4>Tabs</h4><ul><li><code>fleet-list</code>: vehicle table, filters, and action menus.</li><li><code>fleet-add</code>: new or edit vehicle form.</li></ul></div>
+              <div class="spec-block"><h4>Data</h4><ul><li>Vehicle name, ID, plate, type, status, current booking, service information.</li><li>Brand/model/year, capacity, rates, photos, insurance, registration, permits.</li></ul></div>
+              <div class="spec-block"><h4>Actions</h4><ul><li>Mark available.</li><li>Mark maintenance.</li><li>Disable with reason.</li><li>View details.</li><li>View history.</li><li>Edit or delete vehicle.</li></ul></div>
+            </div>
+          </article>
+
+          <article class="spec-card">
+            <div class="spec-head"><h2>Vehicle Panels & Modals</h2><span class="mod-tag">Fleet</span></div>
+            <span class="spec-route">#vehicle-actions-panel / #vehicle-details-panel / #vehicle-history-panel</span>
+            <div class="spec-grid">
+              <div class="spec-block"><h4>Status & actions</h4><ul><li>Vehicle Status & Actions panel.</li><li>Mark Maintenance.</li><li>Disable Vehicle.</li><li>Mark Available.</li><li>View Details and History.</li></ul></div>
+              <div class="spec-block"><h4>Details and history</h4><ul><li>Vehicle Details panel stores specs and compliance information.</li><li>Vehicle History panel tracks assignments, maintenance, status changes, and creation activity.</li><li>Delete Vehicle modal requires reason.</li></ul></div>
+            </div>
+          </article>
+
+          <article class="spec-card">
+            <div class="spec-head"><h2>Client Profiles</h2><span class="mod-tag">Customers</span></div>
+            <span class="spec-route">#admin-customers</span>
+            <div class="spec-grid">
+              <div class="spec-block"><h4>Purpose</h4><ul><li>View client profile list, booking history, preferences, and VIP status.</li></ul></div>
+              <div class="spec-block"><h4>Filters</h4><ul><li>VIP Status: All, VIP, Standard.</li><li>Search by name, email, phone, or customer ID.</li></ul></div>
+              <div class="spec-block"><h4>Actions</h4><ul><li>Open customer detail panel.</li><li>Toggle VIP or Standard from row menu.</li><li>Show empty state when no matching rows are found.</li></ul></div>
+            </div>
+          </article>
+
+          <article class="spec-card">
+            <div class="spec-head"><h2>Settings</h2><span class="mod-tag">Settings</span></div>
+            <span class="spec-route">#admin-settings</span>
+            <div class="spec-grid">
+              <div class="spec-block"><h4>Visible tab</h4><ul><li>Communication Settings is the visible active settings tab.</li><li>Notification Rules table controls In-App, SMS, and Email per customer event.</li><li>Reminder Timing controls 24-hour, 2-hour, and optional driver-arrival reminders.</li></ul></div>
+              <div class="spec-block"><h4>Test panel</h4><ul><li>Test Notification side panel opens from the settings header.</li><li>Event, recipient, country code, phone/email fields are present.</li></ul></div>
+              <div class="spec-block"><h4>Hidden source panel</h4><ul><li>The source also contains a hidden General Settings panel for system, company, security, service area, notification provider, API, and third-party integration settings.</li></ul></div>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section id="bookingops" class="section">
+        <div class="section-head">
+          <strong>Core workflow</strong>
+          <h1>Booking module lifecycle</h1>
+          <p>The booking lifecycle follows the three tabs and embedded panels present in Admin.html: New Requests, Bookings, and Add Booking. It focuses on request review, confirmation/cancellation, viewing assigned bookings, reassignment modals, and manual booking creation.</p>
+        </div>
+        <div class="grid cards-3">
+          <div class="card">
+            <h2>1. Intake</h2>
+            <p>New customer ride requests arrive in <span class="inline-code">booking-requests</span>. Admin filters by pickup date and opens the detail side panel to review customer, route, schedule, duration, and requested vehicle preference.</p>
+          </div>
+          <div class="card">
+            <h2>2. Review</h2>
+            <p>Admin checks resource availability, customer notes, route/stops, and VIP context. Request can be confirmed or cancelled; cancellation should capture a reason.</p>
+          </div>
+          <div class="card">
+            <h2>3. Booking creation</h2>
+            <p>Confirmed requests move into the booking list. Staff can also create manual bookings from the Add Booking tab with customer, route, stops, vehicle type, date, time, and duration.</p>
+          </div>
+          <div class="card">
+            <h2>4. Assignment</h2>
+            <p>Booking detail panels show vehicle and driver assignments. Reassignment modals support changing the assigned vehicle or chauffeur.</p>
+          </div>
+          <div class="card">
+            <h2>5. Status-aware actions</h2>
+            <p>Confirmed bookings expose reassignment and cancellation actions. Completed and cancelled bookings are still viewable, but active controls are hidden in the panel.</p>
+          </div>
+          <div class="card">
+            <h2>6. Closure</h2>
+            <p>Completed and cancelled bookings remain in the booking list for reference. Cancellation uses a modal and should preserve the reason in implementation.</p>
+          </div>
+        </div>
+        <div class="table-wrap" style="margin-top: 22px;">
+          <table class="spec-table">
+            <thead>
+              <tr>
+                <th>Status</th>
+                <th>Meaning</th>
+                <th>Allowed next actions</th>
+                <th>System side effects</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td>New Request</td><td>Customer submitted a ride request; not yet accepted by staff.</td><td>View, review, confirm, cancel.</td><td>Appears in request queue.</td></tr>
+              <tr><td>Under Review</td><td>Staff is validating trip, fleet availability, and customer details.</td><td>Confirm, reject, add internal notes, contact customer.</td><td>Should be visible in booking detail workflow.</td></tr>
+              <tr><td>Confirmed</td><td>Booking accepted by operations.</td><td>View, reassign vehicle, reassign driver, cancel.</td><td>Appears in the Bookings tab with vehicle and driver assignment.</td></tr>
+              <tr><td>Assigned</td><td>Vehicle and chauffeur are attached.</td><td>Reassign resources or cancel if still active.</td><td>Vehicle and driver fields are shown in booking detail panel.</td></tr>
+              <tr><td>In Progress</td><td>Trip has started or is actively being served.</td><td>View operational details.</td><td>Status visible where booking state is displayed.</td></tr>
+              <tr><td>Completed</td><td>Trip is closed.</td><td>View only; no operational reassignment.</td><td>Actions block is hidden for completed bookings.</td></tr>
+              <tr><td>Cancelled</td><td>Booking has been cancelled.</td><td>View only; capture reason where applicable.</td><td>Actions block is hidden for cancelled bookings.</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section id="screens" class="section">
+        <div class="section-head">
+          <strong>Screen inventory</strong>
+          <h1>Pages and embedded panels</h1>
+          <p>A compact QA list for the Admin.html screens in the visible admin flow.</p>
+        </div>
+        <div class="grid cards-3">
+          <div class="screen-card"><span class="screen-title">Auth</span><h2>Login / Forgot / Reset</h2><ul><li>Secure login and recovery screens.</li><li>Remember Me and logout return path.</li><li>OTP reset with password rules.</li></ul><div class="tags"><span>admin-login</span><span>admin-forgot</span><span>admin-reset</span></div></div>
+          <div class="screen-card"><span class="screen-title">Bookings</span><h2>Booking management</h2><ul><li>New Requests, Bookings, Add Booking tabs.</li><li>Request/booking detail panels.</li><li>Manual booking form with multi-stop support.</li></ul><div class="tags"><span>Requests</span><span>Bookings</span><span>Create</span></div></div>
+          <div class="screen-card"><span class="screen-title">Booking Panels</span><h2>Request and booking detail</h2><ul><li>Booking Request Details side panel.</li><li>Booking Details side panel.</li><li>Reassign vehicle, reassign driver, and cancel booking modals.</li></ul><div class="tags"><span>Confirm</span><span>Reassign</span><span>Cancel</span></div></div>
+          <div class="screen-card"><span class="screen-title">Drivers</span><h2>Chauffeur management</h2><ul><li>Search and filter by availability/license.</li><li>Driver detail panel with docs, stats, and current assignment.</li><li>Add driver, history, leave, suspend, delete flows.</li></ul><div class="tags"><span>License</span><span>Documents</span><span>Actions</span></div></div>
+          <div class="screen-card"><span class="screen-title">Fleet</span><h2>Vehicle management</h2><ul><li>Search/filter vehicle rows.</li><li>Vehicle action, details, and history panels.</li><li>Add/edit vehicle and upload compliance documents.</li></ul><div class="tags"><span>Status</span><span>Maintenance</span><span>Compliance</span></div></div>
+          <div class="screen-card"><span class="screen-title">Customers</span><h2>Client profiles</h2><ul><li>VIP status filter and text search.</li><li>Customer detail and booking history.</li><li>VIP/Standard row menu updates.</li></ul><div class="tags"><span>VIP</span><span>Search</span><span>History</span></div></div>
+          <div class="screen-card"><span class="screen-title">Settings</span><h2>Communication settings</h2><ul><li>Communication Settings tab is active.</li><li>Notification Rules and Reminder Timing sections.</li><li>Test Notification side panel.</li></ul><div class="tags"><span>Rules</span><span>Reminders</span><span>Test</span></div></div>
+        </div>
+      </section>
+
+      <section id="stories" class="section">
+        <div class="section-head">
+          <strong>Requirements</strong>
+          <h1>User stories</h1>
+          <p>Admin-facing user stories grouped by the screens and panels in the supplied Admin.html flow.</p>
+        </div>
+
+        <div class="story-group">
+          <h3><span class="mod-tag">Authentication & Shell</span></h3>
+          <div class="grid cards-2">
+            <div class="story-card"><span class="story-id">AD-01 - Secure login</span><p><span class="as">As an</span> admin, <span class="want">I want to log in securely</span> so that only authorized staff can access operations.</p><div class="ac"><h5>Acceptance criteria</h5><ul><li>Login accepts email/username and password.</li><li>Successful login opens the Bookings workspace.</li><li>Unauthenticated users see no admin sidebar/topbar.</li></ul></div></div>
+            <div class="story-card"><span class="story-id">AD-02 - Password reset</span><p><span class="as">As an</span> admin, <span class="want">I want to reset my password with OTP verification</span> so that I can recover account access safely.</p><div class="ac"><h5>Acceptance criteria</h5><ul><li>Forgot Password collects admin email.</li><li>Reset requires OTP, new password, and confirmation.</li><li>Password guidance is visible before submit.</li></ul></div></div>
+            <div class="story-card"><span class="story-id">AD-03 - Global search</span><p><span class="as">As an</span> operations admin, <span class="want">I want global search for booking/customer/contact data</span> so that I can jump to records quickly.</p><div class="ac"><h5>Acceptance criteria</h5><ul><li>Search placeholder covers booking ID, customer, phone, and email.</li><li>Results should focus on records available in the active admin workspace.</li></ul></div></div>
+            <div class="story-card"><span class="story-id">AD-04 - Profile logout</span><p><span class="as">As an</span> admin, <span class="want">I want profile access and logout</span> so that I can end my session from any admin screen.</p><div class="ac"><h5>Acceptance criteria</h5><ul><li>Profile menu displays admin identity.</li><li>Logout returns to the login route.</li></ul></div></div>
+          </div>
+        </div>
+
+        <div class="story-group">
+          <h3><span class="mod-tag">Booking Operations</span></h3>
+          <div class="grid cards-2">
+            <div class="story-card"><span class="story-id">AD-05 - Review new requests</span><p><span class="as">As an</span> operations admin, <span class="want">I want a New Requests queue</span> so that I can review incoming ride requests before accepting them.</p><div class="ac"><h5>Acceptance criteria</h5><ul><li>Queue lists request ID, customer, pickup, drop-off, date/time, duration, status.</li><li>Pickup date filter is available.</li><li>View opens request detail panel.</li></ul></div></div>
+            <div class="story-card"><span class="story-id">AD-06 - Confirm request</span><p><span class="as">As an</span> operations admin, <span class="want">I want to confirm a request</span> so that it becomes an operational booking.</p><div class="ac"><h5>Acceptance criteria</h5><ul><li>Request detail shows customer, trip, and vehicle preference.</li><li>Confirm action closes or updates the request detail flow.</li><li>The booking appears in the Bookings tab when stored in backend data.</li></ul></div></div>
+            <div class="story-card"><span class="story-id">AD-07 - Cancel request or booking</span><p><span class="as">As an</span> operations admin, <span class="want">I want to cancel with a reason</span> so that cancellation history is traceable.</p><div class="ac"><h5>Acceptance criteria</h5><ul><li>Cancel opens a confirmation/reason modal.</li><li>Cancelled records stay visible in the Bookings tab.</li><li>Completed/cancelled bookings hide active assignment actions.</li></ul></div></div>
+            <div class="story-card"><span class="story-id">AD-08 - View booking details</span><p><span class="as">As an</span> operations admin, <span class="want">I want a booking detail panel</span> so that I can inspect customer, trip, vehicle, driver, and timeline information.</p><div class="ac"><h5>Acceptance criteria</h5><ul><li>Panel shows Customer Information, Trip Information, Vehicle & Driver, and Booking Timeline.</li><li>Action block is hidden for Completed and Cancelled bookings.</li></ul></div></div>
+            <div class="story-card"><span class="story-id">AD-09 - Reassign resources</span><p><span class="as">As an</span> operations admin, <span class="want">I want to reassign vehicle or chauffeur</span> so that operational changes can be handled quickly.</p><div class="ac"><h5>Acceptance criteria</h5><ul><li>Reassign vehicle modal lists available vehicles.</li><li>Reassign driver modal lists available chauffeurs.</li><li>Confirm closes the modal and should persist the new assignment in implementation.</li></ul></div></div>
+            <div class="story-card"><span class="story-id">AD-10 - Create manual booking</span><p><span class="as">As an</span> admin, <span class="want">I want to create a booking manually</span> so that phone or concierge bookings can be entered into the system.</p><div class="ac"><h5>Acceptance criteria</h5><ul><li>Form captures customer, contact, pickup/drop, optional stops, vehicle type, date, time, and duration.</li><li>Additional stops can be added and removed.</li><li>Required fields validate before submit.</li></ul></div></div>
+          </div>
+        </div>
+
+        <div class="story-group">
+          <h3><span class="mod-tag">Drivers & Fleet</span></h3>
+          <div class="grid cards-2">
+            <div class="story-card"><span class="story-id">AD-11 - Manage drivers</span><p><span class="as">As a</span> fleet/driver admin, <span class="want">I want to search and filter chauffeurs</span> so that I can find available and compliant drivers.</p><div class="ac"><h5>Acceptance criteria</h5><ul><li>Search by driver name or ID.</li><li>Filter by availability and license status.</li><li>Rows show current booking and status.</li></ul></div></div>
+            <div class="story-card"><span class="story-id">AD-12 - View driver detail</span><p><span class="as">As a</span> fleet/driver admin, <span class="want">I want driver details and documents</span> so that I can verify readiness before assignment.</p><div class="ac"><h5>Acceptance criteria</h5><ul><li>Detail panel shows contact, stats, license information, verified documents, and current assignment.</li><li>History, leave, suspend, and delete actions are available from the panel.</li></ul></div></div>
+            <div class="story-card"><span class="story-id">AD-13 - Add driver</span><p><span class="as">As a</span> fleet/driver admin, <span class="want">I want to add a chauffeur with documents</span> so that new drivers can be onboarded.</p><div class="ac"><h5>Acceptance criteria</h5><ul><li>Form captures identity, contact, experience, license number, issue/expiry date.</li><li>Uploads accept license, medical, and background check files.</li></ul></div></div>
+            <div class="story-card"><span class="story-id">AD-14 - Manage vehicles</span><p><span class="as">As a</span> fleet admin, <span class="want">I want to search and filter vehicles</span> so that I can quickly see availability and assignment state.</p><div class="ac"><h5>Acceptance criteria</h5><ul><li>Vehicle table supports name/plate search and status/category filters.</li><li>Rows expose action menus for status, detail, history, edit, and delete.</li></ul></div></div>
+            <div class="story-card"><span class="story-id">AD-15 - Add vehicle</span><p><span class="as">As a</span> fleet admin, <span class="want">I want to add vehicle specifications and compliance documents</span> so that fleet inventory stays current.</p><div class="ac"><h5>Acceptance criteria</h5><ul><li>Form captures vehicle name, type, brand, model, year, plate, capacity, and rates.</li><li>Vehicle photos and compliance files can be uploaded.</li></ul></div></div>
+            <div class="story-card"><span class="story-id">AD-16 - Update vehicle status</span><p><span class="as">As a</span> fleet admin, <span class="want">I want to mark vehicles available, disabled, or in maintenance</span> so that bookings are assigned only to eligible vehicles.</p><div class="ac"><h5>Acceptance criteria</h5><ul><li>Status action panel shows current status and available transitions.</li><li>Disable/delete require a reason.</li><li>Vehicle history records status and maintenance events.</li></ul></div></div>
+          </div>
+        </div>
+
+        <div class="story-group">
+          <h3><span class="mod-tag">Customers</span></h3>
+          <div class="grid cards-2">
+            <div class="story-card"><span class="story-id">AD-17 - Manage client profiles</span><p><span class="as">As an</span> admin, <span class="want">I want to search customer profiles and update VIP status</span> so that high-value clients are handled correctly.</p><div class="ac"><h5>Acceptance criteria</h5><ul><li>Filter by VIP status and search by customer details.</li><li>VIP/Standard update is available from row menu.</li><li>Empty state appears when no customers match.</li></ul></div></div>
+            <div class="story-card"><span class="story-id">AD-18 - Open customer detail</span><p><span class="as">As an</span> admin, <span class="want">I want to open customer details from the customer row</span> so that I can inspect customer context before handling bookings.</p><div class="ac"><h5>Acceptance criteria</h5><ul><li>Clicking a customer row opens the customer detail behavior defined in the script.</li><li>Customer ID, name, phone, email, and VIP status remain available from row data.</li></ul></div></div>
+          </div>
+        </div>
+
+        <div class="story-group">
+          <h3><span class="mod-tag">Settings</span></h3>
+          <div class="grid cards-2">
+            <div class="story-card"><span class="story-id">AD-19 - Configure notification rules</span><p><span class="as">As a</span> communications admin, <span class="want">I want to choose channels per event</span> so that customers receive the right updates.</p><div class="ac"><h5>Acceptance criteria</h5><ul><li>Rules cover booking confirmed, driver assigned, driver en route, 24h reminder, 2h reminder, driver arrived, trip completed, and payment receipt.</li><li>Each event has In-App, SMS, and Email channel toggles.</li></ul></div></div>
+            <div class="story-card"><span class="story-id">AD-20 - Configure reminder timing</span><p><span class="as">As a</span> communications admin, <span class="want">I want to adjust reminder timing</span> so that trip reminders are sent at the intended interval.</p><div class="ac"><h5>Acceptance criteria</h5><ul><li>24 Hour Reminder, 2 Hour Reminder, and Driver Arrival Reminder controls are present.</li><li>Save Changes action is available.</li></ul></div></div>
+            <div class="story-card"><span class="story-id">AD-21 - Send test notification</span><p><span class="as">As a</span> communications admin, <span class="want">I want to send a test notification</span> so that I can verify settings before relying on them.</p><div class="ac"><h5>Acceptance criteria</h5><ul><li>Test Notification opens a side panel.</li><li>Admin can choose event and recipient details.</li><li>Cancel and Send Test actions are present.</li></ul></div></div>
+          </div>
+        </div>
+      </section>
+
+      <section id="rules" class="section">
+        <div class="section-head">
+          <strong>Handover</strong>
+          <h1>Business rules &amp; developer notes</h1>
+          <p>Implementation constraints and operational rules to preserve for the visible Admin.html portal flow.</p>
+        </div>
+        <div class="grid cards-2">
+          <div class="card">
+            <h2>Authenticated access only</h2>
+            <p>All admin sections are internal. The auth screens hide the admin shell until login. Session expiry, logout, and permission checks should be enforced server-side, not only through hash routing or CSS display state.</p>
+          </div>
+          <div class="card">
+            <h2>Bookings are the default workspace</h2>
+            <p>After login or password reset, admins land in Booking Management. This matches the Admin.html Login Securely and Reset & Open Dashboard actions.</p>
+          </div>
+          <div class="card">
+            <h2>Status changes must synchronize resources</h2>
+            <p>Confirming, cancelling, or reassigning a booking should update the booking record and the visible vehicle/driver assignment fields consistently when connected to backend data.</p>
+          </div>
+          <div class="card">
+            <h2>Destructive actions need reasons</h2>
+            <p>Cancel booking, disable vehicle, delete vehicle, suspend driver, and delete driver should require a reason and confirmation before the state change is committed.</p>
+          </div>
+          <div class="card">
+            <h2>Completed and cancelled trips are view-only</h2>
+            <p>The HTML already hides booking action controls for completed or cancelled bookings. Production behavior should prevent reassignment, cancellation, or status progression after closure.</p>
+          </div>
+          <div class="card">
+            <h2>Drivers require valid operational status</h2>
+            <p>Driver availability and license status should be checked before assignment. The driver table distinguishes Available, Assigned, On Leave, Unavailable, and On Trip states.</p>
+          </div>
+          <div class="card">
+            <h2>Fleet status controls assignment</h2>
+            <p>Vehicle status should prevent invalid assignment. Available vehicles can be assigned; maintenance or disabled vehicles should be excluded from assignment lists once backend logic is connected.</p>
+          </div>
+          <div class="card">
+            <h2>Customer VIP state is editable</h2>
+            <p>The Customers module supports VIP and Standard states from the row menu. Implementation should persist the change and keep filters/search in sync with the updated row state.</p>
+          </div>
+          <div class="card">
+            <h2>Communication settings are customer-facing</h2>
+            <p>Notification Rules and Reminder Timing control how customers receive booking and trip updates. Test Notification should validate event and recipient details before sending.</p>
+          </div>
+          <div class="card">
+            <h2>Data shown is demo data</h2>
+            <p>IDs, customer names, phone numbers, vehicles, drivers, dates, and revenue figures in the HTML are sample content. Replace with backend data and verify empty, loading, error, and permission-denied states.</p>
+          </div>
+        </div>
+        <p class="note">This admin-flow file is a documentation artifact based on the supplied Admin.html structure. Confirm final API contracts, permissions, notification provider behavior, and persistence rules before implementation.</p>
+      </section>
+
+      <footer class="footer">
+        <span>Luxury Limo - Admin Portal User Flow</span>
+        <span>4 core modules - Settings - admin operations handoff</span>
+      </footer>
+    </div>
+  </body>
+</html>
