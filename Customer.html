@@ -68,14 +68,15 @@
       }
 .brand { display: flex; align-items: center; text-align: left; gap: 14px; text-decoration: none; padding-top: 0; }
 .brand::before { content: "RLL"; width: 58px; height: 58px; display: grid; place-items: center; border: 1px solid rgba(240,212,138,.44); background: linear-gradient(145deg, rgba(201,164,93,.22), rgba(5,5,5,.78)); color: var(--gold-bright); font-family: var(--display); font-size: 1.35rem; font-weight: 700; flex: 0 0 auto; }
-.brand-car-icon { display: none; }
+.brand-car-icon { display: none !important; }
 .brand-name { font-family: var(--body); font-weight: 800; font-size: 1.35rem; color: var(--ivory); letter-spacing: 0; line-height: 1.15; }
-.brand-sub { display: none; }
+.brand-name br { display: none; }
+.brand-sub { display: none !important; }
       .nav-left { display: flex; align-items: center; gap: 16px; min-width: 0; }
       .page-back-btn {
         width: 42px;
         height: 42px;
-        display: inline-flex;
+        display: none !important;
         align-items: center;
         justify-content: center;
         border: 0;
@@ -782,7 +783,7 @@
       #vehicle .detail-grid { display: contents; }
       #vehicle .detail-stack { grid-column: 1; }
       #vehicle .detail-sidebar { grid-column: 2; grid-row: 1 / span 2; }
-      .detail-gallery { display: grid; grid-template-columns: 72px minmax(0, 1fr); gap: 18px; align-items: start; margin-bottom: 18px; }
+      .detail-gallery { display: grid; grid-template-columns: 64px minmax(0, 1fr); gap: 14px; align-items: start; margin-bottom: 18px; }
       #vehicle .detail-gallery { grid-column: 1; margin-bottom: 0; }
       .gallery-thumbs { display: grid; align-content: start; gap: 12px; }
       .gallery-thumb {
@@ -799,23 +800,22 @@
       .gallery-thumb.is-active { border-color: var(--gold-bright); box-shadow: 0 0 0 2px rgba(240,212,138,.22); }
       .gallery-main {
         position: relative;
-        min-height: 590px;
+        min-height: 430px;
         border: 1px solid var(--line);
         border-radius: var(--radius);
         background: center/cover no-repeat rgba(255,255,255,.035);
       }
       .vehicle-request-card {
-        max-height: calc(100vh - 140px);
-        overflow-y: auto;
-        overflow-x: hidden;
+        max-height: none;
+        overflow: visible;
       }
       .vehicle-cta-actions {
-        position: sticky;
-        bottom: 0;
-        z-index: 4;
-        margin: 18px -2px -2px;
-        padding: 14px 2px 2px;
-        background: linear-gradient(180deg, rgba(28,31,38,0), rgba(28,31,38,.98) 26%, rgba(28,31,38,.98));
+        position: static;
+        bottom: auto;
+        z-index: auto;
+        margin: 18px 0 0;
+        padding: 0;
+        background: transparent;
       }
       .vehicle-summary-card p { margin-bottom: 16px; }
       .amenity-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
@@ -1676,6 +1676,60 @@
       .premium-summary-row:hover {
         background: linear-gradient(90deg, transparent, rgba(201,164,93,0.03), transparent);
       }
+      .summary-back {
+        border: 0;
+        color: #fff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0;
+        cursor: pointer;
+      }
+      .summary-back svg {
+        width: 30px;
+        height: 30px;
+        fill: none;
+        stroke: currentColor;
+        stroke-width: 2.4;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+      }
+      #summary .booking-summary-card {
+        width: min(1180px, 100%);
+      }
+      #summary .booking-summary-card .summary-list {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        column-gap: 56px;
+        row-gap: 0;
+      }
+      #summary .booking-summary-card .premium-summary-row {
+        min-height: 70px;
+        align-items: center;
+      }
+      #summary .booking-summary-card .premium-summary-row:first-child {
+        grid-column: 1 / -1;
+      }
+      #summary .booking-summary-card .premium-summary-row strong {
+        text-align: right;
+      }
+      #summary .booking-summary-card .btn.primary {
+        min-width: 280px;
+      }
+      @media (max-width: 900px) {
+        #summary .booking-summary-card {
+          width: 100%;
+        }
+        #summary .booking-summary-card .summary-list {
+          grid-template-columns: 1fr;
+        }
+        #summary .booking-summary-card .premium-summary-row:first-child {
+          grid-column: auto;
+        }
+        #summary .booking-summary-card .btn.primary {
+          width: 100%;
+          min-width: 0;
+        }
+      }
       
       .driver-fleet-assignment {
         background: linear-gradient(135deg, rgba(201,164,93,0.08) 0%, rgba(18,20,24,0) 100%) !important;
@@ -1880,7 +1934,7 @@
             <div class="brand-name">Real Limo<br>Lux</div>
             <div class="brand-sub">PREMIUM RIDES</div>
           </a>
-          <div class="nav-actions auth-nav-actions"><a class="btn ghost" href="#login">Login</a></div>
+          <div class="nav-actions auth-nav-actions"><a class="btn ghost" href="#login">Sign In</a></div>
         </div>
       </nav>
       <main class="auth-screen">
@@ -2020,6 +2074,10 @@
                       <span style="font-size: 0.85rem; color: #b3b3b3;">SMS</span>
                       <span class="toggle" aria-pressed="false"></span>
                     </div>
+                    <div class="toggle-row" style="padding: 0; border: 0; background: transparent; margin-top: 12px; display: flex; align-items: center; justify-content: space-between;">
+                      <span style="font-size: 0.85rem; color: #b3b3b3;">In App</span>
+                      <span class="toggle" aria-pressed="true"></span>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -2094,6 +2152,10 @@
                     <div class="toggle-row" style="padding: 0; border: 0; background: transparent; display: flex; align-items: center; justify-content: space-between;">
                       <span style="font-size: 0.85rem; color: #b3b3b3;">SMS</span>
                       <span class="toggle" aria-pressed="false"></span>
+                    </div>
+                    <div class="toggle-row" style="padding: 0; border: 0; background: transparent; margin-top: 12px; display: flex; align-items: center; justify-content: space-between;">
+                      <span style="font-size: 0.85rem; color: #b3b3b3;">In App</span>
+                      <span class="toggle" aria-pressed="true"></span>
                     </div>
                   </div>
                 </div>
@@ -2171,6 +2233,10 @@
                       <span style="font-size: 0.85rem; color: #b3b3b3;">SMS</span>
                       <span class="toggle" aria-pressed="false"></span>
                     </div>
+                    <div class="toggle-row" style="padding: 0; border: 0; background: transparent; margin-top: 12px; display: flex; align-items: center; justify-content: space-between;">
+                      <span style="font-size: 0.85rem; color: #b3b3b3;">In App</span>
+                      <span class="toggle" aria-pressed="true"></span>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -2182,7 +2248,7 @@
             <article class="card tight pricing-card"><h3>Indicative Pricing</h3><div class="pricing-mini-grid"><div class="pricing-mini-row"><span>Hourly Pricing</span><strong class="price">$250 - $280/hr</strong></div></div><p class="pricing-disclaimer">Final hourly pricing is tailored based on journey distance, travel duration, route preferences, vehicle selection, optional stops, personalized service requests, and fleet availability at the time of confirmation.</p></article>
             <article class="card tight"><h2>Amenities</h2><div class="amenity-grid"><span class="amenity-card"><span class="icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 13a10 10 0 0 1 14 0"></path><path d="M8.5 16.5a5 5 0 0 1 7 0"></path><path d="M12 20h.01"></path></svg></span>Wi-Fi</span><span class="amenity-card"><span class="icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14"></path><path d="M7 12V8a3 3 0 0 1 3-3h4a3 3 0 0 1 3 3v4"></path><path d="M6 12v6"></path><path d="M18 12v6"></path></svg></span>Leather Seats</span><span class="amenity-card"><span class="icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3h10"></path><path d="M8 3l1 7h6l1-7"></path><path d="M12 10v9"></path><path d="M9 21h6"></path></svg></span>Refreshments</span><span class="amenity-card"><span class="icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13 2 4 14h7l-1 8 9-12h-7l1-8z"></path></svg></span>Charging Ports</span><span class="amenity-card"><span class="icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v18"></path><path d="m8 7 4-4 4 4"></path><path d="m8 17 4 4 4-4"></path></svg></span>Climate Control</span><span class="amenity-card"><span class="icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16"></path><path d="M7 6v12"></path><path d="M17 6v12"></path><path d="M4 18h16"></path></svg></span>Privacy Glass</span></div></article>
           </div>
-          <div class="detail-sidebar" style="position: sticky; top: 120px; align-self: start;">
+          <div class="detail-sidebar" style="position: static; top: auto; align-self: start;">
             <aside class="card tight vehicle-request-card"><h2>Request This Vehicle</h2><div class="form-grid one"><div style="display:flex;gap:12px"><label class="field" style="flex:1"><span>Date (From)</span><input id="vehicle-date-from" type="date" value=""></label><label class="field" style="flex:1"><span>Date (To)</span><input id="vehicle-date-to" type="date" value=""></label></div><div style="display:flex;gap:12px"><label class="field" style="flex:1"><span>Time (From)</span><input id="vehicle-time-from" type="time" value=""></label><label class="field" style="flex:1"><span>Time (To)</span><input id="vehicle-time-to" type="time" value=""></label></div><label class="field"><span>Duration</span><input id="vehicle-duration" type="text" value="" placeholder="Auto calculated" readonly></label><p class="pricing-disclaimer" style="margin-top:-6px;">Minimum duration for booking is 2 hours.</p><label class="field field-with-clear"><span>Pickup Location</span><input id="vehicle-pickup" class="location-input" list="location-suggestions" required value=""><button class="field-clear-btn" type="button" data-clear-field aria-label="Clear pickup location">&times;</button></label><div class="stop-list" id="vehicle-stop-list"><div class="stop-row"><label class="field field-with-clear"><span>Stop 1 (Optional)</span><input class="location-input vehicle-stop-input" list="location-suggestions" value="" placeholder="Search location"><button class="field-clear-btn" type="button" data-remove-stop aria-label="Remove stop">&times;</button></label><button class="btn outline" type="button" id="add-stop-btn">+ Add Stop</button></div></div><label class="field field-with-clear"><span>Destination</span><input id="vehicle-destination" class="location-input" list="location-suggestions" required value=""><button class="field-clear-btn" type="button" data-clear-field aria-label="Clear destination">&times;</button></label><label class="field full" style="margin-top:12px"><span>Special Requests</span><textarea></textarea></label></div><div class="vehicle-cta-actions"><a class="btn primary" id="continue-booking-btn" style="width:100%;" href="#confirmation">Submit Booking Request</a><div style="text-align:center; margin-top:16px"><a href="#summary" style="color:var(--gold); text-decoration:underline; font-size: 0.95rem;">View Booking Summary</a></div></div></aside>
           </div>
         </div></div></div></main>
@@ -2222,12 +2288,16 @@
                       <span style="font-size: 0.85rem; color: #b3b3b3;">SMS</span>
                       <span class="toggle" aria-pressed="false"></span>
                     </div>
+                    <div class="toggle-row" style="padding: 0; border: 0; background: transparent; margin-top: 12px; display: flex; align-items: center; justify-content: space-between;">
+                      <span style="font-size: 0.85rem; color: #b3b3b3;">In App</span>
+                      <span class="toggle" aria-pressed="true"></span>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
           </div></div></nav>
-      <main class="section"><div class="container"><div class="card"><h2>Booking Summary</h2><div class="summary-list" style="margin-top: 16px;"><div class="premium-summary-row"><span>Vehicle</span><strong>Mercedes-Benz S-Class</strong></div><div class="premium-summary-row"><span>Pickup</span><strong>The Peninsula, Beverly Hills</strong></div><div class="premium-summary-row"><span>Destination</span><strong>Van Nuys Private Airport</strong></div><div class="premium-summary-row"><span>Stops</span><strong>Beverly Hills Hotel</strong></div><div class="premium-summary-row"><span>Special Requests</span><strong>VIP treatment, refreshments, quiet cabin</strong></div><div class="premium-summary-row"><span>Date & Time</span><strong>May 22, 2026 at 6:30 PM</strong></div><div class="premium-summary-row"><span>Indicative Pricing</span><strong>$250 - $1,850</strong></div></div><div style="margin-top:22px; display:flex; align-items:center; justify-content:space-between; gap:14px;"><a class="btn secondary" href="#fleet">Back</a><a class="btn primary" href="#confirmation">Submit Booking Request</a></div></div></div></main>
+      <main class="section"><div class="container"><div class="card booking-summary-card" style="max-width: 1180px; margin: 0 auto; padding: 40px;"><button class="page-back summary-back" type="button" aria-label="Go to previous page" onclick="if (history.length > 1) history.back(); else location.hash = '#vehicle';" style="position: static; margin: -8px 0 8px; transform: none; background: transparent; width: 36px; height: 36px;"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5"></path><path d="m12 19-7-7 7-7"></path></svg></button><h2>Booking Summary</h2><div class="summary-list" style="margin-top: 16px;"><div class="premium-summary-row"><span>Requested Vehicle</span><strong>Mercedes-Benz S-Class</strong></div><div class="premium-summary-row"><span>Pickup</span><strong>Not selected</strong></div><div class="premium-summary-row"><span>Stop 1</span><strong>No stops added</strong></div><div class="premium-summary-row"><span>Destination</span><strong>Not selected</strong></div><div class="premium-summary-row"><span>From Date</span><strong>Select date</strong></div><div class="premium-summary-row"><span>To Date</span><strong>Select date</strong></div><div class="premium-summary-row"><span>From Time</span><strong>Select time</strong></div><div class="premium-summary-row"><span>To Time</span><strong>Select time</strong></div><div class="premium-summary-row"><span>Duration</span><strong>Select date and time</strong></div><div class="premium-summary-row"><span>Special Requests</span><strong>Not added</strong></div></div><div style="margin-top:26px; display:flex; justify-content:flex-end;"><a class="btn primary" href="#confirmation">Submit Booking Request</a></div></div></div></main>
     </section>
 
     <section id="confirmation" class="screen">
@@ -2263,6 +2333,10 @@
                     <div class="toggle-row" style="padding: 0; border: 0; background: transparent; display: flex; align-items: center; justify-content: space-between;">
                       <span style="font-size: 0.85rem; color: #b3b3b3;">SMS</span>
                       <span class="toggle" aria-pressed="false"></span>
+                    </div>
+                    <div class="toggle-row" style="padding: 0; border: 0; background: transparent; margin-top: 12px; display: flex; align-items: center; justify-content: space-between;">
+                      <span style="font-size: 0.85rem; color: #b3b3b3;">In App</span>
+                      <span class="toggle" aria-pressed="true"></span>
                     </div>
                   </div>
                 </div>
@@ -2306,12 +2380,16 @@
                       <span style="font-size: 0.85rem; color: #b3b3b3;">SMS</span>
                       <span class="toggle" aria-pressed="false"></span>
                     </div>
+                    <div class="toggle-row" style="padding: 0; border: 0; background: transparent; margin-top: 12px; display: flex; align-items: center; justify-content: space-between;">
+                      <span style="font-size: 0.85rem; color: #b3b3b3;">In App</span>
+                      <span class="toggle" aria-pressed="true"></span>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
           </div></div></nav>
-      <main class="section"><div class="container"><span class="eyebrow">Notifications</span><h1>Notification</h1><div class="toggle-row" style="margin-top:24px"><span>In-App Notifications</span><span class="toggle"></span></div><div class="notification-list" style="margin-top:22px"><article class="notification-item"><span class="notification-dot"></span><div><h3>Booking request received</h3><p>Your request MLC-2052 has been received. The concierge team is reviewing vehicle availability.</p></div><span class="notification-time" style="text-align: right; line-height: 1.4;">Jun 02, 2026<br>4:15 PM</span></article><article class="notification-item"><span class="notification-dot"></span><div><h3>Pre-trip reminder scheduled</h3><p>Reminder is scheduled 24 hours before pickup for your May 22, 2026 itinerary.</p></div><span class="notification-time">Today</span></article><article class="notification-item"><span class="notification-dot"></span><div><h3>Chauffeur assignment pending</h3><p>Chauffeur details will be shared after the operations team confirms the selected vehicle.</p></div><span class="notification-time">Pending</span></article><article class="notification-item"><span class="notification-dot"></span><div><h3>Route preference saved</h3><p>Your preferred pickup and destination notes are attached to the active booking request.</p></div><span class="notification-time">Saved</span></article></div></div></main>
+      <main class="section"><div class="container"><span class="eyebrow">Notifications</span><h1>Notification</h1><div class="notification-list" style="margin-top:22px"><article class="notification-item"><span class="notification-dot"></span><div><h3>Booking request received</h3><p>Your request MLC-2052 has been received. The concierge team is reviewing vehicle availability.</p></div><span class="notification-time" style="text-align: right; line-height: 1.4;">Jun 02, 2026<br>4:15 PM</span></article><article class="notification-item"><span class="notification-dot"></span><div><h3>Pre-trip reminder scheduled</h3><p>Reminder is scheduled 24 hours before pickup for your May 22, 2026 itinerary.</p></div><span class="notification-time">Today</span></article><article class="notification-item"><span class="notification-dot"></span><div><h3>Chauffeur assignment pending</h3><p>Chauffeur details will be shared after the operations team confirms the selected vehicle.</p></div><span class="notification-time">Pending</span></article><article class="notification-item"><span class="notification-dot"></span><div><h3>Route preference saved</h3><p>Your preferred pickup and destination notes are attached to the active booking request.</p></div><span class="notification-time">Saved</span></article></div></div></main>
     </section>
 
 <section id="communication-preferences" class="screen">
@@ -2348,6 +2426,10 @@
                       <span style="font-size: 0.85rem; color: #b3b3b3;">SMS</span>
                       <span class="toggle" aria-pressed="false"></span>
                     </div>
+                    <div class="toggle-row" style="padding: 0; border: 0; background: transparent; margin-top: 12px; display: flex; align-items: center; justify-content: space-between;">
+                      <span style="font-size: 0.85rem; color: #b3b3b3;">In App</span>
+                      <span class="toggle" aria-pressed="true"></span>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -2371,6 +2453,13 @@
               <div class="toggle-row" style="margin-bottom: 8px; padding: 0; border: 0; background: transparent;"><span>SMS Notification</span><span class="toggle"></span></div>
               <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 16px;">Get real-time updates when your chauffeur arrives.</p>
               <div class="field"><span>Phone Number</span><div class="phone-split"><span class="phone-prefix">+1</span><input value="212 555 0188" aria-label="Phone number"></div></div>
+            </div>
+
+            <div style="height: 1px; background: rgba(201,164,93,0.2); margin: 32px 0;"></div>
+
+            <div style="margin-bottom: 32px;">
+              <div class="toggle-row" style="margin-bottom: 8px; padding: 0; border: 0; background: transparent;"><span>In-App Notifications</span><span class="toggle"></span></div>
+              <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 0;">Show booking updates, chauffeur alerts, and route reminders inside your account.</p>
             </div>
 
             <div style="display: flex; justify-content: flex-end;">
@@ -2414,6 +2503,10 @@
                       <span style="font-size: 0.85rem; color: #b3b3b3;">SMS</span>
                       <span class="toggle" aria-pressed="false"></span>
                     </div>
+                    <div class="toggle-row" style="padding: 0; border: 0; background: transparent; margin-top: 12px; display: flex; align-items: center; justify-content: space-between;">
+                      <span style="font-size: 0.85rem; color: #b3b3b3;">In App</span>
+                      <span class="toggle" aria-pressed="true"></span>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -2455,6 +2548,10 @@
                     <div class="toggle-row" style="padding: 0; border: 0; background: transparent; display: flex; align-items: center; justify-content: space-between;">
                       <span style="font-size: 0.85rem; color: #b3b3b3;">SMS</span>
                       <span class="toggle" aria-pressed="false"></span>
+                    </div>
+                    <div class="toggle-row" style="padding: 0; border: 0; background: transparent; margin-top: 12px; display: flex; align-items: center; justify-content: space-between;">
+                      <span style="font-size: 0.85rem; color: #b3b3b3;">In App</span>
+                      <span class="toggle" aria-pressed="true"></span>
                     </div>
                   </div>
                 </div>
@@ -2577,6 +2674,10 @@
                       <span style="font-size: 0.85rem; color: #b3b3b3;">SMS</span>
                       <span class="toggle" aria-pressed="false"></span>
                     </div>
+                    <div class="toggle-row" style="padding: 0; border: 0; background: transparent; margin-top: 12px; display: flex; align-items: center; justify-content: space-between;">
+                      <span style="font-size: 0.85rem; color: #b3b3b3;">In App</span>
+                      <span class="toggle" aria-pressed="true"></span>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -2664,6 +2765,10 @@
                     <div class="toggle-row" style="padding: 0; border: 0; background: transparent; display: flex; align-items: center; justify-content: space-between;">
                       <span style="font-size: 0.85rem; color: #b3b3b3;">SMS</span>
                       <span class="toggle" aria-pressed="false"></span>
+                    </div>
+                    <div class="toggle-row" style="padding: 0; border: 0; background: transparent; margin-top: 12px; display: flex; align-items: center; justify-content: space-between;">
+                      <span style="font-size: 0.85rem; color: #b3b3b3;">In App</span>
+                      <span class="toggle" aria-pressed="true"></span>
                     </div>
                   </div>
                 </div>
@@ -3659,7 +3764,7 @@
         };
         const getValue = (selector) => document.querySelector(selector)?.value?.trim() || "";
         const bookingForm = document.querySelector("#booking .form-grid");
-        const summaryRows = [...document.querySelectorAll("#summary .summary-row")];
+        const summaryRows = [...document.querySelectorAll("#summary .premium-summary-row, #summary .summary-row")];
         const collectQuickBooking = () => ({
           pickup: getValue("#quick-pickup"),
           drop: getValue("#quick-drop"),
@@ -3718,14 +3823,29 @@
           if (select && value) select.value = value;
         };
 
+        const summaryFallbacks = {
+          "Requested Vehicle": "Selected vehicle",
+          "Pickup": "Not selected",
+          "Stop 1": "No stops added",
+          "Destination": "Not selected",
+          "From Date": "Select date",
+          "To Date": "Select date",
+          "From Time": "Select time",
+          "To Time": "Select time",
+          "Duration": "Select date and time",
+          "Special Requests": "Not added"
+        };
+
         const setRow = (label, value) => {
           const row = summaryRows.find((item) => item.querySelector("span")?.textContent.trim() === label);
-          if (row && value) row.querySelector("strong").textContent = value;
+          if (row) row.querySelector("strong").textContent = value || summaryFallbacks[label] || "Not provided";
         };
 
         const normalizeStops = (stops) => stops.map((stop) => stop.trim()).filter(Boolean);
 
         const collectVehicleRequest = () => ({
+          vehicle: document.querySelector("#vehicle .vehicle-summary-card h2")?.textContent?.trim() || "Selected vehicle",
+          pricing: document.querySelector("#vehicle .pricing-mini-row strong.price")?.textContent?.trim() || "Hourly pricing will be confirmed",
           pickup: getValue("#vehicle-pickup"),
           destination: getValue("#vehicle-destination"),
           date: getValue("#vehicle-date-from"),
@@ -3735,14 +3855,21 @@
           timeFrom: getValue("#vehicle-time-from"),
           timeTo: getValue("#vehicle-time-to"),
           duration: getValue("#vehicle-duration"),
-          stops: normalizeStops([...document.querySelectorAll("#vehicle .vehicle-stop-input")].map((input) => input.value))
+          stops: normalizeStops([...document.querySelectorAll("#vehicle .vehicle-stop-input")].map((input) => input.value)),
+          specialRequests: document.querySelector("#vehicle textarea")?.value?.trim() || ""
         });
 
         const collectBookingRequest = () => ({
+          vehicle: readFlow("limoVehicleRequest")?.vehicle || document.querySelector("#vehicle .vehicle-summary-card h2")?.textContent?.trim() || "Selected vehicle",
+          pricing: readFlow("limoVehicleRequest")?.pricing || document.querySelector("#vehicle .pricing-mini-row strong.price")?.textContent?.trim() || "Hourly pricing will be confirmed",
           pickup: getValue("#booking input.location-input"),
           destination: document.querySelectorAll("#booking input.location-input")[1]?.value?.trim() || "",
           date: document.querySelector('#booking input[type="date"]')?.value || "",
+          dateFrom: document.querySelector('#booking input[type="date"]')?.value || "",
+          dateTo: document.querySelector('#booking input[type="date"]')?.value || "",
           time: document.querySelector('#booking input[type="time"]')?.value || "",
+          timeFrom: document.querySelector('#booking input[type="time"]')?.value || "",
+          timeTo: "",
           duration: document.querySelector("#booking select")?.value || "",
           stops: normalizeStops([...document.querySelectorAll("#booking .booking-stop-input")].map((input) => input.value)),
           specialRequests: document.querySelector("#booking textarea")?.value?.trim() || ""
@@ -3790,14 +3917,16 @@
 
         const populateSummary = (data) => {
           const stops = normalizeStops(data.stops);
+          setRow("Requested Vehicle", data.vehicle);
           setRow("Pickup", data.pickup);
+          setRow("Stop 1", stops.length ? stops.map((stop, index) => `Stop ${index + 1}: ${stop}`).join("; ") : "");
           setRow("Destination", data.destination);
-          setRow("Stops", stops.map((stop, index) => `Stop ${index + 1}: ${stop}`).join("; "));
+          setRow("From Date", data.dateFrom || data.date);
+          setRow("To Date", data.dateTo);
+          setRow("From Time", data.timeFrom || data.time);
+          setRow("To Time", data.timeTo);
+          setRow("Duration", data.duration);
           setRow("Special Requests", data.specialRequests);
-          const schedule = data.dateTo && data.timeTo
-            ? `${data.dateFrom || data.date || "Selected date"} ${data.timeFrom || data.time || "selected time"} to ${data.dateTo} ${data.timeTo}`
-            : `${data.date || "Selected date"} at ${data.time || "selected time"}`;
-          setRow("Date & Time", `${schedule} (${data.duration || "selected duration"})`);
         };
 
         const hydrateSummary = () => {
@@ -3809,7 +3938,15 @@
         document.querySelector("#continue-booking-btn")?.addEventListener("click", () => {
           const data = collectVehicleRequest();
           saveFlow("limoVehicleRequest", data);
+          saveFlow("limoBookingRequest", data);
           populateBookingFromVehicle(data);
+        });
+
+        document.querySelector('#vehicle a[href="#summary"]')?.addEventListener("click", () => {
+          const data = collectVehicleRequest();
+          saveFlow("limoVehicleRequest", data);
+          saveFlow("limoBookingRequest", data);
+          populateSummary(data);
         });
 
         document.querySelector('#booking a[href="#summary"]')?.addEventListener("click", () => {
@@ -3819,7 +3956,7 @@
         });
 
         const handleRoute = () => {
-          const hash = location.hash || "#login";
+          const hash = location.hash || "#home";
           document.querySelectorAll('.screen').forEach(screen => {
             screen.classList.remove('active-screen');
           });
@@ -3827,7 +3964,7 @@
           if (target) {
             target.classList.add('active-screen');
           } else {
-            document.getElementById('login')?.classList.add('active-screen');
+            document.getElementById('home')?.classList.add('active-screen');
           }
           window.scrollTo(0,0);
 
@@ -3892,7 +4029,12 @@
         });
 
         document.querySelectorAll(".auth-complete-link").forEach((link) => {
-          link.addEventListener("click", () => saveFlow("limoSession", { signedIn: true, at: new Date().toISOString() }));
+          link.addEventListener("click", () => {
+            const completesSignIn = link.getAttribute("href") === "#home" || !!link.closest("#otp");
+            if (!completesSignIn) return;
+            sessionStorage.setItem("limoSession", JSON.stringify({ signedIn: true, at: new Date().toISOString() }));
+            localStorage.removeItem("limoSession");
+          });
         });
 
         
@@ -4065,7 +4207,10 @@
               document.getElementById(`${provider}-step-3`).classList.add('active');
               
               // Register login in our prototype session
-              try { localStorage.setItem("limoSession", JSON.stringify({ signedIn: true, at: new Date().toISOString() })); } catch (err) {}
+              try {
+                sessionStorage.setItem("limoSession", JSON.stringify({ signedIn: true, at: new Date().toISOString() }));
+                localStorage.removeItem("limoSession");
+              } catch (err) {}
             }, 1800);
           });
         });
@@ -4149,7 +4294,10 @@
             setTimeout(() => {
               document.getElementById(`${provider}-step-2`).classList.remove('active');
               document.getElementById(`${provider}-step-3`).classList.add('active');
-              try { localStorage.setItem("limoSession", JSON.stringify({ signedIn: true, at: new Date().toISOString() })); } catch (err) {}
+              try {
+                sessionStorage.setItem("limoSession", JSON.stringify({ signedIn: true, at: new Date().toISOString() }));
+                localStorage.removeItem("limoSession");
+              } catch (err) {}
             }, 1800);
           });
         });
@@ -4161,6 +4309,10 @@
 // WORKABLE PROTOTYPE LOGIC
 // ==========================================
 document.addEventListener('DOMContentLoaded', () => {
+    if (!window.location.hash) {
+        sessionStorage.removeItem('limoSession');
+        localStorage.removeItem('limoSession');
+    }
     
     // 1. Initialize State
     let state = {
@@ -4176,8 +4328,13 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    const session = JSON.parse(localStorage.getItem('limoSession') || '{}');
-    const isSignedIn = !!session.signedIn;
+    function isSignedIn() {
+        try {
+            return !!JSON.parse(sessionStorage.getItem('limoSession') || '{}').signedIn;
+        } catch (err) {
+            return false;
+        }
+    }
 
     // 2. Sync UI across all screens
     function syncUI() {
@@ -4189,10 +4346,10 @@ document.addEventListener('DOMContentLoaded', () => {
             // If it's a dedicated auth screen nav, skip modifying it
             if (authActions.classList.contains('auth-nav-actions')) return;
 
-            if (isSignedIn) {
+            if (isSignedIn()) {
                 // Remove login button if exists
                 const loginBtn = authActions.querySelector('a[href="#login"]');
-                if (loginBtn && loginBtn.textContent === 'Login') {
+                if (loginBtn) {
                     loginBtn.remove();
                 }
                 
@@ -4219,11 +4376,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 const notifBtn = authActions.querySelector('.notification-icon-btn');
                 if (notifBtn) notifBtn.style.display = 'none';
                 
-                if (!authActions.querySelector('a[href="#login"]')) {
+                const existingLogin = authActions.querySelector('a[href="#login"]');
+                if (existingLogin) {
+                    existingLogin.textContent = 'Sign In';
+                } else {
                     const loginA = document.createElement('a');
                     loginA.className = 'btn ghost';
                     loginA.href = '#login';
-                    loginA.textContent = 'Login';
+                    loginA.textContent = 'Sign In';
                     authActions.appendChild(loginA);
                 }
             }
@@ -4327,14 +4487,16 @@ document.addEventListener('DOMContentLoaded', () => {
     const openDeleteProfileModal = () => deleteProfileModal?.classList.remove('is-hidden');
     const closeDeleteProfileModal = () => deleteProfileModal?.classList.add('is-hidden');
     const completeLogout = () => {
+        sessionStorage.removeItem('limoSession');
         localStorage.removeItem('limoSession');
-        window.location.hash = '#login';
+        window.location.hash = '#home';
         window.location.reload(); // Hard reload to reset state
     };
     const completeProfileDelete = () => {
         localStorage.removeItem('limoProfile');
+        sessionStorage.removeItem('limoSession');
         localStorage.removeItem('limoSession');
-        window.location.hash = '#login';
+        window.location.hash = '#home';
         window.location.reload(); // Hard reload to reset state
     };
 
@@ -4364,7 +4526,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (bookBtn) {
             bookBtn.onclick = (e) => {
                 e.preventDefault();
-                if (!isSignedIn) {
+                if (!isSignedIn()) {
                     window.location.hash = '#login';
                     return;
                 }
@@ -4736,7 +4898,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Auth Flow Interception (when user logs in via #google-login or OTP verification)
     // We modify existing timeouts to also set isSignedIn = true and syncUI()
     window.addEventListener('hashchange', () => {
-        if (window.location.hash === '#home' && JSON.parse(localStorage.getItem('limoSession') || '{}').signedIn) {
+        if (window.location.hash === '#home' && JSON.parse(sessionStorage.getItem('limoSession') || '{}').signedIn) {
             syncUI();
         }
     });
