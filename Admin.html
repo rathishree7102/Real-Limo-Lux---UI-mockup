@@ -392,6 +392,28 @@
         position: relative;
         flex: 0 0 auto;
       }
+      .admin-message-icon {
+        width: 46px;
+        height: 46px;
+        display: grid;
+        place-items: center;
+        flex: 0 0 auto;
+        border: 1px solid rgba(240,212,138,.44);
+        border-radius: var(--radius);
+        background: rgba(255,255,255,.025);
+        color: #fff;
+      }
+      .admin-message-icon:hover {
+        color: var(--gold-bright);
+        background: rgba(201,164,93,.12);
+      }
+      .admin-message-icon svg {
+        width: 22px;
+        height: 22px;
+        stroke: currentColor;
+        stroke-width: 2;
+        fill: none;
+      }
       .admin-profile summary {
         width: 46px;
         height: 46px;
@@ -439,6 +461,82 @@
         font-weight: 800;
       }
       .profile-menu a:hover { background: rgba(201,164,93,.12); }
+      .message-preview {
+        max-width: 360px;
+        color: var(--muted);
+        line-height: 1.45;
+      }
+      .message-detail-modal {
+        position: fixed;
+        inset: 0;
+        z-index: 80;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        padding: 24px;
+        background: rgba(0,0,0,.72);
+      }
+      .message-detail-modal.open { display: flex; }
+      .message-detail-card {
+        width: min(760px, 100%);
+        max-height: min(720px, 86vh);
+        overflow: auto;
+        border: 1px solid var(--line);
+        border-radius: var(--radius-lg);
+        background: linear-gradient(145deg, rgba(27,30,38,.98), rgba(11,13,17,.98));
+        box-shadow: var(--shadow);
+        padding: 28px;
+      }
+      .message-detail-head {
+        display: flex;
+        align-items: start;
+        justify-content: space-between;
+        gap: 16px;
+        margin-bottom: 22px;
+      }
+      .message-detail-head h2 {
+        margin: 6px 0 0;
+        font-size: clamp(1.8rem, 3vw, 2.7rem);
+      }
+      .message-detail-close {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        border: 1px solid rgba(240,212,138,.38);
+        background: rgba(255,255,255,.04);
+        color: var(--ivory);
+        cursor: pointer;
+        font-size: 1.25rem;
+      }
+      .message-detail-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+        margin-bottom: 18px;
+      }
+      .message-detail-item {
+        border: 1px solid rgba(239,228,202,.12);
+        border-radius: var(--radius);
+        padding: 14px;
+        background: rgba(255,255,255,.025);
+      }
+      .message-detail-item span {
+        display: block;
+        color: var(--muted);
+        font-size: .82rem;
+        margin-bottom: 6px;
+      }
+      .message-detail-item strong { color: var(--ivory); }
+      .message-full-text {
+        padding: 18px;
+        border: 1px solid rgba(240,212,138,.26);
+        border-radius: var(--radius);
+        background: rgba(0,0,0,.32);
+        color: var(--ivory);
+        font-size: 1rem;
+        line-height: 1.7;
+        white-space: pre-line;
+      }
       .dashboard-panels {
         align-items: stretch;
       }
@@ -637,8 +735,9 @@
         .topbar-inner, .admin-footer .footer-inner, .section-head { align-items: flex-start; flex-direction: column; }
         .section-head .quick-actions { width: 100%; flex-wrap: wrap; }
         .section-head .quick-actions .btn { flex: 1 1 100%; }
-        .admin-profile { align-self: flex-end; }
+        .admin-profile, .admin-message-icon { align-self: flex-end; }
         .topbar-search { width: 100%; }
+        .message-detail-grid { grid-template-columns: 1fr; }
       }
       /* Custom Select */
       .cs-wrap { position: relative; width: 100%; font-size: .92rem; }
@@ -775,6 +874,7 @@
         <a href="#admin-fleet-management">Fleet Management</a>
         <!-- Notifications removed -->
         <a href="#admin-customers">Customers</a>
+        <a href="#admin-messages">Messages</a>
         <a href="#admin-settings">Settings</a>
       </nav>
     </aside>
@@ -782,6 +882,11 @@
     <header class="admin-topbar">
       <div class="topbar-inner">
         <label class="topbar-search" aria-label="Global search"><input placeholder="Search booking ID, customer, phone, email"></label>
+        <a class="admin-message-icon" href="#admin-messages" aria-label="Messages">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M21 15a4 4 0 0 1-4 4H8l-5 3V7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4z"></path>
+          </svg>
+        </a>
         <details class="admin-profile">
           <summary aria-label="Admin profile">
             <span class="profile-initials">OA</span>
@@ -1454,66 +1559,67 @@
                 
                 <form>
                   <div style="display:grid; grid-template-columns:1fr 1fr; gap:24px; margin-bottom:24px;">
-                    <!-- Photo Upload -->
-                    <div style="grid-column: span 2;">
-                      <label style="display:block; margin-bottom:8px; font-size:0.85rem; color:#fff;">Photo</label>
-                      <div style="display:flex; align-items:center; gap:16px;">
-                        <img src="https://ui-avatars.com/api/?name=New+Driver&background=random" style="width:60px; height:60px; border-radius:50%; object-fit:cover; border:2px solid rgba(255,255,255,0.1);">
-                        <div style="position:relative;">
-                          <input type="file" accept="image/*" style="opacity:0; position:absolute; inset:0; width:100%; height:100%; cursor:pointer;">
-                          <button type="button" class="btn outline" style="padding:8px 16px; border-color:rgba(255,255,255,0.2); color:#fff; font-size:0.85rem;">Choose File</button>
-                        </div>
-                        <span style="color:rgba(255,255,255,0.4); font-size:0.75rem;">JPG, PNG (Max 5MB)</span>
-                      </div>
-                    </div>
-
                     <div>
-                      <label style="display:block; margin-bottom:8px; font-size:0.85rem; color:#fff;">First Name</label>
+                      <label style="display:block; margin-bottom:8px; font-size:0.85rem; color:#fff;">Driver First Name</label>
                       <input type="text" placeholder="John" style="width:100%; padding:12px; background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.1); color:#fff; border-radius:6px; font-size:0.95rem;">
                     </div>
                     <div>
                       <label style="display:block; margin-bottom:8px; font-size:0.85rem; color:#fff;">Last Name</label>
                       <input type="text" placeholder="Doe" style="width:100%; padding:12px; background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.1); color:#fff; border-radius:6px; font-size:0.95rem;">
                     </div>
+                    <div style="grid-column: span 2;">
+                      <label style="display:block; margin-bottom:8px; font-size:0.85rem; color:#fff;">Driver Photo</label>
+                      <div style="display:flex; align-items:center; gap:16px;">
+                        <img src="https://ui-avatars.com/api/?name=New+Driver&background=random" style="width:60px; height:60px; border-radius:50%; object-fit:cover; border:2px solid rgba(255,255,255,0.1);">
+                        <div style="position:relative;">
+                          <input type="file" accept="image/*" style="opacity:0; position:absolute; inset:0; width:100%; height:100%; cursor:pointer;">
+                          <button type="button" class="btn outline" style="padding:8px 16px; border-color:rgba(255,255,255,0.2); color:#fff; font-size:0.85rem;">Choose File</button>
+                        </div>
+                        <span style="color:rgba(255,255,255,0.4); font-size:0.75rem;">JPG or PNG (max 5MB)</span>
+                      </div>
+                    </div>
+                    <div>
+                      <label style="display:block; margin-bottom:8px; font-size:0.85rem; color:#fff;">Phone Number</label>
+                      <input type="tel" placeholder="+1 (555) 000-0000" style="width:100%; padding:12px; background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.1); color:#fff; border-radius:6px; font-size:0.95rem;">
+                    </div>
                     <div>
                       <label style="display:block; margin-bottom:8px; font-size:0.85rem; color:#fff;">Email Address</label>
                       <input type="email" placeholder="john.doe@example.com" style="width:100%; padding:12px; background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.1); color:#fff; border-radius:6px; font-size:0.95rem;">
                     </div>
                     <div>
-                      <label style="display:block; margin-bottom:8px; font-size:0.85rem; color:#fff;">Phone Number</label>
-                      <input type="text" placeholder="+1 (555) 000-0000" style="width:100%; padding:12px; background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.1); color:#fff; border-radius:6px; font-size:0.95rem;">
-                    </div>
-                    <div>
-                      <label style="display:block; margin-bottom:8px; font-size:0.85rem; color:#fff;">Experience</label>
-                      <select style="width:100%; padding:12px; background:transparent; border:1px solid rgba(255,255,255,0.1); color:#fff; border-radius:6px; font-size:0.95rem; cursor:pointer;">
-                        <option>0-2 Years</option>
-                        <option>2-5 Years</option>
-                        <option>5-10 Years</option>
-                        <option>10+ Years</option>
-                      </select>
-                    </div>
-                    <div>
-                      <label style="display:block; margin-bottom:8px; font-size:0.85rem; color:#fff;">License Number</label>
-                      <input type="text" placeholder="NY-DL-000000" style="width:100%; padding:12px; background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.1); color:#fff; border-radius:6px; font-size:0.95rem;">
-                    </div>
-                    <div>
-                      <label style="display:block; margin-bottom:8px; font-size:0.85rem; color:#fff;">License Issue Date</label>
-                      <input type="date" style="width:100%; padding:12px; background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.1); color:#fff; border-radius:6px; font-size:0.95rem; cursor:pointer;">
+                      <label style="display:block; margin-bottom:8px; font-size:0.85rem; color:#fff;">License Number*</label>
+                      <input type="text" placeholder="NY-DL-000000" required style="width:100%; padding:12px; background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.1); color:#fff; border-radius:6px; font-size:0.95rem;">
                     </div>
                     <div>
                       <label style="display:block; margin-bottom:8px; font-size:0.85rem; color:#fff;">License Expiry Date</label>
                       <input type="date" style="width:100%; padding:12px; background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.1); color:#fff; border-radius:6px; font-size:0.95rem; cursor:pointer;">
                     </div>
+                    <div>
+                      <label style="display:block; margin-bottom:8px; font-size:0.85rem; color:#fff;">Age</label>
+                      <input type="number" min="18" placeholder="32" style="width:100%; padding:12px; background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.1); color:#fff; border-radius:6px; font-size:0.95rem;">
+                    </div>
+                    <div>
+                      <label style="display:block; margin-bottom:8px; font-size:0.85rem; color:#fff;">SSN Number*</label>
+                      <input type="text" placeholder="XXX-XX-XXXX" required style="width:100%; padding:12px; background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.1); color:#fff; border-radius:6px; font-size:0.95rem;">
+                    </div>
+                    <div style="grid-column: span 2;">
+                      <label style="display:block; margin-bottom:8px; font-size:0.85rem; color:#fff;">Insurance Number &amp; Details</label>
+                      <textarea placeholder="Policy number, provider, coverage details, and expiry date" style="width:100%; min-height:96px; padding:12px; background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.1); color:#fff; border-radius:6px; font-size:0.95rem;"></textarea>
+                    </div>
+                  </div>
 
+                  <div style="margin-bottom:24px;">
+                    <label style="display:block; margin-bottom:8px; font-size:0.85rem; color:#fff;">Documents</label>
+                    <div style="border:1px dashed rgba(255,255,255,0.2); border-radius:8px; padding:28px; text-align:center; background:rgba(255,255,255,0.01); cursor:pointer;">
+                      <div style="color:#e8c96a; font-weight:600; margin-bottom:4px;">Upload professional driving license, SSN, and health insurance documents</div>
+                      <div style="color:rgba(255,255,255,0.4); font-size:0.85rem;">Health insurance is optional. PDF, JPG, or PNG files accepted.</div>
+                      <input type="file" multiple accept=".pdf,image/*" style="margin-top:16px; color:#fff;">
+                    </div>
                   </div>
 
                   <div style="margin-bottom:32px;">
-                    <label style="display:block; margin-bottom:8px; font-size:0.85rem; color:#fff;">Upload Documents (License, Medical, Background Check)</label>
-                    <div style="border:1px dashed rgba(255,255,255,0.2); border-radius:8px; padding:32px; text-align:center; background:rgba(255,255,255,0.01); cursor:pointer;">
-                      <div style="font-size:2rem; margin-bottom:12px;">📄</div>
-                      <div style="color:#e8c96a; font-weight:600; margin-bottom:4px;">Click to upload or drag and drop</div>
-                      <div style="color:rgba(255,255,255,0.4); font-size:0.85rem;">SVG, PNG, JPG or PDF (max. 10MB)</div>
-                    </div>
+                    <label style="display:block; margin-bottom:8px; font-size:0.85rem; color:#fff;">Any Special Comments</label>
+                    <textarea placeholder="Add notes about availability, background checks, training, or admin comments" style="width:100%; min-height:110px; padding:12px; background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.1); color:#fff; border-radius:6px; font-size:0.95rem;"></textarea>
                   </div>
 
                   <div style="display:flex; justify-content:flex-end; gap:16px;">
@@ -2115,14 +2221,6 @@ function switchFleetTab(tabId, btn) {
           
           <div class="card" style="padding:24px;">
             <div style="display:flex; align-items:flex-end; gap:24px; margin-bottom:24px;">
-              <div style="width: 240px;">
-                <label style="display:block; color:rgba(255,255,255,0.8); font-size:0.85rem; margin-bottom:8px; font-weight:600;">VIP Status</label>
-                <select id="customer-filter-vip" style="width:100%; background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.1); border-radius:6px; padding:10px 12px; color:#fff; font-size:0.9rem; cursor:pointer;" onchange="filterCustomers()">
-                  <option value="">All</option>
-                  <option value="VIP">VIP</option>
-                  <option value="Standard">Standard</option>
-                </select>
-              </div>
               <div style="width: 380px;">
                 <label style="display:block; color:rgba(255,255,255,0.8); font-size:0.85rem; margin-bottom:8px; font-weight:600;">Search Customers</label>
                 <div style="position:relative;">
@@ -2141,180 +2239,89 @@ function switchFleetTab(tabId, btn) {
                     <th style="padding:16px 20px; color:#e8c96a; font-weight:600; font-size:0.8rem; letter-spacing:0.5px; text-transform:uppercase;">PHONE NUMBER</th>
                     <th style="padding:16px 20px; color:#e8c96a; font-weight:600; font-size:0.8rem; letter-spacing:0.5px; text-transform:uppercase;">EMAIL</th>
                     <th style="padding:16px 20px; color:#e8c96a; font-weight:600; font-size:0.8rem; letter-spacing:0.5px; text-transform:uppercase;">TOTAL TRIPS</th>
-                    <th style="padding:16px 20px; color:#e8c96a; font-weight:600; font-size:0.8rem; letter-spacing:0.5px; text-transform:uppercase;">LAST RIDE</th>
-                    <th style="padding:16px 20px; color:#e8c96a; font-weight:600; font-size:0.8rem; letter-spacing:0.5px; text-transform:uppercase; text-align:center;">VIP STATUS</th>
+                    <th style="padding:16px 20px; color:#e8c96a; font-weight:600; font-size:0.8rem; letter-spacing:0.5px; text-transform:uppercase;">LAST RIDE</th>
                   </tr>
                 </thead>
                 <tbody id="customer-table-body">
-                  <tr class="customer-row" data-id="CUS-1001" data-name="Aria Morgan" data-phone="+1 212 555 0188" data-email="aria.morgan@email.com" data-vip="VIP" style="border-bottom: 1px solid rgba(255,255,255,0.05);">
+                  <tr class="customer-row" data-id="CUS-1001" data-name="Aria Morgan" data-phone="+1 212 555 0188" data-email="aria.morgan@email.com" style="border-bottom: 1px solid rgba(255,255,255,0.05);">
                     <td style="padding:16px 20px; color:rgba(255,255,255,0.8);">CUS-1001</td>
                     <td style="padding:16px 20px; color:#fff;">Aria Morgan</td>
                     <td style="padding:16px 20px; color:rgba(255,255,255,0.8);">+1 212 555 0188</td>
                     <td style="padding:16px 20px; color:rgba(255,255,255,0.8);">aria.morgan@email.com</td>
                     <td style="padding:16px 20px; color:rgba(255,255,255,0.8);">12</td>
-                    <td style="padding:16px 20px; color:rgba(255,255,255,0.8);">May 22, 2026</td>
-                    <td style="padding:16px 20px; text-align:center;"><div class="vip-dropdown-container" style="position:relative; display:inline-block; text-align:left;">
-  <button onclick="toggleVipMenu(event, this)" style="border:none; background:rgba(81, 207, 102, 0.1); color:#51cf66; border-radius:12px; padding:4px 10px 4px 14px; font-weight:600; font-size:0.8rem; cursor:pointer; display:flex; align-items:center; gap:6px;">
-    <span class="vip-text">VIP</span> <span style="font-size:0.6rem; opacity:0.7;">▼</span>
-  </button>
-  <div class="vip-menu" style="display:none; position:absolute; top:100%; right:0; background:#1a1d24; border:1px solid rgba(255,255,255,0.1); border-radius:6px; padding:4px; z-index:100; margin-top:4px; min-width:100px; box-shadow:0 4px 12px rgba(0,0,0,0.5);">
-     <div style="padding:6px 12px; cursor:pointer; color:#51cf66; font-size:0.8rem; border-radius:4px;" onmouseover="this.style.background='rgba(255,255,255,0.05)'" onmouseout="this.style.background='transparent'" onclick="setRowVip(event, this, 'VIP')">VIP</div>
-     <div style="padding:6px 12px; cursor:pointer; color:#fff; font-size:0.8rem; border-radius:4px;" onmouseover="this.style.background='rgba(255,255,255,0.05)'" onmouseout="this.style.background='transparent'" onclick="setRowVip(event, this, 'Standard')">Standard</div>
-  </div>
-</div></td>
+                    <td style="padding:16px 20px; color:rgba(255,255,255,0.8);">May 22, 2026</td>
                   </tr>
-                  <tr class="customer-row" data-id="CUS-1002" data-name="Avery Cole" data-phone="+1 212 555 0170" data-email="avery.cole@email.com" data-vip="Standard" style="border-bottom: 1px solid rgba(255,255,255,0.05);">
+                  <tr class="customer-row" data-id="CUS-1002" data-name="Avery Cole" data-phone="+1 212 555 0170" data-email="avery.cole@email.com" style="border-bottom: 1px solid rgba(255,255,255,0.05);">
                     <td style="padding:16px 20px; color:rgba(255,255,255,0.8);">CUS-1002</td>
                     <td style="padding:16px 20px; color:#fff;">Avery Cole</td>
                     <td style="padding:16px 20px; color:rgba(255,255,255,0.8);">+1 212 555 0170</td>
                     <td style="padding:16px 20px; color:rgba(255,255,255,0.8);">avery.cole@email.com</td>
                     <td style="padding:16px 20px; color:rgba(255,255,255,0.8);">3</td>
-                    <td style="padding:16px 20px; color:rgba(255,255,255,0.8);">May 22, 2026</td>
-                    <td style="padding:16px 20px; text-align:center;"><div class="vip-dropdown-container" style="position:relative; display:inline-block; text-align:left;">
-  <button onclick="toggleVipMenu(event, this)" style="border:none; background:rgba(255, 255, 255, 0.05); color:#fff; border-radius:12px; padding:4px 10px 4px 14px; font-weight:600; font-size:0.8rem; cursor:pointer; display:flex; align-items:center; gap:6px;">
-    <span class="vip-text">Standard</span> <span style="font-size:0.6rem; opacity:0.7;">▼</span>
-  </button>
-  <div class="vip-menu" style="display:none; position:absolute; top:100%; right:0; background:#1a1d24; border:1px solid rgba(255,255,255,0.1); border-radius:6px; padding:4px; z-index:100; margin-top:4px; min-width:100px; box-shadow:0 4px 12px rgba(0,0,0,0.5);">
-     <div style="padding:6px 12px; cursor:pointer; color:#51cf66; font-size:0.8rem; border-radius:4px;" onmouseover="this.style.background='rgba(255,255,255,0.05)'" onmouseout="this.style.background='transparent'" onclick="setRowVip(event, this, 'VIP')">VIP</div>
-     <div style="padding:6px 12px; cursor:pointer; color:#fff; font-size:0.8rem; border-radius:4px;" onmouseover="this.style.background='rgba(255,255,255,0.05)'" onmouseout="this.style.background='transparent'" onclick="setRowVip(event, this, 'Standard')">Standard</div>
-  </div>
-</div></td>
+                    <td style="padding:16px 20px; color:rgba(255,255,255,0.8);">May 22, 2026</td>
                   </tr>
-                  <tr class="customer-row" data-id="CUS-1003" data-name="Elena Park" data-phone="+1 212 555 0166" data-email="elena.park@email.com" data-vip="VIP" style="border-bottom: 1px solid rgba(255,255,255,0.05);">
+                  <tr class="customer-row" data-id="CUS-1003" data-name="Elena Park" data-phone="+1 212 555 0166" data-email="elena.park@email.com" style="border-bottom: 1px solid rgba(255,255,255,0.05);">
                     <td style="padding:16px 20px; color:rgba(255,255,255,0.8);">CUS-1003</td>
                     <td style="padding:16px 20px; color:#fff;">Elena Park</td>
                     <td style="padding:16px 20px; color:rgba(255,255,255,0.8);">+1 212 555 0166</td>
                     <td style="padding:16px 20px; color:rgba(255,255,255,0.8);">elena.park@email.com</td>
                     <td style="padding:16px 20px; color:rgba(255,255,255,0.8);">7</td>
-                    <td style="padding:16px 20px; color:rgba(255,255,255,0.8);">May 22, 2026</td>
-                    <td style="padding:16px 20px; text-align:center;"><div class="vip-dropdown-container" style="position:relative; display:inline-block; text-align:left;">
-  <button onclick="toggleVipMenu(event, this)" style="border:none; background:rgba(81, 207, 102, 0.1); color:#51cf66; border-radius:12px; padding:4px 10px 4px 14px; font-weight:600; font-size:0.8rem; cursor:pointer; display:flex; align-items:center; gap:6px;">
-    <span class="vip-text">VIP</span> <span style="font-size:0.6rem; opacity:0.7;">▼</span>
-  </button>
-  <div class="vip-menu" style="display:none; position:absolute; top:100%; right:0; background:#1a1d24; border:1px solid rgba(255,255,255,0.1); border-radius:6px; padding:4px; z-index:100; margin-top:4px; min-width:100px; box-shadow:0 4px 12px rgba(0,0,0,0.5);">
-     <div style="padding:6px 12px; cursor:pointer; color:#51cf66; font-size:0.8rem; border-radius:4px;" onmouseover="this.style.background='rgba(255,255,255,0.05)'" onmouseout="this.style.background='transparent'" onclick="setRowVip(event, this, 'VIP')">VIP</div>
-     <div style="padding:6px 12px; cursor:pointer; color:#fff; font-size:0.8rem; border-radius:4px;" onmouseover="this.style.background='rgba(255,255,255,0.05)'" onmouseout="this.style.background='transparent'" onclick="setRowVip(event, this, 'Standard')">Standard</div>
-  </div>
-</div></td>
+                    <td style="padding:16px 20px; color:rgba(255,255,255,0.8);">May 22, 2026</td>
                   </tr>
-                  <tr class="customer-row" data-id="CUS-1004" data-name="Jordan Blake" data-phone="+1 212 555 0199" data-email="jordan.blake@email.com" data-vip="Standard" style="border-bottom: 1px solid rgba(255,255,255,0.05);">
+                  <tr class="customer-row" data-id="CUS-1004" data-name="Jordan Blake" data-phone="+1 212 555 0199" data-email="jordan.blake@email.com" style="border-bottom: 1px solid rgba(255,255,255,0.05);">
                     <td style="padding:16px 20px; color:rgba(255,255,255,0.8);">CUS-1004</td>
                     <td style="padding:16px 20px; color:#fff;">Jordan Blake</td>
                     <td style="padding:16px 20px; color:rgba(255,255,255,0.8);">+1 212 555 0199</td>
                     <td style="padding:16px 20px; color:rgba(255,255,255,0.8);">jordan.blake@email.com</td>
                     <td style="padding:16px 20px; color:rgba(255,255,255,0.8);">2</td>
-                    <td style="padding:16px 20px; color:rgba(255,255,255,0.8);">May 23, 2026</td>
-                    <td style="padding:16px 20px; text-align:center;"><div class="vip-dropdown-container" style="position:relative; display:inline-block; text-align:left;">
-  <button onclick="toggleVipMenu(event, this)" style="border:none; background:rgba(255, 255, 255, 0.05); color:#fff; border-radius:12px; padding:4px 10px 4px 14px; font-weight:600; font-size:0.8rem; cursor:pointer; display:flex; align-items:center; gap:6px;">
-    <span class="vip-text">Standard</span> <span style="font-size:0.6rem; opacity:0.7;">▼</span>
-  </button>
-  <div class="vip-menu" style="display:none; position:absolute; top:100%; right:0; background:#1a1d24; border:1px solid rgba(255,255,255,0.1); border-radius:6px; padding:4px; z-index:100; margin-top:4px; min-width:100px; box-shadow:0 4px 12px rgba(0,0,0,0.5);">
-     <div style="padding:6px 12px; cursor:pointer; color:#51cf66; font-size:0.8rem; border-radius:4px;" onmouseover="this.style.background='rgba(255,255,255,0.05)'" onmouseout="this.style.background='transparent'" onclick="setRowVip(event, this, 'VIP')">VIP</div>
-     <div style="padding:6px 12px; cursor:pointer; color:#fff; font-size:0.8rem; border-radius:4px;" onmouseover="this.style.background='rgba(255,255,255,0.05)'" onmouseout="this.style.background='transparent'" onclick="setRowVip(event, this, 'Standard')">Standard</div>
-  </div>
-</div></td>
+                    <td style="padding:16px 20px; color:rgba(255,255,255,0.8);">May 23, 2026</td>
                   </tr>
-                  <tr class="customer-row" data-id="CUS-1005" data-name="Liam Scott" data-phone="+1 212 555 0111" data-email="liam.scott@email.com" data-vip="Standard" style="border-bottom: 1px solid rgba(255,255,255,0.05);">
+                  <tr class="customer-row" data-id="CUS-1005" data-name="Liam Scott" data-phone="+1 212 555 0111" data-email="liam.scott@email.com" style="border-bottom: 1px solid rgba(255,255,255,0.05);">
                     <td style="padding:16px 20px; color:rgba(255,255,255,0.8);">CUS-1005</td>
                     <td style="padding:16px 20px; color:#fff;">Liam Scott</td>
                     <td style="padding:16px 20px; color:rgba(255,255,255,0.8);">+1 212 555 0111</td>
                     <td style="padding:16px 20px; color:rgba(255,255,255,0.8);">liam.scott@email.com</td>
                     <td style="padding:16px 20px; color:rgba(255,255,255,0.8);">5</td>
-                    <td style="padding:16px 20px; color:rgba(255,255,255,0.8);">May 21, 2026</td>
-                    <td style="padding:16px 20px; text-align:center;"><div class="vip-dropdown-container" style="position:relative; display:inline-block; text-align:left;">
-  <button onclick="toggleVipMenu(event, this)" style="border:none; background:rgba(255, 255, 255, 0.05); color:#fff; border-radius:12px; padding:4px 10px 4px 14px; font-weight:600; font-size:0.8rem; cursor:pointer; display:flex; align-items:center; gap:6px;">
-    <span class="vip-text">Standard</span> <span style="font-size:0.6rem; opacity:0.7;">▼</span>
-  </button>
-  <div class="vip-menu" style="display:none; position:absolute; top:100%; right:0; background:#1a1d24; border:1px solid rgba(255,255,255,0.1); border-radius:6px; padding:4px; z-index:100; margin-top:4px; min-width:100px; box-shadow:0 4px 12px rgba(0,0,0,0.5);">
-     <div style="padding:6px 12px; cursor:pointer; color:#51cf66; font-size:0.8rem; border-radius:4px;" onmouseover="this.style.background='rgba(255,255,255,0.05)'" onmouseout="this.style.background='transparent'" onclick="setRowVip(event, this, 'VIP')">VIP</div>
-     <div style="padding:6px 12px; cursor:pointer; color:#fff; font-size:0.8rem; border-radius:4px;" onmouseover="this.style.background='rgba(255,255,255,0.05)'" onmouseout="this.style.background='transparent'" onclick="setRowVip(event, this, 'Standard')">Standard</div>
-  </div>
-</div></td>
+                    <td style="padding:16px 20px; color:rgba(255,255,255,0.8);">May 21, 2026</td>
                   </tr>
-                  <tr class="customer-row" data-id="CUS-1006" data-name="Sophie Owen" data-phone="+1 212 555 0122" data-email="sophie.owen@email.com" data-vip="VIP" style="border-bottom: 1px solid rgba(255,255,255,0.05);">
+                  <tr class="customer-row" data-id="CUS-1006" data-name="Sophie Owen" data-phone="+1 212 555 0122" data-email="sophie.owen@email.com" style="border-bottom: 1px solid rgba(255,255,255,0.05);">
                     <td style="padding:16px 20px; color:rgba(255,255,255,0.8);">CUS-1006</td>
                     <td style="padding:16px 20px; color:#fff;">Sophie Owen</td>
                     <td style="padding:16px 20px; color:rgba(255,255,255,0.8);">+1 212 555 0122</td>
                     <td style="padding:16px 20px; color:rgba(255,255,255,0.8);">sophie.owen@email.com</td>
                     <td style="padding:16px 20px; color:rgba(255,255,255,0.8);">9</td>
-                    <td style="padding:16px 20px; color:rgba(255,255,255,0.8);">May 20, 2026</td>
-                    <td style="padding:16px 20px; text-align:center;"><div class="vip-dropdown-container" style="position:relative; display:inline-block; text-align:left;">
-  <button onclick="toggleVipMenu(event, this)" style="border:none; background:rgba(81, 207, 102, 0.1); color:#51cf66; border-radius:12px; padding:4px 10px 4px 14px; font-weight:600; font-size:0.8rem; cursor:pointer; display:flex; align-items:center; gap:6px;">
-    <span class="vip-text">VIP</span> <span style="font-size:0.6rem; opacity:0.7;">▼</span>
-  </button>
-  <div class="vip-menu" style="display:none; position:absolute; top:100%; right:0; background:#1a1d24; border:1px solid rgba(255,255,255,0.1); border-radius:6px; padding:4px; z-index:100; margin-top:4px; min-width:100px; box-shadow:0 4px 12px rgba(0,0,0,0.5);">
-     <div style="padding:6px 12px; cursor:pointer; color:#51cf66; font-size:0.8rem; border-radius:4px;" onmouseover="this.style.background='rgba(255,255,255,0.05)'" onmouseout="this.style.background='transparent'" onclick="setRowVip(event, this, 'VIP')">VIP</div>
-     <div style="padding:6px 12px; cursor:pointer; color:#fff; font-size:0.8rem; border-radius:4px;" onmouseover="this.style.background='rgba(255,255,255,0.05)'" onmouseout="this.style.background='transparent'" onclick="setRowVip(event, this, 'Standard')">Standard</div>
-  </div>
-</div></td>
+                    <td style="padding:16px 20px; color:rgba(255,255,255,0.8);">May 20, 2026</td>
                   </tr>
-                  <tr class="customer-row" data-id="CUS-1007" data-name="Mason Taylor" data-phone="+1 212 555 0144" data-email="mason.taylor@email.com" data-vip="Standard" style="border-bottom: 1px solid rgba(255,255,255,0.05);">
+                  <tr class="customer-row" data-id="CUS-1007" data-name="Mason Taylor" data-phone="+1 212 555 0144" data-email="mason.taylor@email.com" style="border-bottom: 1px solid rgba(255,255,255,0.05);">
                     <td style="padding:16px 20px; color:rgba(255,255,255,0.8);">CUS-1007</td>
                     <td style="padding:16px 20px; color:#fff;">Mason Taylor</td>
                     <td style="padding:16px 20px; color:rgba(255,255,255,0.8);">+1 212 555 0144</td>
                     <td style="padding:16px 20px; color:rgba(255,255,255,0.8);">mason.taylor@email.com</td>
                     <td style="padding:16px 20px; color:rgba(255,255,255,0.8);">4</td>
-                    <td style="padding:16px 20px; color:rgba(255,255,255,0.8);">May 19, 2026</td>
-                    <td style="padding:16px 20px; text-align:center;"><div class="vip-dropdown-container" style="position:relative; display:inline-block; text-align:left;">
-  <button onclick="toggleVipMenu(event, this)" style="border:none; background:rgba(255, 255, 255, 0.05); color:#fff; border-radius:12px; padding:4px 10px 4px 14px; font-weight:600; font-size:0.8rem; cursor:pointer; display:flex; align-items:center; gap:6px;">
-    <span class="vip-text">Standard</span> <span style="font-size:0.6rem; opacity:0.7;">▼</span>
-  </button>
-  <div class="vip-menu" style="display:none; position:absolute; top:100%; right:0; background:#1a1d24; border:1px solid rgba(255,255,255,0.1); border-radius:6px; padding:4px; z-index:100; margin-top:4px; min-width:100px; box-shadow:0 4px 12px rgba(0,0,0,0.5);">
-     <div style="padding:6px 12px; cursor:pointer; color:#51cf66; font-size:0.8rem; border-radius:4px;" onmouseover="this.style.background='rgba(255,255,255,0.05)'" onmouseout="this.style.background='transparent'" onclick="setRowVip(event, this, 'VIP')">VIP</div>
-     <div style="padding:6px 12px; cursor:pointer; color:#fff; font-size:0.8rem; border-radius:4px;" onmouseover="this.style.background='rgba(255,255,255,0.05)'" onmouseout="this.style.background='transparent'" onclick="setRowVip(event, this, 'Standard')">Standard</div>
-  </div>
-</div></td>
+                    <td style="padding:16px 20px; color:rgba(255,255,255,0.8);">May 19, 2026</td>
                   </tr>
-                  <tr class="customer-row" data-id="CUS-1008" data-name="Isabella White" data-phone="+1 212 555 0155" data-email="isabella.white@email.com" data-vip="VIP" style="border-bottom: 1px solid rgba(255,255,255,0.05);">
+                  <tr class="customer-row" data-id="CUS-1008" data-name="Isabella White" data-phone="+1 212 555 0155" data-email="isabella.white@email.com" style="border-bottom: 1px solid rgba(255,255,255,0.05);">
                     <td style="padding:16px 20px; color:rgba(255,255,255,0.8);">CUS-1008</td>
                     <td style="padding:16px 20px; color:#fff;">Isabella White</td>
                     <td style="padding:16px 20px; color:rgba(255,255,255,0.8);">+1 212 555 0155</td>
                     <td style="padding:16px 20px; color:rgba(255,255,255,0.8);">isabella.white@email.com</td>
                     <td style="padding:16px 20px; color:rgba(255,255,255,0.8);">8</td>
-                    <td style="padding:16px 20px; color:rgba(255,255,255,0.8);">May 18, 2026</td>
-                    <td style="padding:16px 20px; text-align:center;"><div class="vip-dropdown-container" style="position:relative; display:inline-block; text-align:left;">
-  <button onclick="toggleVipMenu(event, this)" style="border:none; background:rgba(81, 207, 102, 0.1); color:#51cf66; border-radius:12px; padding:4px 10px 4px 14px; font-weight:600; font-size:0.8rem; cursor:pointer; display:flex; align-items:center; gap:6px;">
-    <span class="vip-text">VIP</span> <span style="font-size:0.6rem; opacity:0.7;">▼</span>
-  </button>
-  <div class="vip-menu" style="display:none; position:absolute; top:100%; right:0; background:#1a1d24; border:1px solid rgba(255,255,255,0.1); border-radius:6px; padding:4px; z-index:100; margin-top:4px; min-width:100px; box-shadow:0 4px 12px rgba(0,0,0,0.5);">
-     <div style="padding:6px 12px; cursor:pointer; color:#51cf66; font-size:0.8rem; border-radius:4px;" onmouseover="this.style.background='rgba(255,255,255,0.05)'" onmouseout="this.style.background='transparent'" onclick="setRowVip(event, this, 'VIP')">VIP</div>
-     <div style="padding:6px 12px; cursor:pointer; color:#fff; font-size:0.8rem; border-radius:4px;" onmouseover="this.style.background='rgba(255,255,255,0.05)'" onmouseout="this.style.background='transparent'" onclick="setRowVip(event, this, 'Standard')">Standard</div>
-  </div>
-</div></td>
+                    <td style="padding:16px 20px; color:rgba(255,255,255,0.8);">May 18, 2026</td>
                   </tr>
-                  <tr class="customer-row" data-id="CUS-1009" data-name="Noah Ortiz" data-phone="+1 212 555 0133" data-email="noah.ortiz@email.com" data-vip="Standard" style="border-bottom: 1px solid rgba(255,255,255,0.05);">
+                  <tr class="customer-row" data-id="CUS-1009" data-name="Noah Ortiz" data-phone="+1 212 555 0133" data-email="noah.ortiz@email.com" style="border-bottom: 1px solid rgba(255,255,255,0.05);">
                     <td style="padding:16px 20px; color:rgba(255,255,255,0.8);">CUS-1009</td>
                     <td style="padding:16px 20px; color:#fff;">Noah Ortiz</td>
                     <td style="padding:16px 20px; color:rgba(255,255,255,0.8);">+1 212 555 0133</td>
                     <td style="padding:16px 20px; color:rgba(255,255,255,0.8);">noah.ortiz@email.com</td>
                     <td style="padding:16px 20px; color:rgba(255,255,255,0.8);">6</td>
-                    <td style="padding:16px 20px; color:rgba(255,255,255,0.8);">May 17, 2026</td>
-                    <td style="padding:16px 20px; text-align:center;"><div class="vip-dropdown-container" style="position:relative; display:inline-block; text-align:left;">
-  <button onclick="toggleVipMenu(event, this)" style="border:none; background:rgba(255, 255, 255, 0.05); color:#fff; border-radius:12px; padding:4px 10px 4px 14px; font-weight:600; font-size:0.8rem; cursor:pointer; display:flex; align-items:center; gap:6px;">
-    <span class="vip-text">Standard</span> <span style="font-size:0.6rem; opacity:0.7;">▼</span>
-  </button>
-  <div class="vip-menu" style="display:none; position:absolute; top:100%; right:0; background:#1a1d24; border:1px solid rgba(255,255,255,0.1); border-radius:6px; padding:4px; z-index:100; margin-top:4px; min-width:100px; box-shadow:0 4px 12px rgba(0,0,0,0.5);">
-     <div style="padding:6px 12px; cursor:pointer; color:#51cf66; font-size:0.8rem; border-radius:4px;" onmouseover="this.style.background='rgba(255,255,255,0.05)'" onmouseout="this.style.background='transparent'" onclick="setRowVip(event, this, 'VIP')">VIP</div>
-     <div style="padding:6px 12px; cursor:pointer; color:#fff; font-size:0.8rem; border-radius:4px;" onmouseover="this.style.background='rgba(255,255,255,0.05)'" onmouseout="this.style.background='transparent'" onclick="setRowVip(event, this, 'Standard')">Standard</div>
-  </div>
-</div></td>
+                    <td style="padding:16px 20px; color:rgba(255,255,255,0.8);">May 17, 2026</td>
                   </tr>
-                  <tr class="customer-row" data-id="CUS-1010" data-name="Charlotte Young" data-phone="+1 212 555 0109" data-email="charlotte.young@email.com" data-vip="VIP" style="border-bottom: none;">
+                  <tr class="customer-row" data-id="CUS-1010" data-name="Charlotte Young" data-phone="+1 212 555 0109" data-email="charlotte.young@email.com" style="border-bottom: none;">
                     <td style="padding:16px 20px; color:rgba(255,255,255,0.8);">CUS-1010</td>
                     <td style="padding:16px 20px; color:#fff;">Charlotte Young</td>
                     <td style="padding:16px 20px; color:rgba(255,255,255,0.8);">+1 212 555 0109</td>
                     <td style="padding:16px 20px; color:rgba(255,255,255,0.8);">charlotte.young@email.com</td>
                     <td style="padding:16px 20px; color:rgba(255,255,255,0.8);">11</td>
-                    <td style="padding:16px 20px; color:rgba(255,255,255,0.8);">May 16, 2026</td>
-                    <td style="padding:16px 20px; text-align:center;"><div class="vip-dropdown-container" style="position:relative; display:inline-block; text-align:left;">
-  <button onclick="toggleVipMenu(event, this)" style="border:none; background:rgba(81, 207, 102, 0.1); color:#51cf66; border-radius:12px; padding:4px 10px 4px 14px; font-weight:600; font-size:0.8rem; cursor:pointer; display:flex; align-items:center; gap:6px;">
-    <span class="vip-text">VIP</span> <span style="font-size:0.6rem; opacity:0.7;">▼</span>
-  </button>
-  <div class="vip-menu" style="display:none; position:absolute; top:100%; right:0; background:#1a1d24; border:1px solid rgba(255,255,255,0.1); border-radius:6px; padding:4px; z-index:100; margin-top:4px; min-width:100px; box-shadow:0 4px 12px rgba(0,0,0,0.5);">
-     <div style="padding:6px 12px; cursor:pointer; color:#51cf66; font-size:0.8rem; border-radius:4px;" onmouseover="this.style.background='rgba(255,255,255,0.05)'" onmouseout="this.style.background='transparent'" onclick="setRowVip(event, this, 'VIP')">VIP</div>
-     <div style="padding:6px 12px; cursor:pointer; color:#fff; font-size:0.8rem; border-radius:4px;" onmouseover="this.style.background='rgba(255,255,255,0.05)'" onmouseout="this.style.background='transparent'" onclick="setRowVip(event, this, 'Standard')">Standard</div>
-  </div>
-</div></td>
+                    <td style="padding:16px 20px; color:rgba(255,255,255,0.8);">May 16, 2026</td>
                   </tr>
                 </tbody>
               </table>
@@ -2323,6 +2330,104 @@ function switchFleetTab(tabId, btn) {
           </div>
         </div>
       </section>
+
+      <section id="admin-messages" class="screen">
+        <div class="container">
+          <div class="section-head">
+            <div>
+              <span class="eyebrow">Customer Communications</span>
+              <h1>Messages & Reviews.</h1>
+              <p>Review customer profile details, booking messages, and completed ride reviews submitted from the customer app.</p>
+            </div>
+          </div>
+
+          <div class="card" style="padding:0; overflow:hidden;">
+            <div class="table-wrap">
+              <table class="compact-table" id="admin-message-table" style="width:100%; text-align:left; border-collapse:collapse;">
+                <thead>
+                  <tr>
+                    <th>Message ID</th>
+                    <th>Received</th>
+                    <th>Customer</th>
+                    <th>Booking</th>
+                    <th>Type</th>
+                    <th>Preview</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr data-message-row data-id="MSG-1001" data-received="May 22, 2026 at 08:12 AM" data-customer="Aria Morgan" data-phone="+1 212 555 0188" data-email="aria.morgan@email.com" data-booking="MLC-2052" data-type="Booking note" data-status="Unread" data-message="Please keep the cabin quiet and have chilled water ready before pickup. My executive guest prefers minimal conversation and a privacy-first ride.">
+                    <td>MSG-1001</td>
+                    <td>May 22, 2026<br><span class="muted">08:12 AM</span></td>
+                    <td><strong>Aria Morgan</strong><br><span class="muted">+1 212 555 0188</span></td>
+                    <td>MLC-2052</td>
+                    <td>Booking note</td>
+                    <td class="message-preview">Please keep the cabin quiet and have chilled water ready before pickup...</td>
+                    <td><button class="btn small outline" type="button" data-message-details>Details</button></td>
+                  </tr>
+                  <tr data-message-row data-id="MSG-1002" data-received="May 22, 2026 at 10:40 AM" data-customer="Avery Cole" data-phone="+1 212 555 0170" data-email="avery.cole@email.com" data-booking="MLC-2048" data-type="Booking change" data-status="In Review" data-message="Please update the pickup time to 7:45 PM and confirm whether the chauffeur can wait near the west lobby entrance. The office team will be ready there after the meeting.">
+                    <td>MSG-1002</td>
+                    <td>May 22, 2026<br><span class="muted">10:40 AM</span></td>
+                    <td><strong>Avery Cole</strong><br><span class="muted">+1 212 555 0170</span></td>
+                    <td>MLC-2048</td>
+                    <td>Booking change</td>
+                    <td class="message-preview">Please update the pickup time to 7:45 PM and confirm...</td>
+                    <td><button class="btn small outline" type="button" data-message-details>Details</button></td>
+                  </tr>
+                  <tr data-message-row data-id="REV-1986" data-received="Apr 18, 2026 at 09:38 PM" data-customer="Elena Park" data-phone="+1 212 555 0166" data-email="elena.park@email.com" data-booking="MLC-1986" data-type="Ride review" data-status="Submitted" data-message="Punctuality: 5/5&#10;Courteousness: 5/5&#10;Cleanliness: 5/5&#10;Customer Experience & Responsiveness: 5/5&#10;&#10;Excellent chauffeur, spotless cabin, and very responsive support. Please share my thanks with James Whittaker.">
+                    <td>REV-1986</td>
+                    <td>Apr 18, 2026<br><span class="muted">09:38 PM</span></td>
+                    <td><strong>Elena Park</strong><br><span class="muted">+1 212 555 0166</span></td>
+                    <td>MLC-1986</td>
+                    <td>Ride review</td>
+                    <td class="message-preview">Excellent chauffeur, spotless cabin, and very responsive support...</td>
+                    <td><button class="btn small outline" type="button" data-message-details>Details</button></td>
+                  </tr>
+                  <tr data-message-row data-id="MSG-1003" data-received="May 23, 2026 at 02:05 PM" data-customer="Jordan Blake" data-phone="+1 212 555 0199" data-email="jordan.blake@email.com" data-booking="MLC-2039" data-type="Support message" data-status="Resolved" data-message="Can you send a copy of the completed ride receipt and chauffeur assignment details to my assistant as well? The email is already saved on the customer profile.">
+                    <td>MSG-1003</td>
+                    <td>May 23, 2026<br><span class="muted">02:05 PM</span></td>
+                    <td><strong>Jordan Blake</strong><br><span class="muted">+1 212 555 0199</span></td>
+                    <td>MLC-2039</td>
+                    <td>Support message</td>
+                    <td class="message-preview">Can you send a copy of the completed ride receipt...</td>
+                    <td><button class="btn small outline" type="button" data-message-details>Details</button></td>
+                  </tr>
+                  <tr data-message-row data-id="REV-1744" data-received="Feb 09, 2026 at 12:55 PM" data-customer="Liam Scott" data-phone="+1 212 555 0111" data-email="liam.scott@email.com" data-booking="MLC-1744" data-type="Ride review" data-status="Submitted" data-message="Punctuality: 4/5&#10;Courteousness: 5/5&#10;Cleanliness: 4/5&#10;Customer Experience & Responsiveness: 4/5&#10;&#10;Comfortable ride and helpful chauffeur. The only improvement would be faster pickup confirmation for early morning rides.">
+                    <td>REV-1744</td>
+                    <td>Feb 09, 2026<br><span class="muted">12:55 PM</span></td>
+                    <td><strong>Liam Scott</strong><br><span class="muted">+1 212 555 0111</span></td>
+                    <td>MLC-1744</td>
+                    <td>Ride review</td>
+                    <td class="message-preview">Comfortable ride and helpful chauffeur. The only improvement would be...</td>
+                    <td><button class="btn small outline" type="button" data-message-details>Details</button></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <div class="message-detail-modal" id="admin-message-detail-modal" aria-hidden="true">
+        <div class="message-detail-card" role="dialog" aria-modal="true" aria-labelledby="message-detail-title">
+          <div class="message-detail-head">
+            <div>
+              <span class="eyebrow" id="message-detail-type">Message</span>
+              <h2 id="message-detail-title">Customer message</h2>
+            </div>
+            <button class="message-detail-close" type="button" id="message-detail-close" aria-label="Close">&times;</button>
+          </div>
+          <div class="message-detail-grid">
+            <div class="message-detail-item"><span>Customer</span><strong id="message-detail-customer">-</strong></div>
+            <div class="message-detail-item"><span>Phone</span><strong id="message-detail-phone">-</strong></div>
+            <div class="message-detail-item"><span>Email</span><strong id="message-detail-email">-</strong></div>
+            <div class="message-detail-item"><span>Booking</span><strong id="message-detail-booking">-</strong></div>
+            <div class="message-detail-item"><span>Received</span><strong id="message-detail-received">-</strong></div>
+            <div class="message-detail-item"><span>Status</span><strong id="message-detail-status">-</strong></div>
+          </div>
+          <div class="message-full-text" id="message-detail-body"></div>
+        </div>
+      </div>
 
 
       
@@ -3105,515 +3210,171 @@ function switchFleetTab(tabId, btn) {
 
       <section id="admin-settings" class="screen">
         <div class="container">
-
-          <!-- Tabs restored -->
-          <div class="cms-tabs" style="display:flex; border-bottom:1px solid rgba(255,255,255,0.1); margin-bottom:24px;">
-            
-            <button class="cms-tab active" data-cms-tab="settings-communication" onclick="switchSettingsTab('settings-communication', this)" style="background:none; border:none; color:#e8c96a; padding:12px 16px; border-bottom:2px solid #e8c96a; font-weight:600; cursor:pointer;">Communication Settings</button>
+          <div class="cms-tabs" style="display:flex; border-bottom:1px solid rgba(255,255,255,0.1); margin-bottom:24px; gap:8px;">
+            <button class="cms-tab active" data-cms-tab="settings-general" onclick="switchSettingsTab('settings-general', this)" style="background:none; border:none; color:#e8c96a; padding:12px 16px; border-bottom:2px solid #e8c96a; font-weight:600; cursor:pointer;">General Settings</button>
+            <button class="cms-tab" data-cms-tab="settings-communication" onclick="switchSettingsTab('settings-communication', this)" style="background:none; border:none; color:rgba(255,255,255,0.6); padding:12px 16px; border-bottom:2px solid transparent; font-weight:600; cursor:pointer;">Communication Settings</button>
           </div>
 
-          <div class="cms-panel" id="settings-general" style="display:none;">
-
-
-          
-          
-          <script>
-            function switchSettingsTab(tabId, btn) {
-               document.getElementById('settings-general').classList.remove('active');
-               document.getElementById('settings-general').style.display = 'none';
-               document.getElementById('settings-communication').classList.remove('active');
-               document.getElementById('settings-communication').style.display = 'none';
-               
-               document.querySelectorAll('.cms-tab').forEach(t => {
-                   t.classList.remove('active');
-                   t.style.color = 'rgba(255,255,255,0.6)';
-                   t.style.borderBottom = 'none';
-               });
-               
-               document.getElementById(tabId).classList.add('active');
-               document.getElementById(tabId).style.display = 'block';
-               
-               btn.classList.add('active');
-               btn.style.color = '#e8c96a';
-               btn.style.borderBottom = '2px solid #e8c96a';
-            }
-          </script>
-    
-
-    <div class="cms-panel" id="settings-general" style="display:none;">
-      <div class="section-head" style="align-items:flex-end; margin-bottom:32px;">
-        <div>
-          <span class="eyebrow">SETTINGS</span>
-          <h1>Settings.</h1>
-          <p>Manage system configurations, company settings, and integrations.</p>
-        </div>
-        <button class="btn primary" style="background:#e8c96a; color:#000; border:none; padding:10px 24px; font-weight:600;">Save Settings</button>
-      </div>
-
-      <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(300px, 1fr)); gap:24px;">
-        <!-- System Configuration -->
-        <article class="card">
-          <h2 style="font-size:1.2rem; margin-top:0; margin-bottom:20px; color:#fff;">System Configuration</h2>
-          <div class="form-group" style="margin-bottom:16px;">
-            <label style="display:block; margin-bottom:8px; font-size:0.85rem; color:#fff;">Booking Approval Mode</label>
-            <select style="width:100%; padding:10px; background:transparent; border:1px solid rgba(255,255,255,0.1); color:#fff; border-radius:6px;">
-              <option>Manual Review</option>
-              <option>Auto Approve</option>
-            </select>
-          </div>
-          <div class="form-group" style="margin-bottom:16px;">
-            <label style="display:block; margin-bottom:8px; font-size:0.85rem; color:#fff;">Default Timezone</label>
-            <select style="width:100%; padding:10px; background:transparent; border:1px solid rgba(255,255,255,0.1); color:#fff; border-radius:6px;">
-              <option>UTC</option>
-              <option>EST</option>
-              <option>PST</option>
-            </select>
-          </div>
-          <div class="form-group" style="margin-bottom:0;">
-            <label style="display:block; margin-bottom:8px; font-size:0.85rem; color:#fff;">Currency</label>
-            <select style="width:100%; padding:10px; background:transparent; border:1px solid rgba(255,255,255,0.1); color:#fff; border-radius:6px;">
-              <option>USD ($)</option>
-              <option>EUR (€)</option>
-            </select>
-          </div>
-        </article>
-
-        <!-- Company Settings -->
-        <article class="card">
-          <h2 style="font-size:1.2rem; margin-top:0; margin-bottom:20px; color:#fff;">Company Settings</h2>
-          <div class="form-group" style="margin-bottom:16px;">
-            <label style="display:block; margin-bottom:8px; font-size:0.85rem; color:#fff;">Company Name</label>
-            <input type="text" value="Real Limo Lux Premium Rides" style="width:100%; padding:10px; background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.1); color:#fff; border-radius:6px;">
-          </div>
-          <div class="form-group" style="margin-bottom:16px;">
-            <label style="display:block; margin-bottom:8px; font-size:0.85rem; color:#fff;">Support Email</label>
-            <input type="text" value="support@luxurylimo.example" style="width:100%; padding:10px; background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.1); color:#fff; border-radius:6px;">
-          </div>
-          <div class="form-group" style="margin-bottom:0;">
-            <label style="display:block; margin-bottom:8px; font-size:0.85rem; color:#fff;">Contact Phone</label>
-            <input type="text" value="+1 800 555 0199" style="width:100%; padding:10px; background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.1); color:#fff; border-radius:6px;">
-          </div>
-        </article>
-
-        <!-- Security Settings -->
-        <article class="card">
-          <h2 style="font-size:1.2rem; margin-top:0; margin-bottom:20px; color:#fff;">Security Settings</h2>
-          <div class="form-group" style="margin-bottom:16px;">
-            <label style="display:block; margin-bottom:8px; font-size:0.85rem; color:#fff;">Enforce 2FA for Admins</label>
-            <select style="width:100%; padding:10px; background:transparent; border:1px solid rgba(255,255,255,0.1); color:#fff; border-radius:6px;">
-              <option>Required</option>
-              <option>Optional</option>
-            </select>
-          </div>
-          <div class="form-group" style="margin-bottom:16px;">
-            <label style="display:block; margin-bottom:8px; font-size:0.85rem; color:#fff;">Session Timeout</label>
-            <select style="width:100%; padding:10px; background:transparent; border:1px solid rgba(255,255,255,0.1); color:#fff; border-radius:6px;">
-              <option>30 Minutes</option>
-              <option>1 Hour</option>
-              <option>4 Hours</option>
-            </select>
-          </div>
-          <div class="form-group" style="margin-bottom:0;">
-            <label style="display:block; margin-bottom:8px; font-size:0.85rem; color:#fff;">Password Expiry</label>
-            <select style="width:100%; padding:10px; background:transparent; border:1px solid rgba(255,255,255,0.1); color:#fff; border-radius:6px;">
-              <option>90 Days</option>
-              <option>180 Days</option>
-              <option>Never</option>
-            </select>
-          </div>
-        </article>
-        
-        <!-- Service Area Configuration -->
-        <article class="card">
-          <h2 style="font-size:1.2rem; margin-top:0; margin-bottom:20px; color:#fff;">Service Area Configuration</h2>
-          <div class="form-group" style="margin-bottom:16px;">
-            <label style="display:block; margin-bottom:8px; font-size:0.85rem; color:#fff;">Default Radius</label>
-            <select style="width:100%; padding:10px; background:transparent; border:1px solid rgba(255,255,255,0.1); color:#fff; border-radius:6px;">
-              <option>50 Miles</option>
-              <option>100 Miles</option>
-            </select>
-          </div>
-          <div class="form-group" style="margin-bottom:0;">
-            <label style="display:block; margin-bottom:8px; font-size:0.85rem; color:#fff;">Operating Cities</label>
-            <input type="text" value="New York, Miami, LA" style="width:100%; padding:10px; background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.1); color:#fff; border-radius:6px;">
-          </div>
-        </article>
-
-        <!-- Notification Provider Settings -->
-        <article class="card">
-          <h2 style="font-size:1.2rem; margin-top:0; margin-bottom:20px; color:#fff;">Notification Provider Settings</h2>
-          <div class="form-group" style="margin-bottom:16px;">
-            <label style="display:block; margin-bottom:8px; font-size:0.85rem; color:#fff;">Email Provider</label>
-            <select style="width:100%; padding:10px; background:transparent; border:1px solid rgba(255,255,255,0.1); color:#fff; border-radius:6px;">
-              <option>SendGrid</option>
-              <option>AWS SES</option>
-            </select>
-          </div>
-          <div class="form-group" style="margin-bottom:0;">
-            <label style="display:block; margin-bottom:8px; font-size:0.85rem; color:#fff;">SMS Provider</label>
-            <select style="width:100%; padding:10px; background:transparent; border:1px solid rgba(255,255,255,0.1); color:#fff; border-radius:6px;">
-              <option>Twilio</option>
-              <option>MessageBird</option>
-            </select>
-          </div>
-        </article>
-
-        <!-- API & Third-Party Integrations -->
-        <article class="card">
-          <h2 style="font-size:1.2rem; margin-top:0; margin-bottom:20px; color:#fff;">API & Third-Party Integrations</h2>
-          <div class="form-group" style="margin-bottom:16px;">
-            <label style="display:block; margin-bottom:8px; font-size:0.85rem; color:#fff;">Payment Gateway</label>
-            <select style="width:100%; padding:10px; background:transparent; border:1px solid rgba(255,255,255,0.1); color:#fff; border-radius:6px;">
-              <option>Stripe</option>
-              <option>PayPal</option>
-            </select>
-          </div>
-          <div class="form-group" style="margin-bottom:0;">
-            <label style="display:block; margin-bottom:8px; font-size:0.85rem; color:#fff;">Maps Provider</label>
-            <select style="width:100%; padding:10px; background:transparent; border:1px solid rgba(255,255,255,0.1); color:#fff; border-radius:6px;">
-              <option>Google Maps</option>
-              <option>Mapbox</option>
-            </select>
-          </div>
-        </article>
-      </div>
-    </div>
-    
-<div class="cms-panel active" id="settings-communication" style="display:block;"> style="display:block !important;">
-            <div class="section-head">
+          <div class="cms-panel active" id="settings-general" style="display:block;">
+            <div class="section-head" style="align-items:flex-end; margin-bottom:32px;">
               <div>
-                <span class="eyebrow">Communication Settings</span>
+                <span class="eyebrow">GENERAL SETTINGS</span>
+                <h1>General Settings.</h1>
+                <p>Manage basic company details and default operating information.</p>
+              </div>
+              <button class="btn primary" style="background:#e8c96a; color:#000; border:none; padding:10px 24px; font-weight:600;">Save Settings</button>
+            </div>
+
+            <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(320px, 1fr)); gap:24px;">
+              <article class="card">
+                <h2 style="font-size:1.2rem; margin-top:0; margin-bottom:20px; color:#fff;">Basic Company Details</h2>
+                <div class="form-group" style="margin-bottom:16px;">
+                  <label style="display:block; margin-bottom:8px; font-size:0.85rem; color:#fff;">Company Name</label>
+                  <input type="text" value="Real Limo Lux" style="width:100%; padding:10px; background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.1); color:#fff; border-radius:6px;">
+                </div>
+                <div class="form-group" style="margin-bottom:16px;">
+                  <label style="display:block; margin-bottom:8px; font-size:0.85rem; color:#fff;">Company Email</label>
+                  <input type="email" value="support@reallimolux.com" style="width:100%; padding:10px; background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.1); color:#fff; border-radius:6px;">
+                </div>
+                <div class="form-group" style="margin-bottom:16px;">
+                  <label style="display:block; margin-bottom:8px; font-size:0.85rem; color:#fff;">Phone Number</label>
+                  <input type="tel" value="+1 800 555 0199" style="width:100%; padding:10px; background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.1); color:#fff; border-radius:6px;">
+                </div>
+                <div class="form-group" style="margin-bottom:0;">
+                  <label style="display:block; margin-bottom:8px; font-size:0.85rem; color:#fff;">Website</label>
+                  <input type="text" value="www.reallimolux.com" style="width:100%; padding:10px; background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.1); color:#fff; border-radius:6px;">
+                </div>
+              </article>
+
+              <article class="card">
+                <h2 style="font-size:1.2rem; margin-top:0; margin-bottom:20px; color:#fff;">Operations Details</h2>
+                <div class="form-group" style="margin-bottom:16px;">
+                  <label style="display:block; margin-bottom:8px; font-size:0.85rem; color:#fff;">Office Address</label>
+                  <textarea style="width:100%; min-height:84px; padding:10px; background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.1); color:#fff; border-radius:6px;">740 Park Avenue, Residence 12B, New York, NY 10021</textarea>
+                </div>
+                <div class="form-group" style="margin-bottom:16px;">
+                  <label style="display:block; margin-bottom:8px; font-size:0.85rem; color:#fff;">Service Area</label>
+                  <input type="text" value="New York, Los Angeles, Miami" style="width:100%; padding:10px; background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.1); color:#fff; border-radius:6px;">
+                </div>
+                <div class="form-group" style="margin-bottom:0;">
+                  <label style="display:block; margin-bottom:8px; font-size:0.85rem; color:#fff;">Support Hours</label>
+                  <input type="text" value="24/7 concierge availability" style="width:100%; padding:10px; background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.1); color:#fff; border-radius:6px;">
+                </div>
+              </article>
+
+              <article class="card">
+                <h2 style="font-size:1.2rem; margin-top:0; margin-bottom:20px; color:#fff;">System Configuration</h2>
+                <div class="form-group" style="margin-bottom:16px;">
+                  <label style="display:block; margin-bottom:8px; font-size:0.85rem; color:#fff;">Booking Approval Mode</label>
+                  <select style="width:100%; padding:10px; background:transparent; border:1px solid rgba(255,255,255,0.1); color:#fff; border-radius:6px;">
+                    <option>Manual Review</option>
+                    <option>Auto Approve</option>
+                  </select>
+                </div>
+                <div class="form-group" style="margin-bottom:16px;">
+                  <label style="display:block; margin-bottom:8px; font-size:0.85rem; color:#fff;">Default Timezone</label>
+                  <select style="width:100%; padding:10px; background:transparent; border:1px solid rgba(255,255,255,0.1); color:#fff; border-radius:6px;">
+                    <option>EST</option>
+                    <option>PST</option>
+                    <option>UTC</option>
+                  </select>
+                </div>
+                <div class="form-group" style="margin-bottom:0;">
+                  <label style="display:block; margin-bottom:8px; font-size:0.85rem; color:#fff;">Currency</label>
+                  <select style="width:100%; padding:10px; background:transparent; border:1px solid rgba(255,255,255,0.1); color:#fff; border-radius:6px;">
+                    <option>USD ($)</option>
+                    <option>EUR</option>
+                  </select>
+                </div>
+              </article>
+            </div>
+          </div>
+
+          <div class="cms-panel" id="settings-communication" style="display:none;">
+            <div class="section-head" style="align-items:center; margin-bottom:24px; display:flex; justify-content:space-between;">
+              <div>
+                <span class="eyebrow">COMMUNICATION SETTINGS</span>
                 <h1>Communication Settings.</h1>
                 <p>Manage how and when your customers receive notifications.</p>
               </div>
-              <div class="quick-actions">
-                <button id="test-notification-btn" class="btn secondary" style="background:var(--gold-bright); color:#080808; font-weight:700; border:none;" onclick="document.getElementById('test-notification-panel').classList.add('open'); document.getElementById('test-panel-backdrop').classList.add('open');">Test Notification</button>
-              </div>
+              <button id="test-notification-btn" class="btn primary" style="background:#e8c96a; color:#000; border:none; padding:10px 20px; font-weight:600;" onclick="document.getElementById('test-notification-panel').classList.add('open'); document.getElementById('test-panel-backdrop').classList.add('open');">Test Notification</button>
             </div>
-            
-            <article class="card" style="margin-bottom: 22px;">
-              <h2>Notification Rules</h2>
-              <p class="muted" style="margin-top:4px; margin-bottom:16px; font-size:0.85rem;">Choose the channels through which different notifications are sent to your customers.</p>
+
+            <article class="card" style="margin-bottom:24px;">
+              <h2 style="margin-top:0; color:#fff; font-size:1.4rem; margin-bottom:8px;">Notification Rules</h2>
+              <p class="muted" style="font-size:0.9rem; margin-bottom:24px;">Choose the channels through which different notifications are sent to your customers.</p>
               <div class="table-wrap">
-                <table class="compact-table" style="min-width: 800px;">
+                <table class="compact-table" style="width:100%; min-width:800px;">
                   <thead>
                     <tr>
-                      <th style="width:25%">EVENT</th>
-                      <th style="width:35%">DESCRIPTION</th>
-                      <th style="text-align:center; width:10%">IN-APP</th>
-                      <th style="text-align:center; width:10%">SMS</th>
-                      <th style="text-align:center; width:10%">EMAIL</th>
-                      <th style="width:10%">STATUS</th>
-                      
+                      <th>EVENT</th>
+                      <th>DESCRIPTION</th>
+                      <th style="text-align:center;">IN-APP</th>
+                      <th style="text-align:center;">SMS</th>
+                      <th style="text-align:center;">EMAIL</th>
+                      <th>STATUS</th>
                     </tr>
                   </thead>
                   <tbody>
-                    <tr>
-                      <td><div style="display:flex; align-items:center; gap:10px;"><span style="color:var(--gold-bright);">📅</span> <strong>Booking Confirmed</strong></div></td>
-                      <td class="muted" style="font-size:0.85rem;">Sent when a booking is confirmed.</td>
-                      <td style="text-align:center;"><input type="checkbox" checked class="custom-chk"></td>
-                      <td style="text-align:center;"><input type="checkbox" checked class="custom-chk"></td>
-                      <td style="text-align:center;"><input type="checkbox" checked class="custom-chk"></td>
-                      <td><span class="status confirmed" style="background:rgba(81,207,102,0.1); color:#51cf66; border:none;">Active</span></td>
-                      
-                    </tr>
-                    <tr>
-                      <td><div style="display:flex; align-items:center; gap:10px;"><span style="color:var(--gold-bright);">👤</span> <strong>Driver Assigned</strong></div></td>
-                      <td class="muted" style="font-size:0.85rem;">Sent when a driver is assigned to a booking.</td>
-                      <td style="text-align:center;"><input type="checkbox" checked class="custom-chk"></td>
-                      <td style="text-align:center;"><input type="checkbox" checked class="custom-chk"></td>
-                      <td style="text-align:center;"><input type="checkbox" class="custom-chk"></td>
-                      <td><span class="status confirmed" style="background:rgba(81,207,102,0.1); color:#51cf66; border:none;">Active</span></td>
-                      
-                    </tr>
-                    <tr>
-                      <td><div style="display:flex; align-items:center; gap:10px;"><span style="color:var(--gold-bright);">🚘</span> <strong>Driver En Route</strong></div></td>
-                      <td class="muted" style="font-size:0.85rem;">Sent when driver starts en route to pickup.</td>
-                      <td style="text-align:center;"><input type="checkbox" checked class="custom-chk"></td>
-                      <td style="text-align:center;"><input type="checkbox" checked class="custom-chk"></td>
-                      <td style="text-align:center;"><input type="checkbox" class="custom-chk"></td>
-                      <td><span class="status confirmed" style="background:rgba(81,207,102,0.1); color:#51cf66; border:none;">Active</span></td>
-                      
-                    </tr>
-                    <tr>
-                      <td><div style="display:flex; align-items:center; gap:10px;"><span style="color:var(--gold-bright);">🔔</span> <strong>Trip Reminder (24h)</strong></div></td>
-                      <td class="muted" style="font-size:0.85rem;">Reminder sent 24 hours before the trip.</td>
-                      <td style="text-align:center;"><input type="checkbox" class="custom-chk"></td>
-                      <td style="text-align:center;"><input type="checkbox" checked class="custom-chk"></td>
-                      <td style="text-align:center;"><input type="checkbox" class="custom-chk"></td>
-                      <td><span class="status confirmed" style="background:rgba(81,207,102,0.1); color:#51cf66; border:none;">Active</span></td>
-                      
-                    </tr>
-                    <tr>
-                      <td><div style="display:flex; align-items:center; gap:10px;"><span style="color:var(--gold-bright);">🔔</span> <strong>Trip Reminder (2h)</strong></div></td>
-                      <td class="muted" style="font-size:0.85rem;">Reminder sent 2 hours before the trip.</td>
-                      <td style="text-align:center;"><input type="checkbox" class="custom-chk"></td>
-                      <td style="text-align:center;"><input type="checkbox" checked class="custom-chk"></td>
-                      <td style="text-align:center;"><input type="checkbox" class="custom-chk"></td>
-                      <td><span class="status confirmed" style="background:rgba(81,207,102,0.1); color:#51cf66; border:none;">Active</span></td>
-                      
-                    </tr>
-                    <tr>
-                      <td><div style="display:flex; align-items:center; gap:10px;"><span style="color:var(--gold-bright);">📍</span> <strong>Driver Arrived</strong></div></td>
-                      <td class="muted" style="font-size:0.85rem;">Sent when driver reaches the pickup location.</td>
-                      <td style="text-align:center;"><input type="checkbox" checked class="custom-chk"></td>
-                      <td style="text-align:center;"><input type="checkbox" checked class="custom-chk"></td>
-                      <td style="text-align:center;"><input type="checkbox" class="custom-chk"></td>
-                      <td><span class="status confirmed" style="background:rgba(81,207,102,0.1); color:#51cf66; border:none;">Active</span></td>
-                      
-                    </tr>
-                    <tr>
-                      <td><div style="display:flex; align-items:center; gap:10px;"><span style="color:var(--gold-bright);">✓</span> <strong>Trip Completed</strong></div></td>
-                      <td class="muted" style="font-size:0.85rem;">Sent when the trip is completed.</td>
-                      <td style="text-align:center;"><input type="checkbox" checked class="custom-chk"></td>
-                      <td style="text-align:center;"><input type="checkbox" class="custom-chk"></td>
-                      <td style="text-align:center;"><input type="checkbox" checked class="custom-chk"></td>
-                      <td><span class="status confirmed" style="background:rgba(81,207,102,0.1); color:#51cf66; border:none;">Active</span></td>
-                      
-                    </tr>
-                    <tr>
-                      <td><div style="display:flex; align-items:center; gap:10px;"><span style="color:var(--gold-bright);">🧾</span> <strong>Payment Receipt</strong></div></td>
-                      <td class="muted" style="font-size:0.85rem;">Sent after payment is completed.</td>
-                      <td style="text-align:center;"><input type="checkbox" class="custom-chk"></td>
-                      <td style="text-align:center;"><input type="checkbox" class="custom-chk"></td>
-                      <td style="text-align:center;"><input type="checkbox" checked class="custom-chk"></td>
-                      <td><span class="status confirmed" style="background:rgba(81,207,102,0.1); color:#51cf66; border:none;">Active</span></td>
-                      
-                    </tr>
+                    <tr><td><strong>Booking Confirmed</strong></td><td class="muted">Sent when a booking is confirmed.</td><td style="text-align:center;"><input type="checkbox" checked class="custom-chk"></td><td style="text-align:center;"><input type="checkbox" checked class="custom-chk"></td><td style="text-align:center;"><input type="checkbox" checked class="custom-chk"></td><td><span class="status confirmed">Active</span></td></tr>
+                    <tr><td><strong>Driver Assigned</strong></td><td class="muted">Sent when a driver is assigned to a booking.</td><td style="text-align:center;"><input type="checkbox" checked class="custom-chk"></td><td style="text-align:center;"><input type="checkbox" checked class="custom-chk"></td><td style="text-align:center;"><input type="checkbox" class="custom-chk"></td><td><span class="status confirmed">Active</span></td></tr>
+                    <tr><td><strong>Driver En Route</strong></td><td class="muted">Sent when the driver starts en route to pickup.</td><td style="text-align:center;"><input type="checkbox" checked class="custom-chk"></td><td style="text-align:center;"><input type="checkbox" checked class="custom-chk"></td><td style="text-align:center;"><input type="checkbox" class="custom-chk"></td><td><span class="status confirmed">Active</span></td></tr>
+                    <tr><td><strong>Trip Reminder (24h)</strong></td><td class="muted">Reminder sent 24 hours before the trip.</td><td style="text-align:center;"><input type="checkbox" class="custom-chk"></td><td style="text-align:center;"><input type="checkbox" checked class="custom-chk"></td><td style="text-align:center;"><input type="checkbox" class="custom-chk"></td><td><span class="status confirmed">Active</span></td></tr>
+                    <tr><td><strong>Trip Reminder (2h)</strong></td><td class="muted">Reminder sent 2 hours before the trip.</td><td style="text-align:center;"><input type="checkbox" class="custom-chk"></td><td style="text-align:center;"><input type="checkbox" checked class="custom-chk"></td><td style="text-align:center;"><input type="checkbox" class="custom-chk"></td><td><span class="status confirmed">Active</span></td></tr>
+                    <tr><td><strong>Trip Completed</strong></td><td class="muted">Sent when the trip is completed.</td><td style="text-align:center;"><input type="checkbox" checked class="custom-chk"></td><td style="text-align:center;"><input type="checkbox" class="custom-chk"></td><td style="text-align:center;"><input type="checkbox" checked class="custom-chk"></td><td><span class="status confirmed">Active</span></td></tr>
                   </tbody>
                 </table>
               </div>
             </article>
 
             <article class="card">
-              <h2>Reminder Timing</h2>
-              <p class="muted" style="margin-top:4px; margin-bottom:16px; font-size:0.85rem;">Set default reminder times for trip related notifications.</p>
-              
-              <div style="display:flex; align-items:center; justify-content:space-between; padding:16px 0; border-bottom:1px solid rgba(239,228,202,.1);">
-                <div style="display:flex; align-items:center; gap:16px;">
-                  <div style="width:48px; height:48px; border:1px solid rgba(255,255,255,0.1); border-radius:8px; display:flex; align-items:center; justify-content:center; color:var(--gold-bright);">
-                    <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
-                  </div>
-                  <div>
-                    <h3 style="font-size:1rem; margin:0 0 4px;">24 Hour Reminder</h3>
-                    <p class="muted" style="margin:0; font-size:0.85rem;">Send reminder 24 hours before the trip</p>
-                  </div>
+              <h2 style="margin-top:0; color:#fff; font-size:1.4rem; margin-bottom:8px;">Reminder Timing</h2>
+              <p class="muted" style="font-size:0.9rem; margin-bottom:20px;">Set default reminder times for trip related notifications.</p>
+              <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(240px, 1fr)); gap:16px;">
+                <div class="form-group">
+                  <label style="display:block; margin-bottom:8px; color:#fff;">24 Hour Reminder</label>
+                  <select style="width:100%; padding:10px; background:transparent; border:1px solid rgba(255,255,255,0.1); color:#fff; border-radius:6px;"><option>24 hours before</option><option>48 hours before</option></select>
                 </div>
-                <div style="width:240px;">
-                  <select style="width:100%;"><option>24 hours before</option><option>48 hours before</option></select>
+                <div class="form-group">
+                  <label style="display:block; margin-bottom:8px; color:#fff;">2 Hour Reminder</label>
+                  <select style="width:100%; padding:10px; background:transparent; border:1px solid rgba(255,255,255,0.1); color:#fff; border-radius:6px;"><option>2 hours before</option><option>4 hours before</option></select>
                 </div>
-              </div>
-
-              <div style="display:flex; align-items:center; justify-content:space-between; padding:16px 0; border-bottom:1px solid rgba(239,228,202,.1);">
-                <div style="display:flex; align-items:center; gap:16px;">
-                  <div style="width:48px; height:48px;"></div>
-                  <div>
-                    <h3 style="font-size:1rem; margin:0 0 4px;">2 Hour Reminder</h3>
-                    <p class="muted" style="margin:0; font-size:0.85rem;">Send reminder 2 hours before the trip</p>
-                  </div>
-                </div>
-                <div style="width:240px;">
-                  <select style="width:100%;"><option>2 hours before</option><option>4 hours before</option></select>
+                <div class="form-group">
+                  <label style="display:block; margin-bottom:8px; color:#fff;">Driver Arrival Reminder</label>
+                  <select style="width:100%; padding:10px; background:transparent; border:1px solid rgba(255,255,255,0.1); color:#fff; border-radius:6px;"><option>30 minutes before</option><option>15 minutes before</option></select>
                 </div>
               </div>
-
-              <div style="display:flex; align-items:center; justify-content:space-between; padding:16px 0;">
-                <div style="display:flex; align-items:center; gap:16px;">
-                  <div style="width:48px; height:48px;"></div>
-                  <div>
-                    <h3 style="font-size:1rem; margin:0 0 4px;">Driver Arrival Reminder (Optional)</h3>
-                    <p class="muted" style="margin:0; font-size:0.85rem;">Send reminder before driver arrival</p>
-                  </div>
-                </div>
-                <div style="width:240px;">
-                  <select style="width:100%;"><option>30 minutes before</option><option>15 minutes before</option></select>
-                </div>
+              <div style="display:flex; justify-content:flex-end; margin-top:24px;">
+                <button class="btn primary" style="background:#e8c96a; color:#000; border:none; padding:10px 24px; font-weight:600;">Save Changes</button>
               </div>
             </article>
-            
-            <div style="display:flex; align-items:center; justify-content:space-between; margin-top:24px;">
-              <div style="display:flex; align-items:center; gap:12px; background:rgba(255,255,255,0.03); padding:12px 16px; border-radius:8px; border:1px solid rgba(255,255,255,0.06); width:calc(100% - 180px);">
-                <span style="color:var(--gold-bright);">ℹ️</span>
-                <span style="color:rgba(255,255,255,0.7); font-size:0.9rem;">All notifications are triggered automatically by the system based on booking and trip events.</span>
-              </div>
-              <button class="btn primary" style="background:var(--gold-bright); color:#080808; font-weight:700; width:160px; border:none;">Save Changes</button>
-            </div>
-            
           </div>
         </div>
-      
-          </div>
-
-          <div class="cms-panel active" id="settings-communication" style="display:block;">
-            
-            <div class="section-head" style="align-items:center; margin-bottom:24px; display:flex; justify-content:space-between;">
-              <div>
-                <span class="eyebrow" style="color:#e8c96a; font-size:0.75rem; font-weight:700; letter-spacing:1px; text-transform:uppercase;">COMMUNICATION SETTINGS</span>
-                <h1 style="margin-top:4px; font-size:2.2rem; margin-bottom:8px;">Communication Settings.</h1>
-                <p style="margin:0; color:rgba(255,255,255,0.5); font-size:0.95rem;">Manage how and when your customers receive notifications.</p>
-              </div>
-              <div>
-                <button class="btn primary" style="background:#e8c96a; color:#000; border:none; padding:10px 20px; font-weight:600; border-radius:6px; cursor:pointer;" onclick="document.getElementById('test-notification-panel').classList.add('open'); document.getElementById('test-panel-backdrop').classList.add('open');">Test Notification</button>
-              </div>
-            </div>
-
-            <!-- Notification Rules -->
-            <div class="card" style="margin-bottom:24px;">
-              <h2 style="margin-top:0; color:#fff; font-size:1.4rem; margin-bottom:8px;">Notification Rules</h2>
-              <p style="color:rgba(255,255,255,0.5); font-size:0.9rem; margin-bottom:24px;">Choose the channels through which different notifications are sent to your customers.</p>
-              
-              <div class="table-wrap">
-                <table style="width:100%; border-collapse:collapse; text-align:left;">
-                  <thead>
-                    <tr style="border-bottom:1px solid rgba(255,255,255,0.1);">
-                      <th style="padding:16px 0; color:#e8c96a; font-size:0.75rem; font-weight:600; letter-spacing:1px; text-transform:uppercase;">EVENT</th>
-                      <th style="padding:16px; color:#e8c96a; font-size:0.75rem; font-weight:600; letter-spacing:1px; text-transform:uppercase;">DESCRIPTION</th>
-                      <th style="padding:16px; text-align:center; color:#e8c96a; font-size:0.75rem; font-weight:600; letter-spacing:1px; text-transform:uppercase;">IN-APP</th>
-                      <th style="padding:16px; text-align:center; color:#e8c96a; font-size:0.75rem; font-weight:600; letter-spacing:1px; text-transform:uppercase;">SMS</th>
-                      <th style="padding:16px; text-align:center; color:#e8c96a; font-size:0.75rem; font-weight:600; letter-spacing:1px; text-transform:uppercase;">EMAIL</th>
-                      <th style="padding:16px; color:#e8c96a; font-size:0.75rem; font-weight:600; letter-spacing:1px; text-transform:uppercase;">STATUS</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr style="border-bottom:1px solid rgba(255,255,255,0.05);">
-                      <td style="padding:16px 0; color:#fff; font-weight:500; display:flex; align-items:center; gap:8px;"><span style="color:#5c7cfa;">📅</span> Booking Confirmed</td>
-                      <td style="padding:16px; color:rgba(255,255,255,0.6); font-size:0.9rem;">Sent when a booking is confirmed.</td>
-                      <td style="padding:16px; text-align:center;"><input type="checkbox" checked style="accent-color:#e8c96a; width:16px; height:16px; cursor:pointer;"></td>
-                      <td style="padding:16px; text-align:center;"><input type="checkbox" checked style="accent-color:#e8c96a; width:16px; height:16px; cursor:pointer;"></td>
-                      <td style="padding:16px; text-align:center;"><input type="checkbox" checked style="accent-color:#e8c96a; width:16px; height:16px; cursor:pointer;"></td>
-                      <td style="padding:16px; color:#51cf66; font-size:0.85rem; font-weight:600;">Active</td>
-                    </tr>
-                    <tr style="border-bottom:1px solid rgba(255,255,255,0.05);">
-                      <td style="padding:16px 0; color:#fff; font-weight:500; display:flex; align-items:center; gap:8px;"><span style="color:#cc5de8;">👤</span> Driver Assigned</td>
-                      <td style="padding:16px; color:rgba(255,255,255,0.6); font-size:0.9rem;">Sent when a driver is assigned to a booking.</td>
-                      <td style="padding:16px; text-align:center;"><input type="checkbox" checked style="accent-color:#e8c96a; width:16px; height:16px; cursor:pointer;"></td>
-                      <td style="padding:16px; text-align:center;"><input type="checkbox" checked style="accent-color:#e8c96a; width:16px; height:16px; cursor:pointer;"></td>
-                      <td style="padding:16px; text-align:center;"><input type="checkbox" style="accent-color:#e8c96a; width:16px; height:16px; cursor:pointer;"></td>
-                      <td style="padding:16px; color:#51cf66; font-size:0.85rem; font-weight:600;">Active</td>
-                    </tr>
-                    <tr style="border-bottom:1px solid rgba(255,255,255,0.05);">
-                      <td style="padding:16px 0; color:#fff; font-weight:500; display:flex; align-items:center; gap:8px;"><span style="color:#ff922b;">🚗</span> Driver En Route</td>
-                      <td style="padding:16px; color:rgba(255,255,255,0.6); font-size:0.9rem;">Sent when driver starts en route to pickup.</td>
-                      <td style="padding:16px; text-align:center;"><input type="checkbox" checked style="accent-color:#e8c96a; width:16px; height:16px; cursor:pointer;"></td>
-                      <td style="padding:16px; text-align:center;"><input type="checkbox" checked style="accent-color:#e8c96a; width:16px; height:16px; cursor:pointer;"></td>
-                      <td style="padding:16px; text-align:center;"><input type="checkbox" style="accent-color:#e8c96a; width:16px; height:16px; cursor:pointer;"></td>
-                      <td style="padding:16px; color:#51cf66; font-size:0.85rem; font-weight:600;">Active</td>
-                    </tr>
-                    <tr style="border-bottom:1px solid rgba(255,255,255,0.05);">
-                      <td style="padding:16px 0; color:#fff; font-weight:500; display:flex; align-items:center; gap:8px;"><span style="color:#e8c96a;">🔔</span> Trip Reminder (24h)</td>
-                      <td style="padding:16px; color:rgba(255,255,255,0.6); font-size:0.9rem;">Reminder sent 24 hours before the trip.</td>
-                      <td style="padding:16px; text-align:center;"><input type="checkbox" style="accent-color:#e8c96a; width:16px; height:16px; cursor:pointer;"></td>
-                      <td style="padding:16px; text-align:center;"><input type="checkbox" checked style="accent-color:#e8c96a; width:16px; height:16px; cursor:pointer;"></td>
-                      <td style="padding:16px; text-align:center;"><input type="checkbox" style="accent-color:#e8c96a; width:16px; height:16px; cursor:pointer;"></td>
-                      <td style="padding:16px; color:#51cf66; font-size:0.85rem; font-weight:600;">Active</td>
-                    </tr>
-                    <tr style="border-bottom:1px solid rgba(255,255,255,0.05);">
-                      <td style="padding:16px 0; color:#fff; font-weight:500; display:flex; align-items:center; gap:8px;"><span style="color:#e8c96a;">🔔</span> Trip Reminder (2h)</td>
-                      <td style="padding:16px; color:rgba(255,255,255,0.6); font-size:0.9rem;">Reminder sent 2 hours before the trip.</td>
-                      <td style="padding:16px; text-align:center;"><input type="checkbox" style="accent-color:#e8c96a; width:16px; height:16px; cursor:pointer;"></td>
-                      <td style="padding:16px; text-align:center;"><input type="checkbox" checked style="accent-color:#e8c96a; width:16px; height:16px; cursor:pointer;"></td>
-                      <td style="padding:16px; text-align:center;"><input type="checkbox" style="accent-color:#e8c96a; width:16px; height:16px; cursor:pointer;"></td>
-                      <td style="padding:16px; color:#51cf66; font-size:0.85rem; font-weight:600;">Active</td>
-                    </tr>
-                    <tr style="border-bottom:1px solid rgba(255,255,255,0.05);">
-                      <td style="padding:16px 0; color:#fff; font-weight:500; display:flex; align-items:center; gap:8px;"><span style="color:#ff6b6b;">📍</span> Driver Arrived</td>
-                      <td style="padding:16px; color:rgba(255,255,255,0.6); font-size:0.9rem;">Sent when driver reaches the pickup location.</td>
-                      <td style="padding:16px; text-align:center;"><input type="checkbox" checked style="accent-color:#e8c96a; width:16px; height:16px; cursor:pointer;"></td>
-                      <td style="padding:16px; text-align:center;"><input type="checkbox" checked style="accent-color:#e8c96a; width:16px; height:16px; cursor:pointer;"></td>
-                      <td style="padding:16px; text-align:center;"><input type="checkbox" style="accent-color:#e8c96a; width:16px; height:16px; cursor:pointer;"></td>
-                      <td style="padding:16px; color:#51cf66; font-size:0.85rem; font-weight:600;">Active</td>
-                    </tr>
-                    <tr style="border-bottom:1px solid rgba(255,255,255,0.05);">
-                      <td style="padding:16px 0; color:#fff; font-weight:500; display:flex; align-items:center; gap:8px;"><span style="color:#20c997;">✓</span> Trip Completed</td>
-                      <td style="padding:16px; color:rgba(255,255,255,0.6); font-size:0.9rem;">Sent when the trip is completed.</td>
-                      <td style="padding:16px; text-align:center;"><input type="checkbox" checked style="accent-color:#e8c96a; width:16px; height:16px; cursor:pointer;"></td>
-                      <td style="padding:16px; text-align:center;"><input type="checkbox" style="accent-color:#e8c96a; width:16px; height:16px; cursor:pointer;"></td>
-                      <td style="padding:16px; text-align:center;"><input type="checkbox" checked style="accent-color:#e8c96a; width:16px; height:16px; cursor:pointer;"></td>
-                      <td style="padding:16px; color:#51cf66; font-size:0.85rem; font-weight:600;">Active</td>
-                    </tr>
-                    <tr>
-                      <td style="padding:16px 0; color:#fff; font-weight:500; display:flex; align-items:center; gap:8px;"><span style="color:#fff;">📄</span> Payment Receipt</td>
-                      <td style="padding:16px; color:rgba(255,255,255,0.6); font-size:0.9rem;">Sent after payment is completed.</td>
-                      <td style="padding:16px; text-align:center;"><input type="checkbox" style="accent-color:#e8c96a; width:16px; height:16px; cursor:pointer;"></td>
-                      <td style="padding:16px; text-align:center;"><input type="checkbox" style="accent-color:#e8c96a; width:16px; height:16px; cursor:pointer;"></td>
-                      <td style="padding:16px; text-align:center;"><input type="checkbox" checked style="accent-color:#e8c96a; width:16px; height:16px; cursor:pointer;"></td>
-                      <td style="padding:16px; color:#51cf66; font-size:0.85rem; font-weight:600;">Active</td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-
-            <!-- Reminder Timing -->
-            <div class="card" style="margin-bottom:24px;">
-              <h2 style="margin-top:0; color:#fff; font-size:1.4rem; margin-bottom:8px;">Reminder Timing</h2>
-              <p style="color:rgba(255,255,255,0.5); font-size:0.9rem; margin-bottom:24px;">Set default reminder times for trip-related notifications.</p>
-              
-              <div style="display:flex; flex-direction:column; gap:16px;">
-                <div style="display:flex; justify-content:space-between; align-items:center; padding-bottom:16px; border-bottom:1px solid rgba(255,255,255,0.05);">
-                  <div style="display:flex; align-items:center; gap:16px;">
-                    <div style="width:40px; height:40px; border-radius:8px; background:rgba(255,255,255,0.05); display:flex; align-items:center; justify-content:center; font-size:1.2rem; color:#e8c96a;">
-                      🕒
-                    </div>
-                    <div>
-                      <div style="color:#fff; font-weight:600; margin-bottom:4px;">24 Hour Reminder</div>
-                      <div style="color:rgba(255,255,255,0.5); font-size:0.85rem;">Send reminder 24 hours before the trip</div>
-                    </div>
-                  </div>
-                  <div>
-                    <select style="background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.1); color:#fff; padding:10px 16px; border-radius:6px; font-size:0.9rem; min-width:200px; cursor:pointer;">
-                      <option>24 hours before</option>
-                    </select>
-                  </div>
-                </div>
-                
-                <div style="display:flex; justify-content:space-between; align-items:center; padding-bottom:16px; border-bottom:1px solid rgba(255,255,255,0.05);">
-                  <div style="display:flex; align-items:center; gap:16px;">
-                    <div style="width:40px; height:40px; border-radius:8px; background:rgba(255,255,255,0.05); display:flex; align-items:center; justify-content:center; font-size:1.2rem; color:#e8c96a;">
-                      🕒
-                    </div>
-                    <div>
-                      <div style="color:#fff; font-weight:600; margin-bottom:4px;">2 Hour Reminder</div>
-                      <div style="color:rgba(255,255,255,0.5); font-size:0.85rem;">Send reminder 2 hours before the trip</div>
-                    </div>
-                  </div>
-                  <div>
-                    <select style="background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.1); color:#fff; padding:10px 16px; border-radius:6px; font-size:0.9rem; min-width:200px; cursor:pointer;">
-                      <option>2 hours before</option>
-                    </select>
-                  </div>
-                </div>
-
-                <div style="display:flex; justify-content:space-between; align-items:center;">
-                  <div style="display:flex; align-items:center; gap:16px;">
-                    <div style="width:40px; height:40px; border-radius:8px; background:rgba(255,255,255,0.05); display:flex; align-items:center; justify-content:center; font-size:1.2rem; color:#e8c96a;">
-                      🕒
-                    </div>
-                    <div>
-                      <div style="color:#fff; font-weight:600; margin-bottom:4px;">Driver Arrival Reminder (Optional)</div>
-                      <div style="color:rgba(255,255,255,0.5); font-size:0.85rem;">Send reminder before driver arrival</div>
-                    </div>
-                  </div>
-                  <div>
-                    <select style="background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.1); color:#fff; padding:10px 16px; border-radius:6px; font-size:0.9rem; min-width:200px; cursor:pointer;">
-                      <option>30 minutes before</option>
-                    </select>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div style="display:flex; justify-content:space-between; align-items:center;">
-              <div style="display:flex; align-items:center; gap:12px; background:rgba(81, 137, 246, 0.1); border:1px solid rgba(81, 137, 246, 0.2); padding:12px 16px; border-radius:6px; color:#fff; font-size:0.85rem;">
-                <span style="color:#5189f6;">ℹ️</span> All notifications are triggered automatically by the system based on booking and trip events.
-              </div>
-              <div>
-                <button class="btn primary" style="background:#e8c96a; color:#000; border:none; padding:12px 24px; font-weight:600; border-radius:6px; cursor:pointer;">Save Changes</button>
-              </div>
-            </div>
-
-          </div>
-
+        <script>
+          function switchSettingsTab(tabId, btn) {
+            const section = document.getElementById('admin-settings');
+            if (!section) return;
+            section.querySelectorAll('.cms-panel').forEach(panel => {
+              panel.classList.remove('active');
+              panel.style.display = 'none';
+            });
+            section.querySelectorAll('.cms-tab').forEach(tab => {
+              tab.classList.remove('active');
+              tab.style.color = 'rgba(255,255,255,0.6)';
+              tab.style.borderBottom = '2px solid transparent';
+            });
+            const target = section.querySelector('#' + tabId);
+            if (target) {
+              target.classList.add('active');
+              target.style.display = 'block';
+            }
+            if (btn) {
+              btn.classList.add('active');
+              btn.style.color = '#e8c96a';
+              btn.style.borderBottom = '2px solid #e8c96a';
+            }
+          }
+        </script>
         </section>
     </main>
 
@@ -3672,6 +3433,41 @@ function switchFleetTab(tabId, btn) {
           clearTimeout(toastTimer);
           toastTimer = setTimeout(() => toast.classList.remove("show"), 2800);
         };
+
+        const messageDetailModal = document.querySelector("#admin-message-detail-modal");
+        const openMessageDetail = (button) => {
+          const row = button.closest("[data-message-row]");
+          if (!row || !messageDetailModal) return;
+          const data = row.dataset;
+          setText("#message-detail-type", data.type || "Message");
+          setText("#message-detail-title", data.id || "Customer message");
+          setText("#message-detail-customer", data.customer || "-");
+          setText("#message-detail-phone", data.phone || "-");
+          setText("#message-detail-email", data.email || "-");
+          setText("#message-detail-booking", data.booking || "-");
+          setText("#message-detail-received", data.received || "-");
+          setText("#message-detail-status", data.status || "-");
+          setText("#message-detail-body", data.message || "No message available.");
+          messageDetailModal.classList.add("open");
+          messageDetailModal.setAttribute("aria-hidden", "false");
+        };
+
+        const closeMessageDetail = () => {
+          if (!messageDetailModal) return;
+          messageDetailModal.classList.remove("open");
+          messageDetailModal.setAttribute("aria-hidden", "true");
+        };
+
+        document.querySelectorAll("[data-message-details]").forEach((button) => {
+          button.addEventListener("click", () => openMessageDetail(button));
+        });
+        document.querySelector("#message-detail-close")?.addEventListener("click", closeMessageDetail);
+        messageDetailModal?.addEventListener("click", (event) => {
+          if (event.target === messageDetailModal) closeMessageDetail();
+        });
+        document.addEventListener("keydown", (event) => {
+          if (event.key === "Escape") closeMessageDetail();
+        });
 
         const addCustomerOption = (name) => {
           const list = document.querySelector("#customer-options");
@@ -4001,7 +3797,6 @@ function switchFleetTab(tabId, btn) {
         ]);
 
         setupTableFilter('customer-table', [
-          { id: 'customer-filter-vip', colIndex: 6, isSelect: true },
           { id: 'customer-filter-search', colIndex: -1, isSelect: false }
         ]);
 
@@ -5402,7 +5197,6 @@ function switchFleetTab(tabId, btn) {
       <script>
         function filterCustomers() {
           const search = document.getElementById('customer-filter-search')?.value.toLowerCase() || '';
-          const vipFilter = document.getElementById('customer-filter-vip')?.value || '';
           
           const tbody = document.getElementById('customer-table-body');
           if (!tbody) return;
@@ -5414,12 +5208,10 @@ function switchFleetTab(tabId, btn) {
             const id = (row.dataset.id || '').toLowerCase();
             const phone = (row.dataset.phone || '').toLowerCase();
             const email = (row.dataset.email || '').toLowerCase();
-            const vip = row.dataset.vip || '';
             
             const matchSearch = !search || name.includes(search) || id.includes(search) || phone.includes(search) || email.includes(search);
-            const matchVip = !vipFilter || vip === vipFilter;
             
-            if (matchSearch && matchVip) {
+            if (matchSearch) {
               row.style.display = '';
               visible++;
             } else {
@@ -5450,47 +5242,6 @@ function switchFleetTab(tabId, btn) {
         }
       </script>
             
-
-<script>
-function toggleVipMenu(e, btn) {
-    e.stopPropagation();
-    document.querySelectorAll('.vip-menu').forEach(m => {
-        if(m !== btn.nextElementSibling) m.style.display = 'none';
-    });
-    const menu = btn.nextElementSibling;
-    menu.style.display = menu.style.display === 'none' || menu.style.display === '' ? 'block' : 'none';
-}
-
-function setRowVip(e, item, status) {
-    e.stopPropagation();
-    const container = item.closest('.vip-dropdown-container');
-    const btn = container.querySelector('button');
-    const textSpan = btn.querySelector('.vip-text');
-    const row = item.closest('.customer-row');
-    
-    if(row) row.dataset.vip = status;
-    
-    textSpan.textContent = status;
-    if(status === 'VIP') {
-        btn.style.background = 'rgba(81, 207, 102, 0.1)';
-        btn.style.color = '#51cf66';
-    } else {
-        btn.style.background = 'rgba(255, 255, 255, 0.05)';
-        btn.style.color = '#fff';
-    }
-    
-    container.querySelector('.vip-menu').style.display = 'none';
-    
-    // If there is an active top VIP filter, we might want to refresh it so the row disappears if it no longer matches.
-    // Uncomment the next line if you want the row to instantly vanish when changing status while filtered.
-    // filterCustomers(); 
-}
-
-document.addEventListener('click', () => {
-    document.querySelectorAll('.vip-menu').forEach(m => m.style.display = 'none');
-});
-</script>
-
 
     <!-- Booking Details Side Panel -->
     <div class="panel-backdrop" id="bd-backdrop" onclick="closePanel('bd-panel')"></div>
