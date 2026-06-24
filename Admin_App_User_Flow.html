@@ -1,4 +1,4 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="en">
   <head>
     <meta charset="utf-8">
@@ -267,13 +267,13 @@
         <div class="section-head">
           <strong>Admin Experience</strong>
           <h1>A secure command center for limo operations</h1>
-          <p>The admin portal is built around the screens visible in the supplied Admin.html sidebar. Staff authenticate, land in Booking Management, then work across four core operating modules: Booking Management, Driver Management, Fleet Management, and Customers. Settings is available as the configuration area for communication rules and system options.</p>
+          <p>The admin portal is built around the screens visible in the supplied Admin.html sidebar. Staff authenticate, land in Booking Management, then work across six primary destinations: Bookings, Driver Management, Fleet Management, Customers, Messages, and Settings.</p>
         </div>
         <div class="stat-strip">
           <div class="stat"><div class="num">3</div><div class="label">Auth screens</div></div>
-          <div class="stat"><div class="num">4</div><div class="label">Core modules</div></div>
-          <div class="stat"><div class="num">1</div><div class="label">Settings area</div></div>
-          <div class="stat"><div class="num">28</div><div class="label">Mapped features</div></div>
+          <div class="stat"><div class="num">6</div><div class="label">Sidebar destinations</div></div>
+          <div class="stat"><div class="num">8</div><div class="label">Source-only routes</div></div>
+          <div class="stat"><div class="num">35</div><div class="label">Mapped features</div></div>
         </div>
       </section>
 
@@ -281,7 +281,7 @@
         <div class="section-head">
           <strong>Visual map</strong>
           <h1>Admin user-flow chart</h1>
-          <p>A focused map of the admin screens present in the supplied Admin.html flow. After login, the admin lands in the portal and can move through four core modules: Booking Management, Driver Management, Fleet Management, and Customers. Each module is broken down into the tabs, panels, and actions available in the HTML.</p>
+          <p>A focused map of the admin screens present in the supplied Admin.html flow. After login, the admin lands in Bookings and can move through the current sidebar destinations: Bookings, Driver Management, Fleet Management, Customers, Messages, and Settings. Each destination is broken down into the tabs, panels, and actions available in the HTML.</p>
         </div>
 
         <div class="flowchart">
@@ -340,7 +340,7 @@
                 <div class="n-desc">Sidebar + top search + profile menu</div>
               </div>
             </div>
-            <div class="connector-label">4 core modules from Admin.html</div>
+            <div class="connector-label">6 visible sidebar destinations from Admin.html</div>
             <div class="connector-v"></div>
 
             <div class="fc-row wrap">
@@ -362,11 +362,21 @@
               <div class="node accent">
                 <span class="n-tag">Module 4</span>
                 <div class="n-title">Customers</div>
-                <div class="n-desc">Client Profiles and VIP status</div>
+                <div class="n-desc">Searchable customer records</div>
+              </div>
+              <div class="node accent">
+                <span class="n-tag">Module 5</span>
+                <div class="n-title">Messages</div>
+                <div class="n-desc">Messages, support notes, ride reviews</div>
+              </div>
+              <div class="node accent">
+                <span class="n-tag">Module 6</span>
+                <div class="n-title">Settings</div>
+                <div class="n-desc">General settings and communications</div>
               </div>
             </div>
 
-            <div class="connector-label">module breakdown</div>
+            <div class="connector-label">primary destination breakdown</div>
 
             <div class="fc-row wrap">
               <div class="branch-col">
@@ -470,22 +480,50 @@
                 </div>
                 <div class="node">
                   <span class="n-tag">Filters</span>
-                  <div class="n-title">VIP + Search</div>
-                  <div class="n-desc">VIP status and customer text search</div>
+                  <div class="n-title">Customer Search</div>
+                  <div class="n-desc">Search by name, email, phone, or ID</div>
                 </div>
                 <div class="node">
                   <span class="n-tag">Table</span>
                   <div class="n-title">Customer Rows</div>
-                  <div class="n-desc">Customer ID, name, phone, email, VIP status</div>
+                  <div class="n-desc">Customer ID, name, phone, email, total trips, last ride</div>
                 </div>
                 <div class="node terminal">
                   <span class="n-tag">Actions</span>
-                  <div class="n-title">Open Profile / Update VIP</div>
-                  <div class="n-desc">View details and switch VIP/Standard</div>
+                  <div class="n-title">Filter Rows / Empty State</div>
+                  <div class="n-desc">Show matching rows or no-match message</div>
                 </div>
               </div>
             </div>
           </div>
+            <div class="fc-row wrap" style="margin-top:18px;">
+              <div class="branch-col">
+                <span class="branch-tag">Messages</span>
+                <div class="node">
+                  <span class="n-tag">Screen</span>
+                  <div class="n-title">Messages &amp; Reviews</div>
+                  <div class="n-desc">Customer communications, booking notes, support messages, ride reviews</div>
+                </div>
+                <div class="node terminal">
+                  <span class="n-tag">Modal</span>
+                  <div class="n-title">Message Details</div>
+                  <div class="n-desc">Customer, phone, email, booking, received time, status, full message</div>
+                </div>
+              </div>
+              <div class="branch-col">
+                <span class="branch-tag">Settings</span>
+                <div class="node">
+                  <span class="n-tag">Tab</span>
+                  <div class="n-title">General Settings</div>
+                  <div class="n-desc">Company, system, security, service, provider, integration settings</div>
+                </div>
+                <div class="node">
+                  <span class="n-tag">Tab</span>
+                  <div class="n-title">Communication Settings</div>
+                  <div class="n-desc">Notification rules, reminder timing, test notification panel</div>
+                </div>
+              </div>
+            </div>
           <div class="legend">
             <span><i class="dot d-start"></i> Entry / session</span>
             <span><i class="dot d-step"></i> Workflow step</span>
@@ -500,18 +538,19 @@
         <div class="section-head">
           <strong>Detailed flow</strong>
           <h1>Admin journey steps</h1>
-          <p>How an operations admin moves through the actual portal screens in Admin.html, from secure access to the four core operating modules and Settings.</p>
+          <p>How an operations admin moves through the actual portal screens in Admin.html, from secure access to the six visible sidebar destinations.</p>
         </div>
         <div class="card">
           <div class="flow-step"><span class="idx">1</span><div class="flow-copy"><strong>Admin lands on login.</strong> The login screen collects email or username, password, remember-me preference, and exposes the forgot-password path.<span class="sub">Routes: <span class="inline-code">#admin-login</span>, <span class="inline-code">#admin-forgot</span>, <span class="inline-code">#admin-reset</span>.</span></div></div>
           <div class="flow-step"><span class="idx">2</span><div class="flow-copy"><strong>Recovery branch verifies admin access.</strong> Forgot password sends an OTP to the admin email; reset requires OTP, new password, confirm password, and password rules.</div></div>
-          <div class="flow-step"><span class="idx">3</span><div class="flow-copy"><strong>Successful login opens Booking Management.</strong> The portal shows the sidebar, topbar search, profile menu, and default Bookings workspace.<span class="sub">Visible sidebar: Bookings, Driver Management, Fleet Management, Customers, Settings.</span></div></div>
+          <div class="flow-step"><span class="idx">3</span><div class="flow-copy"><strong>Successful login opens Booking Management.</strong> The portal shows the sidebar, topbar search, profile menu, and default Bookings workspace.<span class="sub">Visible sidebar: Bookings, Driver Management, Fleet Management, Customers, Messages, Settings.</span></div></div>
           <div class="flow-step"><span class="idx">4</span><div class="flow-copy"><strong>Admin handles Booking Management.</strong> New Requests, Bookings, and Add Booking tabs support request review, booking lookup, booking detail panels, confirmation, cancellation, resource reassignment, and manual booking creation.</div></div>
           <div class="flow-step"><span class="idx">5</span><div class="flow-copy"><strong>Admin handles Driver Management.</strong> The Drivers tab supports search, availability and license filters, driver detail panel, driver history, leave, suspension, deletion, and the Add Driver form with document upload.</div></div>
           <div class="flow-step"><span class="idx">6</span><div class="flow-copy"><strong>Admin handles Fleet Management.</strong> The Fleet tab supports vehicle search and filters, status/action panel, vehicle details, vehicle history, maintenance/disable/delete flows, and the Add Fleet form with photos and compliance documents.</div></div>
-          <div class="flow-step"><span class="idx">7</span><div class="flow-copy"><strong>Admin handles Customers.</strong> Client Profiles supports VIP filtering, customer search, customer rows with ID/contact details, customer detail access, and VIP/Standard updates.</div></div>
-          <div class="flow-step"><span class="idx">8</span><div class="flow-copy"><strong>Admin configures Settings.</strong> Settings exposes Communication Settings in the active tab, including notification rules, reminder timing, and the Test Notification panel; the HTML also contains a hidden General Settings panel.</div></div>
-          <div class="flow-step"><span class="idx">9</span><div class="flow-copy"><strong>Admin logs out from profile.</strong> Profile menu shows Operations Admin and returns the user to the login screen.</div></div>
+          <div class="flow-step"><span class="idx">7</span><div class="flow-copy"><strong>Admin handles Customers.</strong> Client Profiles supports customer search, customer rows with ID/contact details, total trip count, last ride date, and an empty state when no customers match.</div></div>
+          <div class="flow-step"><span class="idx">8</span><div class="flow-copy"><strong>Admin reviews Messages.</strong> Messages &amp; Reviews lists booking notes, support messages, and completed ride reviews; Details opens a modal with customer, booking, status, received time, and full message text.</div></div>
+          <div class="flow-step"><span class="idx">9</span><div class="flow-copy"><strong>Admin configures Settings.</strong> General Settings is the active default tab. Communication Settings is the second tab for notification rules, reminder timing, and the Test Notification panel.</div></div>
+          <div class="flow-step"><span class="idx">10</span><div class="flow-copy"><strong>Admin logs out from profile.</strong> Profile menu shows Operations Admin and returns the user to the login screen.</div></div>
         </div>
       </section>
 
@@ -534,7 +573,7 @@
             <tbody>
               <tr><td><span class="mod-tag">Auth</span></td><td>Secure login</td><td>Enter email/username and password, remember session, log in.</td><td>Email / username, password, remember me, profile initials, logout.</td></tr>
               <tr><td><span class="mod-tag">Auth</span></td><td>Password recovery</td><td>Send OTP, enter OTP, set and confirm password.</td><td>OTP code, new password, uppercase/number/special-character rules.</td></tr>
-              <tr><td><span class="mod-tag">Shell</span></td><td>Admin navigation</td><td>Move between Bookings, Driver Management, Fleet Management, Customers, Settings, and profile logout.</td><td>Visible sidebar modules plus hidden Overview link in source.</td></tr>
+              <tr><td><span class="mod-tag">Shell</span></td><td>Admin navigation</td><td>Move between Bookings, Driver Management, Fleet Management, Customers, Messages, Settings, and profile logout.</td><td>Visible sidebar modules in the current admin navigation.</td></tr>
               <tr><td><span class="mod-tag">Shell</span></td><td>Global search</td><td>Search by booking ID, customer, phone, or email.</td><td>Topbar search scope should align with booking/customer records.</td></tr>
               <tr><td><span class="mod-tag">Bookings</span></td><td>New request queue</td><td>Filter by pickup date and open request details.</td><td>Request ID, customer, phone, pickup, drop-off, pickup date/time, duration, New Request status.</td></tr>
               <tr><td><span class="mod-tag">Bookings</span></td><td>Booking request detail panel</td><td>Review customer information, trip information, and vehicle preference.</td><td>Customer, phone, email, pickup/drop, date/time, duration, vehicle preference.</td></tr>
@@ -554,12 +593,13 @@
               <tr><td><span class="mod-tag">Fleet</span></td><td>Vehicle history panel</td><td>Review assignment, maintenance, status, and update timeline.</td><td>Trip completed, driver assigned, maintenance started/completed, status changed, vehicle added.</td></tr>
               <tr><td><span class="mod-tag">Fleet</span></td><td>Add vehicle</td><td>Create fleet record with specifications and compliance uploads.</td><td>Name, type, brand/model/year, plate, capacity, hourly rate, photos, registration, insurance, permits.</td></tr>
               <tr><td><span class="mod-tag">Fleet</span></td><td>Delete vehicle</td><td>Open delete vehicle modal and submit deletion reason.</td><td>Delete reason and destructive confirmation.</td></tr>
-              <tr><td><span class="mod-tag">Customers</span></td><td>Client profiles</td><td>Search, filter VIP status, open profile, update VIP/Standard.</td><td>Customer ID, name, phone, email, booking count/history, VIP status.</td></tr>
-              <tr><td><span class="mod-tag">Customers</span></td><td>VIP status menu</td><td>Switch a customer between VIP and Standard from row menu.</td><td>VIP badge state and row data attribute.</td></tr>
-              <tr><td><span class="mod-tag">Customers</span></td><td>Customer detail panel</td><td>Open customer details from row selection.</td><td>Customer ID, name, contact, profile details, booking context.</td></tr>
+              <tr><td><span class="mod-tag">Customers</span></td><td>Client profiles</td><td>Search and review customer profile rows.</td><td>Customer ID, name, phone, email, total trips, last ride date.</td></tr>
+              <tr><td><span class="mod-tag">Customers</span></td><td>Customer search and empty state</td><td>Filter customers by name, email, phone, or customer ID.</td><td><code>customer-filter-search</code>, row data attributes, no-match empty message.</td></tr>
+              <tr><td><span class="mod-tag">Messages</span></td><td>Messages &amp; Reviews inbox</td><td>Review booking notes, booking changes, support messages, and ride reviews from customer records.</td><td>Message ID, received timestamp, customer, phone, email, booking ID, message type, preview, status.</td></tr>
+              <tr><td><span class="mod-tag">Messages</span></td><td>Message detail modal</td><td>Open Details from a message row and inspect the full submitted text.</td><td>Customer, phone, email, booking, received time, status, full message body.</td></tr>
+              <tr><td><span class="mod-tag">Settings</span></td><td>General Settings tab</td><td>Manage company and operating configuration from the default active settings tab.</td><td>Company details, booking approval mode, timezone, currency, 2FA, session timeout, service areas, providers, payment gateway, maps provider.</td></tr>
               <tr><td><span class="mod-tag">Settings</span></td><td>Communication Settings tab</td><td>Choose customer notification channels and reminder timing.</td><td>Booking confirmed, driver assigned, driver en route, 24h/2h reminders, driver arrived, trip completed, payment receipt.</td></tr>
               <tr><td><span class="mod-tag">Settings</span></td><td>Test notification panel</td><td>Open Test Notification, choose event and recipient details, send test.</td><td>Event select, customer fields, country code, phone/email destination.</td></tr>
-              <tr><td><span class="mod-tag">Settings</span></td><td>General settings panel</td><td>Hidden panel in source for system, company, security, service area, provider, and integration settings.</td><td>Booking approval mode, timezone, currency, company, 2FA, session timeout, providers, payment gateway, maps provider.</td></tr>
             </tbody>
           </table>
         </div>
@@ -654,9 +694,19 @@
             <div class="spec-head"><h2>Client Profiles</h2><span class="mod-tag">Customers</span></div>
             <span class="spec-route">#admin-customers</span>
             <div class="spec-grid">
-              <div class="spec-block"><h4>Purpose</h4><ul><li>View client profile list, booking history, preferences, and VIP status.</li></ul></div>
-              <div class="spec-block"><h4>Filters</h4><ul><li>VIP Status: All, VIP, Standard.</li><li>Search by name, email, phone, or customer ID.</li></ul></div>
-              <div class="spec-block"><h4>Actions</h4><ul><li>Open customer detail panel.</li><li>Toggle VIP or Standard from row menu.</li><li>Show empty state when no matching rows are found.</li></ul></div>
+              <div class="spec-block"><h4>Purpose</h4><ul><li>View the customer profile list from the Customer Management screen.</li><li>The visible table is focused on customer identity, contact details, trip count, and last ride date.</li></ul></div>
+              <div class="spec-block"><h4>Search</h4><ul><li>Search Customers input filters by name, email, phone, or customer ID.</li><li><code>filterCustomers()</code> reads row data attributes and hides non-matching rows.</li></ul></div>
+              <div class="spec-block"><h4>Visible state</h4><ul><li>Columns: Customer ID, Customer Name, Phone Number, Email, Total Trips, Last Ride.</li><li>No VIP segment, VIP filter, VIP column, or VIP/Standard action is rendered in the current Customers screen.</li><li>No-match state displays &quot;No customers match the search.&quot;</li></ul></div>
+            </div>
+          </article>
+
+          <article class="spec-card">
+            <div class="spec-head"><h2>Messages &amp; Reviews</h2><span class="mod-tag">Messages</span></div>
+            <span class="spec-route">#admin-messages</span>
+            <div class="spec-grid">
+              <div class="spec-block"><h4>Purpose</h4><ul><li>Review customer communications submitted from booking and customer app flows.</li><li>Includes booking notes, booking changes, support messages, and ride reviews.</li></ul></div>
+              <div class="spec-block"><h4>Table data</h4><ul><li>Message ID, received timestamp, customer, booking, type, preview, and action.</li><li>Rows carry phone, email, status, and full message text as data attributes.</li></ul></div>
+              <div class="spec-block"><h4>Actions</h4><ul><li>Details opens the message detail modal.</li><li>Modal displays customer contact, booking, received time, status, and full body text.</li></ul></div>
             </div>
           </article>
 
@@ -664,9 +714,9 @@
             <div class="spec-head"><h2>Settings</h2><span class="mod-tag">Settings</span></div>
             <span class="spec-route">#admin-settings</span>
             <div class="spec-grid">
-              <div class="spec-block"><h4>Visible tab</h4><ul><li>Communication Settings is the visible active settings tab.</li><li>Notification Rules table controls In-App, SMS, and Email per customer event.</li><li>Reminder Timing controls 24-hour, 2-hour, and optional driver-arrival reminders.</li></ul></div>
-              <div class="spec-block"><h4>Test panel</h4><ul><li>Test Notification side panel opens from the settings header.</li><li>Event, recipient, country code, phone/email fields are present.</li></ul></div>
-              <div class="spec-block"><h4>Hidden source panel</h4><ul><li>The source also contains a hidden General Settings panel for system, company, security, service area, notification provider, API, and third-party integration settings.</li></ul></div>
+              <div class="spec-block"><h4>Default tab</h4><ul><li>General Settings is active by default in Admin.html.</li><li>It covers basic company details, booking defaults, security, service areas, providers, APIs, and integrations.</li></ul></div>
+              <div class="spec-block"><h4>Communication tab</h4><ul><li>Communication Settings controls In-App, SMS, and Email channels per customer event.</li><li>Reminder Timing controls 24-hour, 2-hour, and optional driver-arrival reminders.</li></ul></div>
+              <div class="spec-block"><h4>Test panel</h4><ul><li>Test Notification side panel opens from Communication Settings.</li><li>Event, recipient, country code, phone/email fields are present.</li></ul></div>
             </div>
           </article>
         </div>
@@ -716,8 +766,7 @@
             </thead>
             <tbody>
               <tr><td>New Request</td><td>Customer submitted a ride request; not yet accepted by staff.</td><td>View, review, confirm, cancel.</td><td>Appears in request queue.</td></tr>
-              <tr><td>Under Review</td><td>Staff is validating trip, fleet availability, and customer details.</td><td>Confirm, reject, add internal notes, contact customer.</td><td>Should be visible in booking detail workflow.</td></tr>
-              <tr><td>Confirmed</td><td>Booking accepted by operations.</td><td>View, reassign vehicle, reassign driver, cancel.</td><td>Appears in the Bookings tab with vehicle and driver assignment.</td></tr>
+              <tr><td>Review &amp; Confirm</td><td>Staff validates trip details, fleet availability, and customer details before accepting the booking.</td><td>Confirm, reject, add internal notes, contact customer.</td><td>Confirmed bookings appear in the Bookings tab and can move into vehicle/driver assignment.</td></tr>
               <tr><td>Assigned</td><td>Vehicle and chauffeur are attached.</td><td>Reassign resources or cancel if still active.</td><td>Vehicle and driver fields are shown in booking detail panel.</td></tr>
               <tr><td>In Progress</td><td>Trip has started or is actively being served.</td><td>View operational details.</td><td>Status visible where booking state is displayed.</td></tr>
               <tr><td>Completed</td><td>Trip is closed.</td><td>View only; no operational reassignment.</td><td>Actions block is hidden for completed bookings.</td></tr>
@@ -739,8 +788,9 @@
           <div class="screen-card"><span class="screen-title">Booking Panels</span><h2>Request and booking detail</h2><ul><li>Booking Request Details side panel.</li><li>Booking Details side panel.</li><li>Reassign vehicle, reassign driver, and cancel booking modals.</li></ul><div class="tags"><span>Confirm</span><span>Reassign</span><span>Cancel</span></div></div>
           <div class="screen-card"><span class="screen-title">Drivers</span><h2>Chauffeur management</h2><ul><li>Search and filter by availability/license.</li><li>Driver detail panel with docs, stats, and current assignment.</li><li>Add driver, history, leave, suspend, delete flows.</li></ul><div class="tags"><span>License</span><span>Documents</span><span>Actions</span></div></div>
           <div class="screen-card"><span class="screen-title">Fleet</span><h2>Vehicle management</h2><ul><li>Search/filter vehicle rows.</li><li>Vehicle action, details, and history panels.</li><li>Add/edit vehicle and upload compliance documents.</li></ul><div class="tags"><span>Status</span><span>Maintenance</span><span>Compliance</span></div></div>
-          <div class="screen-card"><span class="screen-title">Customers</span><h2>Client profiles</h2><ul><li>VIP status filter and text search.</li><li>Customer detail and booking history.</li><li>VIP/Standard row menu updates.</li></ul><div class="tags"><span>VIP</span><span>Search</span><span>History</span></div></div>
-          <div class="screen-card"><span class="screen-title">Settings</span><h2>Communication settings</h2><ul><li>Communication Settings tab is active.</li><li>Notification Rules and Reminder Timing sections.</li><li>Test Notification side panel.</li></ul><div class="tags"><span>Rules</span><span>Reminders</span><span>Test</span></div></div>
+          <div class="screen-card"><span class="screen-title">Customers</span><h2>Client profiles</h2><ul><li>Search Customers filters by name, email, phone, or customer ID.</li><li>Table shows Customer ID, Customer Name, Phone Number, Email, Total Trips, and Last Ride.</li><li>No VIP segment, VIP filter, or VIP/Standard row action is rendered in the current Customers screen.</li></ul><div class="tags"><span>Search</span><span>Trips</span><span>Last Ride</span></div></div>
+          <div class="screen-card"><span class="screen-title">Messages</span><h2>Messages &amp; reviews</h2><ul><li>Message and review table is reachable from sidebar and topbar icon.</li><li>Details modal shows full communication payload.</li><li>Supports booking notes, support messages, and ride reviews.</li></ul><div class="tags"><span>Inbox</span><span>Reviews</span><span>Details</span></div></div>
+          <div class="screen-card"><span class="screen-title">Settings</span><h2>General and communication settings</h2><ul><li>General Settings tab is active by default.</li><li>Communication Settings contains Notification Rules and Reminder Timing.</li><li>Test Notification side panel validates notification setup.</li></ul><div class="tags"><span>General</span><span>Rules</span><span>Test</span></div></div>
         </div>
       </section>
 
@@ -748,7 +798,7 @@
         <div class="section-head">
           <strong>Requirements</strong>
           <h1>User stories</h1>
-          <p>Admin-facing user stories grouped by the screens and panels in the supplied Admin.html flow.</p>
+          <p>Admin-facing user stories grouped by the screens and panels in the supplied Admin.html flow, including the visible Messages destination.</p>
         </div>
 
         <div class="story-group">
@@ -788,17 +838,25 @@
         <div class="story-group">
           <h3><span class="mod-tag">Customers</span></h3>
           <div class="grid cards-2">
-            <div class="story-card"><span class="story-id">AD-17 - Manage client profiles</span><p><span class="as">As an</span> admin, <span class="want">I want to search customer profiles and update VIP status</span> so that high-value clients are handled correctly.</p><div class="ac"><h5>Acceptance criteria</h5><ul><li>Filter by VIP status and search by customer details.</li><li>VIP/Standard update is available from row menu.</li><li>Empty state appears when no customers match.</li></ul></div></div>
-            <div class="story-card"><span class="story-id">AD-18 - Open customer detail</span><p><span class="as">As an</span> admin, <span class="want">I want to open customer details from the customer row</span> so that I can inspect customer context before handling bookings.</p><div class="ac"><h5>Acceptance criteria</h5><ul><li>Clicking a customer row opens the customer detail behavior defined in the script.</li><li>Customer ID, name, phone, email, and VIP status remain available from row data.</li></ul></div></div>
+            <div class="story-card"><span class="story-id">AD-17 - Manage client profiles</span><p><span class="as">As an</span> admin, <span class="want">I want to search customer profiles</span> so that I can quickly find customer contact and ride history summary data.</p><div class="ac"><h5>Acceptance criteria</h5><ul><li>Search works by name, email, phone, or customer ID.</li><li>Rows show customer ID, name, phone, email, total trips, and last ride.</li><li>Empty state appears when no customers match.</li></ul></div></div>
+            <div class="story-card"><span class="story-id">AD-18 - Review customer list data</span><p><span class="as">As an</span> admin, <span class="want">I want the customer table to show contact and trip summary fields</span> so that I can validate customer context without leaving the list.</p><div class="ac"><h5>Acceptance criteria</h5><ul><li>Customer rows retain ID, name, phone, and email as row data attributes.</li><li>Total Trips and Last Ride are visible as table columns.</li><li>VIP segmentation is not shown unless the admin UI adds a visible VIP field or control.</li></ul></div></div>
+          </div>
+        </div>
+
+        
+        <div class="story-group">
+          <h3><span class="mod-tag">Messages</span></h3>
+          <div class="grid cards-2">
+            <div class="story-card"><span class="story-id">AD-19 - Review messages and ride reviews</span><p><span class="as">As an</span> operations admin, <span class="want">I want to review customer messages and completed ride reviews</span> so that booking notes, changes, support requests, and service feedback are visible in one place.</p><div class="ac"><h5>Acceptance criteria</h5><ul><li>Messages is reachable from sidebar and topbar icon.</li><li>Table shows message ID, received date, customer, booking, type, preview, and Details action.</li><li>Details modal shows full message, customer contact, booking, received time, and status.</li></ul></div></div>
           </div>
         </div>
 
         <div class="story-group">
           <h3><span class="mod-tag">Settings</span></h3>
           <div class="grid cards-2">
-            <div class="story-card"><span class="story-id">AD-19 - Configure notification rules</span><p><span class="as">As a</span> communications admin, <span class="want">I want to choose channels per event</span> so that customers receive the right updates.</p><div class="ac"><h5>Acceptance criteria</h5><ul><li>Rules cover booking confirmed, driver assigned, driver en route, 24h reminder, 2h reminder, driver arrived, trip completed, and payment receipt.</li><li>Each event has In-App, SMS, and Email channel toggles.</li></ul></div></div>
-            <div class="story-card"><span class="story-id">AD-20 - Configure reminder timing</span><p><span class="as">As a</span> communications admin, <span class="want">I want to adjust reminder timing</span> so that trip reminders are sent at the intended interval.</p><div class="ac"><h5>Acceptance criteria</h5><ul><li>24 Hour Reminder, 2 Hour Reminder, and Driver Arrival Reminder controls are present.</li><li>Save Changes action is available.</li></ul></div></div>
-            <div class="story-card"><span class="story-id">AD-21 - Send test notification</span><p><span class="as">As a</span> communications admin, <span class="want">I want to send a test notification</span> so that I can verify settings before relying on them.</p><div class="ac"><h5>Acceptance criteria</h5><ul><li>Test Notification opens a side panel.</li><li>Admin can choose event and recipient details.</li><li>Cancel and Send Test actions are present.</li></ul></div></div>
+            <div class="story-card"><span class="story-id">AD-20 - Configure notification rules</span><p><span class="as">As a</span> communications admin, <span class="want">I want to choose channels per event</span> so that customers receive the right updates.</p><div class="ac"><h5>Acceptance criteria</h5><ul><li>Rules cover booking confirmed, driver assigned, driver en route, 24h reminder, 2h reminder, driver arrived, trip completed, and payment receipt.</li><li>Each event has In-App, SMS, and Email channel toggles.</li></ul></div></div>
+            <div class="story-card"><span class="story-id">AD-21 - Configure reminder timing</span><p><span class="as">As a</span> communications admin, <span class="want">I want to adjust reminder timing</span> so that trip reminders are sent at the intended interval.</p><div class="ac"><h5>Acceptance criteria</h5><ul><li>24 Hour Reminder, 2 Hour Reminder, and Driver Arrival Reminder controls are present.</li><li>Save Changes action is available.</li></ul></div></div>
+            <div class="story-card"><span class="story-id">AD-22 - Send test notification</span><p><span class="as">As a</span> communications admin, <span class="want">I want to send a test notification</span> so that I can verify settings before relying on them.</p><div class="ac"><h5>Acceptance criteria</h5><ul><li>General Settings is the default active tab.</li><li>Test Notification opens a side panel from Communication Settings.</li><li>Admin can choose event and recipient details.</li><li>Cancel and Send Test actions are present.</li></ul></div></div>
           </div>
         </div>
       </section>
@@ -839,8 +897,8 @@
             <p>Vehicle status should prevent invalid assignment. Available vehicles can be assigned; maintenance or disabled vehicles should be excluded from assignment lists once backend logic is connected.</p>
           </div>
           <div class="card">
-            <h2>Customer VIP state is editable</h2>
-            <p>The Customers module supports VIP and Standard states from the row menu. Implementation should persist the change and keep filters/search in sync with the updated row state.</p>
+            <h2>Customer search is list-based</h2>
+            <p>The Customers module currently filters visible rows by customer name, ID, phone, or email. VIP segmentation should not be documented or implemented from this flow unless the Customers screen adds a visible VIP field or control.</p>
           </div>
           <div class="card">
             <h2>Communication settings are customer-facing</h2>
@@ -851,13 +909,21 @@
             <p>IDs, customer names, phone numbers, vehicles, drivers, dates, and revenue figures in the HTML are sample content. Replace with backend data and verify empty, loading, error, and permission-denied states.</p>
           </div>
         </div>
-        <p class="note">This admin-flow file is a documentation artifact based on the supplied Admin.html structure. Confirm final API contracts, permissions, notification provider behavior, and persistence rules before implementation.</p>
+        <p class="note">This admin-flow file is a documentation artifact based on the supplied Admin.html structure. Confirm final API contracts, sidebar visibility decisions, permissions, notification provider behavior, and persistence rules before implementation.</p>
       </section>
 
       <footer class="footer">
         <span>Luxury Limo - Admin Portal User Flow</span>
-        <span>4 core modules - Settings - admin operations handoff</span>
+        <span>6 sidebar destinations - admin operations handoff</span>
       </footer>
     </div>
   </body>
 </html>
+
+
+
+
+
+
+
+
